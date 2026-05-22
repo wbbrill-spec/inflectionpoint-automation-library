@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: inflectionpoint-automation-library
+    env: static
+    staticPublishPath: .
+    buildCommand: echo "No build needed"
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: no-cache

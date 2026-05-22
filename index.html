@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>InflectionPoint Automation Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #B8963E;
+      --gold-light: #D4AF60;
+      --dark: #1a1a1a;
+      --mid: #2e2e2e;
+      --surface: #242424;
+      --border: rgba(184,150,62,0.2);
+      --text: #e8e4dc;
+      --text-muted: #8a8680;
+      --status-live: #4caf7d;
+      --status-progress: #e09b3d;
+      --status-planned: #5a7fa8;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--dark);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 48px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(26,26,26,0.95);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+
+    .logo-wrap img {
+      height: 52px;
+      width: auto;
+      display: block;
+    }
+
+    .header-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* HERO */
+    .hero {
+      padding: 72px 48px 48px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(184,150,62,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--text);
+      margin-bottom: 20px;
+      max-width: 640px;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+
+    .hero-description {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 520px;
+    }
+
+    /* STATS BAR */
+    .stats-bar {
+      display: flex;
+      gap: 0;
+      padding: 0 48px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 20px 32px 20px 0;
+      margin-right: 32px;
+      border-right: 1px solid var(--border);
+    }
+
+    .stat:last-child {
+      border-right: none;
+    }
+
+    .stat-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .stat-dot.live { background: var(--status-live); box-shadow: 0 0 6px rgba(76,175,125,0.5); }
+    .stat-dot.progress { background: var(--status-progress); }
+    .stat-dot.planned { background: var(--status-planned); }
+
+    .stat-label {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    .stat-count {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--text);
+      margin-left: 4px;
+    }
+
+    /* GRID */
+    .library {
+      padding: 48px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 24px;
+      flex: 1;
+    }
+
+    /* CARD */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: border-color 0.25s ease, transform 0.2s ease;
+      position: relative;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .card:hover {
+      border-color: rgba(184,150,62,0.4);
+      transform: translateY(-2px);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card-header {
+      padding: 28px 28px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .card-title-block { flex: 1; }
+
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+
+    .card-subtitle {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 2px;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .status-badge.live {
+      background: rgba(76,175,125,0.12);
+      color: var(--status-live);
+      border: 1px solid rgba(76,175,125,0.25);
+    }
+
+    .status-badge.progress {
+      background: rgba(224,155,61,0.12);
+      color: var(--status-progress);
+      border: 1px solid rgba(224,155,61,0.25);
+    }
+
+    .status-badge.planned {
+      background: rgba(90,127,168,0.12);
+      color: var(--status-planned);
+      border: 1px solid rgba(90,127,168,0.25);
+    }
+
+    .status-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .status-dot.live { animation: pulse 2s infinite; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* CARD BODY */
+    .card-body {
+      padding: 20px 28px 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card-description {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* PIPELINE */
+    .pipeline {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
+      row-gap: 8px;
+    }
+
+    .pipeline-step {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 4px 10px;
+      border-radius: 2px;
+    }
+
+    .pipeline-arrow {
+      font-size: 10px;
+      color: var(--gold);
+      opacity: 0.5;
+      padding: 0 6px;
+    }
+
+    /* META ROW */
+    .card-meta {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .meta-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      opacity: 0.6;
+    }
+
+    .meta-value {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+
+    /* CARD FOOTER */
+    .card-footer {
+      padding: 16px 28px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .btn-run {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-run:hover {
+      background: var(--gold);
+      color: var(--dark);
+    }
+
+    .btn-run:disabled {
+      border-color: rgba(255,255,255,0.12);
+      color: var(--text-muted);
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-run svg {
+      width: 12px; height: 12px;
+    }
+
+    .btn-view {
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+
+    .btn-view:hover { opacity: 1; color: var(--text); }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--gold);
+      padding: 14px 20px;
+      font-size: 13px;
+      color: var(--text);
+      border-radius: 2px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 999;
+      max-width: 320px;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 20px 48px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-text {
+      font-size: 11px;
+      color: var(--text-muted);
+      opacity: 0.5;
+      letter-spacing: 0.1em;
+    }
+
+    @media (max-width: 600px) {
+      header, .hero, .stats-bar, .library, footer { padding-left: 20px; padding-right: 20px; }
+      .library { grid-template-columns: 1fr; }
+      .stats-bar { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo-wrap">
+    <img src="logo.png" alt="InflectionPoint Consulting" />
+  </div>
+  <div class="header-title">Automation Library</div>
+</header>
+
+<section class="hero">
+  <div class="hero-eyebrow">InflectionOS</div>
+  <h1 class="hero-title">Every automation,<br/><em>one place.</em></h1>
+  <p class="hero-description">A living reference for the systems running InflectionPoint Consulting — what they do, how they work, and how to run them.</p>
+</section>
+
+<div class="stats-bar">
+  <div class="stat">
+    <div class="stat-dot live"></div>
+    <span class="stat-label">Live</span>
+    <span class="stat-count" id="count-live">1</span>
+  </div>
+  <div class="stat">
+    <div class="stat-dot progress"></div>
+    <span class="stat-label">In Progress</span>
+    <span class="stat-count" id="count-progress">1</span>
+  </div>
+  <div class="stat">
+    <div class="stat-dot planned"></div>
+    <span class="stat-label">Planned</span>
+    <span class="stat-count" id="count-planned">0</span>
+  </div>
+</div>
+
+<main class="library" id="library"></main>
+
+<footer>
+  <span class="footer-text">InflectionPoint Consulting &mdash; Internal Use Only</span>
+  <span class="footer-text" id="last-updated"></span>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const AUTOMATIONS = [
+    {
+      id: "inflectionos-daily-brief",
+      title: "InflectionOS",
+      subtitle: "Daily Content Brief",
+      status: "live",
+      description: "Pulls an unprocessed topic from the Topic Inbox each morning, generates a structured content brief via AI, and delivers it to Bill's inbox — complete with source context, a summary of the topic's relevance to InflectionPoint Consulting, and a ready-to-refine social media draft.",
+      pipeline: ["Google Sheets", "OpenAI", "Gmail", "Google Sheets"],
+      schedule: "Daily · 7:00 AM CST",
+      platform: "Make.com",
+      scenarioId: "5156133",
+      runnable: true,
+      makeUrl: "https://us2.make.com/5156133/edit"
+    },
+    {
+      id: "automation-library",
+      title: "Automation Library",
+      subtitle: "Web Application",
+      status: "progress",
+      description: "A centralized web app for accessing, managing, and triggering all InflectionOS automations from one place. Built on Render.com with GitHub source control.",
+      pipeline: ["GitHub", "Render.com"],
+      schedule: "Always on",
+      platform: "Render.com",
+      runnable: false
+    }
+  ];
+
+  function statusLabel(s) {
+    const map = { live: "Live", progress: "In Progress", planned: "Planned" };
+    return map[s] || s;
+  }
+
+  function buildCard(auto) {
+    const pipelineHTML = auto.pipeline.map((step, i) =>
+      `<span class="pipeline-step">${step}</span>${i < auto.pipeline.length - 1 ? '<span class="pipeline-arrow">›</span>' : ''}`
+    ).join('');
+
+    const runBtn = auto.runnable
+      ? `<button class="btn-run" onclick="triggerRun('${auto.id}')">
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5">
+            <polygon points="2,1 11,6 2,11" fill="currentColor" stroke="none"/>
+          </svg>
+          Run Automation Now
+        </button>`
+      : `<button class="btn-run" disabled>
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5">
+            <polygon points="2,1 11,6 2,11" fill="currentColor" stroke="none"/>
+          </svg>
+          Not Yet Available
+        </button>`;
+
+    const viewLink = auto.makeUrl
+      ? `<a class="btn-view" href="${auto.makeUrl}" target="_blank">View in Make.com →</a>`
+      : '';
+
+    return `
+      <div class="card" id="card-${auto.id}">
+        <div class="card-header">
+          <div class="card-title-block">
+            <div class="card-title">${auto.title}</div>
+            <div class="card-subtitle">${auto.subtitle}</div>
+          </div>
+          <div class="status-badge ${auto.status}">
+            <div class="status-dot ${auto.status}"></div>
+            ${statusLabel(auto.status)}
+          </div>
+        </div>
+        <div class="card-body">
+          <p class="card-description">${auto.description}</p>
+          <div class="pipeline">${pipelineHTML}</div>
+          <div class="card-meta">
+            <div class="meta-item">
+              <span class="meta-label">Schedule</span>
+              <span class="meta-value">${auto.schedule}</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Platform</span>
+              <span class="meta-value">${auto.platform}</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          ${runBtn}
+          ${viewLink}
+        </div>
+      </div>`;
+  }
+
+  function triggerRun(id) {
+    const auto = AUTOMATIONS.find(a => a.id === id);
+    if (!auto) return;
+    showToast(`Running "${auto.title}" — check your inbox shortly.`);
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  function init() {
+    const lib = document.getElementById('library');
+    lib.innerHTML = AUTOMATIONS.map(buildCard).join('');
+
+    document.getElementById('count-live').textContent = AUTOMATIONS.filter(a => a.status === 'live').length;
+    document.getElementById('count-progress').textContent = AUTOMATIONS.filter(a => a.status === 'progress').length;
+    document.getElementById('count-planned').textContent = AUTOMATIONS.filter(a => a.status === 'planned').length;
+
+    const now = new Date();
+    document.getElementById('last-updated').textContent =
+      `Updated ${now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
+  }
+
+  init();
+</script>
+</body>
+</html>
