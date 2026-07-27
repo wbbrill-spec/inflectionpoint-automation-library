@@ -496,6 +496,18 @@
 <script>
   const AUTOMATIONS = [
     {
+      id: "padco-parts-scan",
+      title: "PADCO Parts Scan",
+      subtitle: "Daily Marketplace Scanner",
+      status: "live",
+      description: "Scans Facebook Marketplace each weekday for junior drum sets (16\" bass, 6 lugs, non-chrome hoop) and vintage Samsonite suitcases within spec, price, and distance of Katy, TX. Matches are logged to Google Sheets, surfaced on the dashboard, and emailed daily to info@panamericandrums.com.",
+      pipeline: ["Facebook Marketplace", "Claude", "Google Sheets", "SendGrid"],
+      schedule: "Weekdays · 9:00 AM CST",
+      platform: "Claude + Google Sheets",
+      runnable: false,
+      dashboardUrl: "/padco.html"
+    },
+    {
       id: "inflectionos-daily-brief",
       title: "InflectionOS",
       subtitle: "Daily Content Brief",
@@ -531,7 +543,14 @@
       `<span class="pipeline-step">${step}</span>${i < auto.pipeline.length - 1 ? '<span class="pipeline-arrow">›</span>' : ''}`
     ).join('');
 
-    const runBtn = auto.runnable
+    const runBtn = auto.dashboardUrl
+      ? `<a class="btn-run" href="${auto.dashboardUrl}">
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5">
+            <polygon points="2,1 11,6 2,11" fill="currentColor" stroke="none"/>
+          </svg>
+          Open Dashboard
+        </a>`
+      : auto.runnable
       ? `<button class="btn-run" onclick="triggerRun('${auto.id}')">
           <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5">
             <polygon points="2,1 11,6 2,11" fill="currentColor" stroke="none"/>
