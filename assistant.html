@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Bill AI — Personal Assistant · InflectionPoint</title>
+  <title>AI Personal Assistant — InflectionPoint</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -22,10 +22,7 @@
     .header-actions { display:flex; align-items:center; gap:22px; }
     .runbtn { display:inline-flex; align-items:center; gap:8px; padding:9px 16px; background:transparent; border:1px solid var(--gold); color:var(--gold); font-family:'DM Sans',sans-serif; font-size:11px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; cursor:pointer; border-radius:2px; transition:all .2s; }
     .runbtn:hover { background:var(--gold); color:var(--dark); }
-    .runbtn:disabled { opacity:.5; cursor:default; }
     .runbtn svg { width:11px; height:11px; }
-    .toast { position:fixed; bottom:28px; right:28px; background:var(--surface); border:1px solid var(--border); border-left:3px solid var(--gold); padding:14px 18px; font-size:13px; color:var(--text); border-radius:2px; box-shadow:0 8px 32px rgba(0,0,0,.4); transform:translateY(80px); opacity:0; transition:all .3s ease; z-index:999; max-width:360px; line-height:1.55; }
-    .toast.show { transform:translateY(0); opacity:1; }
     .hero { padding:56px 48px 28px; border-bottom:1px solid var(--border); position:relative; overflow:hidden; }
     .hero::before { content:''; position:absolute; top:-60px; right:-60px; width:400px; height:400px; background:radial-gradient(circle, rgba(184,150,62,0.06) 0%, transparent 70%); pointer-events:none; }
     .hero-eyebrow { font-size:11px; font-weight:500; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); margin-bottom:14px; }
@@ -39,7 +36,6 @@
     .stat-count.warn { color:var(--progress); }
     .stat-count.alert { color:var(--alert); }
     .stat-label { font-size:12px; color:var(--text-muted); letter-spacing:0.05em; }
-    /* NAV */
     nav.views { display:flex; flex-wrap:wrap; gap:4px; padding:20px 48px 0; }
     nav.views button { border:0; background:transparent; color:var(--text-muted); font-family:'DM Sans',sans-serif; font-size:11px; font-weight:500; letter-spacing:0.15em; text-transform:uppercase; padding:10px 16px; cursor:pointer; border-bottom:2px solid transparent; transition:all .2s; }
     nav.views button:hover { color:var(--text); }
@@ -49,13 +45,10 @@
     .wrap { padding:28px 48px 48px; flex:1; }
     .view { display:none; }
     .view.on { display:block; }
-    .view-head { display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:6px; }
     .view-title { font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:500; }
-    .view-sub { font-size:13px; color:var(--text-muted); font-weight:300; margin-bottom:20px; line-height:1.6; max-width:640px; }
-    /* GROUP */
+    .view-sub { font-size:13px; color:var(--text-muted); font-weight:300; margin:4px 0 20px; line-height:1.6; max-width:680px; }
     .group-label { font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--text-muted); margin:26px 0 12px; display:flex; align-items:center; gap:10px; }
     .group-label::after { content:''; flex:1; height:1px; background:var(--border); }
-    /* TABLE */
     table { width:100%; border-collapse:collapse; }
     thead th { text-align:left; font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--text-muted); font-weight:500; padding:12px 14px; border-bottom:1px solid var(--border); }
     tbody td { padding:14px 14px; border-bottom:1px solid var(--border); vertical-align:top; font-size:14px; font-weight:300; line-height:1.5; }
@@ -65,7 +58,6 @@
     .nums { font-variant-numeric:tabular-nums; }
     a.view-link { color:var(--gold); text-decoration:none; font-size:12px; letter-spacing:0.08em; white-space:nowrap; }
     a.view-link:hover { color:var(--gold-light); text-decoration:underline; }
-    /* BADGES */
     .badge { display:inline-flex; align-items:center; gap:6px; font-size:10px; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; padding:4px 9px; border-radius:2px; white-space:nowrap; border:1px solid transparent; }
     .dot { width:6px; height:6px; border-radius:50%; background:currentColor; flex-shrink:0; }
     .b-live { background:rgba(76,175,125,0.12); color:var(--live); border-color:rgba(76,175,125,0.25); }
@@ -73,27 +65,35 @@
     .b-planned { background:rgba(90,127,168,0.12); color:var(--planned); border-color:rgba(90,127,168,0.25); }
     .b-alert { background:rgba(217,105,79,0.14); color:var(--alert); border-color:rgba(217,105,79,0.3); }
     .b-gold { background:rgba(184,150,62,0.12); color:var(--gold-light); border-color:rgba(184,150,62,0.25); }
-    /* identity chips */
     .acct { font-size:9px; letter-spacing:0.1em; text-transform:uppercase; padding:3px 7px; border-radius:2px; border:1px solid transparent; white-space:nowrap; }
     .acct-ip { background:rgba(184,150,62,0.12); color:var(--gold-light); border-color:rgba(184,150,62,0.25); }
     .acct-lsa { background:rgba(90,127,168,0.12); color:#8fb2de; border-color:rgba(90,127,168,0.25); }
     .acct-kubox { background:rgba(76,175,125,0.12); color:var(--live); border-color:rgba(76,175,125,0.25); }
     .acct-drums { background:rgba(160,120,190,0.14); color:#c4a2dc; border-color:rgba(160,120,190,0.3); }
+    .acct-whatsapp { background:rgba(76,175,125,0.12); color:var(--live); border-color:rgba(76,175,125,0.25); }
     .pri { font-size:10px; letter-spacing:0.1em; text-transform:uppercase; font-weight:500; }
-    .pri-high { color:var(--alert); }
-    .pri-med { color:var(--progress); }
-    .pri-low { color:var(--text-muted); }
-    .due { font-size:12px; }
-    .due.over { color:var(--alert); font-weight:500; }
-    /* FUNNEL */
+    .pri-high { color:var(--alert); } .pri-med { color:var(--progress); } .pri-low { color:var(--text-muted); }
+    .due { font-size:12px; } .due.over { color:var(--alert); font-weight:500; }
+    /* editable status toggle */
+    .stbtn { cursor:pointer; font-family:'DM Sans',sans-serif; font-size:10px; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; padding:5px 11px; border-radius:2px; border:1px solid transparent; white-space:nowrap; transition:all .15s; }
+    .st-needed { background:rgba(217,105,79,0.14); color:var(--alert); border-color:rgba(217,105,79,0.35); }
+    .st-needed:hover { background:rgba(217,105,79,0.24); }
+    .st-taken { background:rgba(76,175,125,0.14); color:var(--live); border-color:rgba(76,175,125,0.35); }
+    .st-taken:hover { background:rgba(76,175,125,0.24); }
+    .st-saving { opacity:.5; }
+    tr.done td { opacity:.55; }
+    /* editable comment */
+    .cmt { width:100%; min-width:180px; background:rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:2px; color:var(--text); font-family:'DM Sans',sans-serif; font-size:12.5px; font-weight:300; padding:7px 9px; resize:vertical; line-height:1.45; transition:border-color .15s; }
+    .cmt:focus { outline:none; border-color:var(--gold); background:rgba(184,150,62,0.05); }
+    .cmt::placeholder { color:var(--text-muted); opacity:.7; }
+    .cmt.saved { border-color:var(--live); }
+    /* funnel */
     .funnel { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
     .col { background:var(--surface); border:1px solid var(--border); border-radius:2px; padding:0 0 12px; }
     .col-head { padding:16px 18px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
     .col-head h3 { font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:500; }
     .col-head .n { font-size:12px; color:var(--text-muted); font-variant-numeric:tabular-nums; }
-    .col-head.h-prod { border-top:2px solid var(--live); }
-    .col-head.h-dev { border-top:2px solid var(--progress); }
-    .col-head.h-arch { border-top:2px solid var(--planned); }
+    .col-head.h-prod { border-top:2px solid var(--live); } .col-head.h-dev { border-top:2px solid var(--progress); } .col-head.h-arch { border-top:2px solid var(--planned); }
     .pcard { margin:12px 14px 0; padding:14px; border:1px solid var(--border); border-radius:2px; background:rgba(255,255,255,0.015); }
     .pcard.stalled { border-color:rgba(217,105,79,0.4); }
     .pcard h4 { font-family:'Cormorant Garamond',serif; font-size:16px; font-weight:500; margin-bottom:6px; }
@@ -101,15 +101,15 @@
     .pcard .next { font-size:12px; color:var(--text); border-left:2px solid var(--gold); padding-left:8px; line-height:1.4; }
     .pcard .foot { display:flex; align-items:center; justify-content:space-between; margin-top:10px; }
     .pcard .ago { font-size:10px; color:var(--text-muted); letter-spacing:0.05em; }
-    /* nudge banner */
     .nudge { background:rgba(184,150,62,0.06); border:1px solid var(--border); border-left:3px solid var(--gold); border-radius:2px; padding:16px 20px; margin-bottom:22px; }
     .nudge strong { font-family:'Cormorant Garamond',serif; font-size:16px; font-weight:500; color:var(--gold-light); }
-    .nudge ul { margin:8px 0 0 18px; }
-    .nudge li { font-size:13px; color:var(--text); line-height:1.7; }
+    .nudge ul { margin:8px 0 0 18px; } .nudge li { font-size:13px; color:var(--text); line-height:1.7; }
     .empty { padding:40px 14px; text-align:center; color:var(--text-muted); font-size:13px; }
     footer { padding:20px 48px; border-top:1px solid var(--border); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; }
     .footer-text { font-size:11px; color:var(--text-muted); opacity:0.55; letter-spacing:0.1em; }
-    .seed-note { font-size:10px; color:var(--progress); opacity:0.8; letter-spacing:0.05em; }
+    .seed-note { font-size:10px; color:var(--progress); opacity:0.85; letter-spacing:0.05em; }
+    .toast { position:fixed; bottom:28px; right:28px; background:var(--surface); border:1px solid var(--border); border-left:3px solid var(--gold); padding:14px 18px; font-size:13px; color:var(--text); border-radius:2px; box-shadow:0 8px 32px rgba(0,0,0,.4); transform:translateY(80px); opacity:0; transition:all .3s ease; z-index:999; max-width:360px; line-height:1.55; }
+    .toast.show { transform:translateY(0); opacity:1; }
     @media (max-width:820px){ .funnel{grid-template-columns:1fr;} }
     @media (max-width:600px){ header,.hero,.stats-bar,nav.views,.wrap,footer{padding-left:20px;padding-right:20px;} .hide-sm{display:none;} }
   </style>
@@ -124,9 +124,9 @@
 </header>
 
 <section class="hero">
-  <div class="hero-eyebrow">BILL AI · PERSONAL ASSISTANT</div>
+  <div class="hero-eyebrow">AI PERSONAL ASSISTANT · DF-AUTO-ASSISTANT</div>
   <h1 class="hero-title">Your daily <em>command center.</em></h1>
-  <p class="hero-description">A weekday scan of four inboxes, Otter.ai meetings, and every Claude project — drafting replies, chasing follow-ups, surfacing what you committed to in meetings, and keeping each project moving through the funnel. Everything the 9:00&nbsp;AM brief flags, tracked here.</p>
+  <p class="hero-description">A weekday scan of four inboxes, Otter.ai meetings, and every Claude project — drafting replies, chasing follow-ups, surfacing commitments, and keeping each project moving. Toggle any item's <b>status</b> and leave a <b>comment</b> right here — your notes save to the Sheet and feed the next run.</p>
 </section>
 
 <div class="stats-bar">
@@ -134,25 +134,25 @@
   <div class="stat"><span class="stat-count warn" id="s-approval">0</span><span class="stat-label">Awaiting approval</span></div>
   <div class="stat"><span class="stat-count warn" id="s-waiting">0</span><span class="stat-label">Waiting on replies</span></div>
   <div class="stat"><span class="stat-count alert" id="s-commit">0</span><span class="stat-label">Open commitments</span></div>
-  <div class="stat"><span class="stat-count" id="s-projects">0</span><span class="stat-label">Projects tracked</span></div>
+  <div class="stat"><span class="stat-count" id="s-upcoming">0</span><span class="stat-label">Scheduled</span></div>
 </div>
 
 <nav class="views" id="nav"></nav>
 
 <div class="wrap">
   <section class="view on" data-v="today"></section>
-  <section class="view" data-v="command"></section>
   <section class="view" data-v="approvals"></section>
   <section class="view" data-v="waiting"></section>
   <section class="view" data-v="commitments"></section>
+  <section class="view" data-v="upcoming"></section>
   <section class="view" data-v="funnel"></section>
-  <section class="view" data-v="ideas"></section>
   <section class="view" data-v="health"></section>
+  <section class="view" data-v="ideas"></section>
   <section class="view" data-v="metrics"></section>
 </div>
 
 <footer>
-  <span class="footer-text">InflectionPoint Consulting — Bill AI · Internal Operations</span>
+  <span class="footer-text">InflectionPoint Consulting — AI Personal Assistant · Internal Operations</span>
   <span class="footer-text" id="updated">Last run: —</span>
 </footer>
 
@@ -160,111 +160,103 @@
 
 <script>
 /* ============================================================
-   DATA SOURCE — Google Sheet "Bill Assistant — Ops Data"
-   One tab per dataset, published anyone-with-link Viewer.
-   Fill SHEET_ID + per-tab GID after the Sheet is created; until
-   then the page renders the seed data below so it never looks empty.
+   DATA — reads Google Sheet "Bill Assistant — Ops Data" by tab name (gviz CSV).
+   WRITES — status/comment edits POST to the Apps Script Web App (server-side,
+   writes straight to the Sheet). Same endpoint the daily run uses.
    ============================================================ */
 const SHEET_ID = "1ExqJR6K-ez41VTr6iwwOCSgX_iYqYatkST79RY39PYk";
-const TAB = { actions:"actions", waiting_on:"waiting_on", tasks:"tasks", commitments:"commitments", projects:"projects", ideas:"ideas", metrics:"metrics", health:"health" };
-// Read each tab by NAME via the gviz CSV endpoint (no gid hunting). Requires the Sheet shared "anyone with link → Viewer".
-const csvUrl = tab => (SHEET_ID && !SHEET_ID.startsWith("REPLACE"))
-  ? `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(TAB[tab]||tab)}` : null;
+const API = "https://script.google.com/macros/s/AKfycbzF0U5Fck7vpa1U7LyqegN4b_CSM4ak4cldkL0UFmxUfeVtJ8i994AXCEfzuYoRWWk/exec";
+const TAB = { actions:"actions", waiting_on:"waiting_on", commitments:"commitments", scheduled:"scheduled", projects:"projects", ideas:"ideas", metrics:"metrics", health:"health" };
+const csvUrl = tab => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(TAB[tab]||tab)}`;
+const TODAY = "2026-07-28";
 
-/* ---------- identity helpers ---------- */
-const ACCTS = {
-  "bill.brill@inflectionpointnow.com": {short:"InflectionPoint", cls:"acct-ip"},
-  "bbrill@thelsa.com":                 {short:"Thelsa",         cls:"acct-lsa"},
-  "billbrill@thekubox.com":            {short:"Kubox",          cls:"acct-kubox"},
-  "info@panamericandrums.com":         {short:"Pan Am Drums",   cls:"acct-drums"}
-};
-function acctChip(a){ const m = ACCTS[a] || {short:(a||"—"), cls:"acct-ip"}; return `<span class="acct ${m.cls}">${esc(m.short)}</span>`; }
 function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
 function norm(s){return String(s||"").trim().toLowerCase();}
-function priChip(p){const n=norm(p);const c=n==="high"?"pri-high":n==="med"||n==="medium"?"pri-med":"pri-low";return `<span class="pri ${c}">${esc(p||"low")}</span>`;}
-function doneGlyph(st){const n=norm(st);const done=["done","closed","complete","completed","sent","resolved","yes","✓"].includes(n);return `<span class="glyph" title="${done?'done':'outstanding'}" style="font-weight:800;margin-right:7px;color:${done?'var(--status-live)':'#e0564f'}">${done?'✓':'✗'}</span>`;}
+function overdue(due){ return due && due < TODAY; }
+const TAKEN = s => norm(s)==="action taken";
 
-/* ---------- SEED DATA (replaced live from the Sheet) ----------
-   Commitments below are REAL items surfaced by the Otter.ai scan on 2026-07-27.
-   Email-derived rows (actions / waiting_on) are illustrative samples until the first live scan. */
+/* ---- save edits back to the Sheet via the Web App ---- */
+async function saveCell(tab, rowId, col, value){
+  try{
+    await fetch(API, {method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain;charset=utf-8"},
+      body: JSON.stringify({action:"updateCell", tab, rowId, col, value})});
+    return true;
+  }catch(e){ return false; }
+}
+function showToast(msg, ms){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'), ms||3800); }
+
+/* ---- identity chips ---- */
+const ACCTS = {
+  "bill.brill@inflectionpointnow.com":{short:"InflectionPoint",cls:"acct-ip"},
+  "bbrill@thelsa.com":{short:"LSA",cls:"acct-lsa"},
+  "billbrill@thekubox.com":{short:"Kubox",cls:"acct-kubox"},
+  "info@panamericandrums.com":{short:"Pan Am Drums",cls:"acct-drums"},
+  "whatsapp":{short:"WhatsApp",cls:"acct-whatsapp"}
+};
+function acctChip(a){ const m=ACCTS[a]||{short:(a||"—"),cls:"acct-ip"}; return `<span class="acct ${m.cls}">${esc(m.short)}</span>`; }
+function priChip(p){const n=norm(p);const c=n==="high"?"pri-high":(n==="med"||n==="medium")?"pri-med":"pri-low";return `<span class="pri ${c}">${esc(p||"low")}</span>`;}
+
+/* ---- editable controls ---- */
+function statusToggle(tab, id, status){
+  const taken = TAKEN(status);
+  return `<button class="stbtn ${taken?'st-taken':'st-needed'}" data-tab="${esc(tab)}" data-id="${esc(id)}">${taken?'Action Taken':'Action Needed'}</button>`;
+}
+function commentBox(tab, id, comment){
+  return `<textarea class="cmt" rows="2" data-tab="${esc(tab)}" data-id="${esc(id)}" placeholder="Add a comment or instruction… e.g. “Follow up tomorrow 9am if no reply”">${esc(comment||"")}</textarea>`;
+}
+
+/* ---- SEED (rendered until the live Sheet loads) — real Otter commitments + sample email items ---- */
 const SEED = {
-  mailboxes: [
-    {identity:"InflectionPoint", address:"bill.brill@inflectionpointnow.com", as_of:"—", status:"ok", campaign_followup:0, auto_draft:0, manual_draft:2, drafts_total:2, needs_reply:2, waiting_on:1, approximate:"no", counted:"yes"},
-    {identity:"Thelsa", address:"bbrill@thelsa.com", as_of:"—", status:"ok", campaign_followup:35, auto_draft:2, manual_draft:1, drafts_total:38, needs_reply:4, waiting_on:2, approximate:"yes", counted:"yes"},
-    {identity:"Kubox", address:"billbrill@thekubox.com", as_of:"—", status:"ok", campaign_followup:0, auto_draft:0, manual_draft:3, drafts_total:3, needs_reply:1, waiting_on:0, approximate:"no", counted:"yes"},
-    {identity:"Pan Am Drums", address:"info@panamericandrums.com", as_of:"—", status:"ok", campaign_followup:0, auto_draft:1, manual_draft:0, drafts_total:1, needs_reply:0, waiting_on:0, approximate:"no", counted:"yes"}
+  actions:[
+    {id:"a1",account:"bill.brill@inflectionpointnow.com",from:"Carl Häggström",subject:"Matt destination-rate automation — data fields",project:"PXC Follow-up Automation",priority:"high",suggested_action:"Reply with the specific data fields + examples needed",status:"Action Needed",comment:"",url:"#"},
+    {id:"a2",account:"billbrill@thekubox.com",from:"Garfield",subject:"Q Box student-relocation white paper — FAQ answers",project:"Q Box India",priority:"med",suggested_action:"Provide detailed FAQ answers to the internal team",status:"Action Needed",comment:"",url:"#"},
+    {id:"a3",account:"bbrill@thelsa.com",from:"Lupita Gonzalez",subject:"OADA rate engine — standard quote exclusions",project:"OADA Rate Engine",priority:"med",suggested_action:"Confirm exclusions list added before remarks section",status:"Action Needed",comment:"",url:"#"}
   ],
-  actions: [
-    {account:"bill.brill@inflectionpointnow.com", from:"Carl Häggström", subject:"MATT follow-up automation — chasing remaining inputs", project:"Classic Moving / MATT Automation", priority:"high", suggested_action:"Following up with Carl/Ivan/Stuti for the remaining data so Bill can build it — targeted this week", draft_status:"n/a", url:"https://mail.google.com/mail/u/0/"},
-    {account:"billbrill@thekubox.com", from:"Garfield", subject:"Kubox India white paper — awaiting FAQ", project:"Kubox India", priority:"low", suggested_action:"Waiting on compiled FAQ from Abhi/Garfield — no action until received", draft_status:"n/a", url:"https://mail.google.com/mail/u/0/"},
-    {account:"bbrill@thelsa.com", from:"Lupita Gonzalez", subject:"OADA rate engine — standard quote exclusions", project:"OADA Rate Engine", priority:"med", suggested_action:"Confirm exclusions list added before remarks section", draft_status:"needs draft", url:"https://mail.google.com/mail/u/0/"},
-    {account:"info@panamericandrums.com", from:"Marketplace alert", subject:"New junior drum set near Katy, TX", project:"PADCO Parts Scan", priority:"low", suggested_action:"Review PADCO match — confirm or dismiss", draft_status:"n/a", url:"https://mail.google.com/mail/u/0/"}
+  approvals:[
+    {account:"bbrill@thelsa.com",type:"Reply draft",subject:"Otso — revised Classic Moving proposal & agreement",who:"Otso Massala",note:"Draft ready: revised plan + simple agreement for signature",url:"#"},
+    {account:"bill.brill@inflectionpointnow.com",type:"Follow-up #1",subject:"Rick — ZoomInfo API key screen-share",who:"Rick",note:"48h elapsed, no reply — nudge queued",url:"#"},
+    {account:"billbrill@thekubox.com",type:"Follow-up #1",subject:"Trans Impact — intro to John Chris @ Q Box",who:"John",note:"Awaiting deck + one-pager; gentle nudge queued",url:"#"}
   ],
-  approvals: [
-    {account:"bbrill@thelsa.com", type:"Reply draft", subject:"Otso — revised Classic Moving proposal & agreement", who:"Otso Massala", note:"Draft ready: revised plan + simple agreement for signature", url:"https://mail.google.com/mail/u/0/"},
-    {account:"bill.brill@inflectionpointnow.com", type:"Follow-up #1", subject:"Rick — ZoomInfo API key screen-share", who:"Rick", note:"48h elapsed, no reply — nudge queued", url:"https://mail.google.com/mail/u/0/"},
-    {account:"billbrill@thekubox.com", type:"Follow-up #1", subject:"Trans Impact — intro to John Chris @ Kubox", who:"John", note:"Awaiting deck + one-pager; gentle nudge queued", url:"https://mail.google.com/mail/u/0/"}
+  waiting:[
+    {id:"w1",account:"bill.brill@inflectionpointnow.com",recipient:"Carl Häggström",subject:"PXC data for automation proposal",sent:"2026-07-24",agreed_due:"2026-07-31",followups:"0",next:"2026-07-31 (agreed timeline)",status:"Action Needed",comment:""},
+    {id:"w2",account:"bbrill@thelsa.com",recipient:"Otso Massala",subject:"Review of revised proposal & impact numbers",sent:"2026-07-23",agreed_due:"",followups:"1",next:"2026-07-27 (48h cadence)",status:"Action Needed",comment:""},
+    {id:"w3",account:"bill.brill@inflectionpointnow.com",recipient:"Rick",subject:"ZoomInfo API key handoff",sent:"2026-07-22",agreed_due:"",followups:"2",next:"— flagged for manual decision",status:"Action Needed",comment:""}
   ],
-  waiting: [
-    {account:"bill.brill@inflectionpointnow.com", recipient:"Carl / Ivan / Stuti", subject:"MATT automation inputs (Carl met w/ Ivan & Stuti)", sent:"2026-07-24", agreed_due:"2026-07-31", followups:"1", next:"chasing — Bill wants it built this week", status:"followup-1", url:"https://mail.google.com/mail/u/0/"},
-    {account:"bbrill@thelsa.com", recipient:"Otso Massala", subject:"Review of revised proposal & impact numbers", sent:"2026-07-23", agreed_due:"", followups:"1", next:"2026-07-27 (48h cadence)", status:"followup-1", url:"https://mail.google.com/mail/u/0/"},
-    {account:"bill.brill@inflectionpointnow.com", recipient:"Rick", subject:"ZoomInfo API key handoff", sent:"2026-07-22", agreed_due:"", followups:"2", next:"— flagged for manual decision", status:"flagged", url:"https://mail.google.com/mail/u/0/"}
+  commitments:[
+    {id:"c1",commitment:"Finish DKIM registration and confirm it is live in Google Admin",meeting:"Email Campaign Optimization Meeting",date:"2026-07-27",due:"2026-07-29",status:"Action Needed",comment:"",url:"https://otter.ai/u/iXs6xSTZpPuUy1W7bs7-p6lhAfE"},
+    {id:"c5",commitment:"Send a one-page summary of the proposed automation approach",meeting:"AI Automation Presentation",date:"2026-07-27",due:"",status:"Action Needed",comment:"",url:"https://otter.ai/u/ygzW-ovVUfE6ZeJ4Tt7c0WAtz-8"},
+    {id:"c10",commitment:"Deliver working Classic Moving follow-up automation beta (~2 weeks)",meeting:"Otso Bill Carl automation talks",date:"2026-07-12",due:"2026-07-26",status:"Action Needed",comment:"",url:"https://otter.ai/u/HJyylwxb8-WkaVxlZd7AfFdPNK8"},
+    {id:"c12",commitment:"Provide detailed answers to the Q Box FAQ for the white paper",meeting:"Q Box Market Strategy Meeting",date:"2026-06-18",due:"",status:"Action Needed",comment:"",url:"https://otter.ai/u/RibPt4dfGc4sx5fU0RmCub3aLkA"}
   ],
-  /* REAL Otter commitments (2026-07-27 scan, past ~14 days + notable open items) */
-  commitments: [
-    {commitment:"Finish DKIM registration and confirm it is live in Google Admin", meeting:"Email Campaign Optimization Meeting", date:"2026-07-27", due:"2026-07-29", status:"open", url:"https://otter.ai/u/iXs6xSTZpPuUy1W7bs7-p6lhAfE"},
-    {commitment:"Set up A/B testing with balanced subject-line variants", meeting:"Email Campaign Optimization Meeting", date:"2026-07-27", due:"", status:"open", url:"https://otter.ai/u/iXs6xSTZpPuUy1W7bs7-p6lhAfE"},
-    {commitment:"Remove duplicate auto-signature text from draft emails", meeting:"Email Campaign Optimization Meeting", date:"2026-07-27", due:"", status:"open", url:"https://otter.ai/u/iXs6xSTZpPuUy1W7bs7-p6lhAfE"},
-    {commitment:"Split the invoice into two ($800 + remaining balance)", meeting:"Email Campaign Optimization Meeting", date:"2026-07-27", due:"", status:"open", url:"https://otter.ai/u/iXs6xSTZpPuUy1W7bs7-p6lhAfE"},
-    {commitment:"Send a one-page summary of the proposed automation approach", meeting:"AI Automation Presentation", date:"2026-07-27", due:"", status:"open", url:"https://otter.ai/u/ygzW-ovVUfE6ZeJ4Tt7c0WAtz-8"},
-    {commitment:"Develop MoveWare cost/invoicing profit-discrepancy automation (replace manual costing review)", meeting:"Logistics Process Improvement Meeting", date:"2026-07-14", due:"", status:"open", url:"https://otter.ai/u/MlWo0Fy9Bt0FkAFfquH3fX9iYcA"},
-    {commitment:"Prepare & distribute written meeting notes with follow-up actions", meeting:"Logistics Process Improvement Meeting", date:"2026-07-14", due:"", status:"open", url:"https://otter.ai/u/MlWo0Fy9Bt0FkAFfquH3fX9iYcA"},
-    {commitment:"Contact Rick, text next steps, schedule screen-share to share ZoomInfo API key", meeting:"William's Meeting Notes", date:"2026-07-13", due:"", status:"open", url:"https://otter.ai/u/EoyEitbcRnXuLjyhJKpzGwbNvic"},
-    {commitment:"Fix scheduler bug creating duplicate automated follow-up emails", meeting:"William's Meeting Notes", date:"2026-07-13", due:"", status:"open", url:"https://otter.ai/u/EoyEitbcRnXuLjyhJKpzGwbNvic"},
-    {commitment:"Build Classic Moving / MATT follow-up automation — blocked waiting on Carl/Ivan/Stuti for remaining inputs; Bill targeting this week", meeting:"Otso Bill Carl automation talks", date:"2026-07-12", due:"2026-07-31", status:"open", url:"https://otter.ai/u/HJyylwxb8-WkaVxlZd7AfFdPNK8"},
-    {commitment:"Compile consolidated list of required inputs for Classic Moving / Family Movers", meeting:"Otso Bill Carl automation talks", date:"2026-07-12", due:"", status:"open", url:"https://otter.ai/u/HJyylwxb8-WkaVxlZd7AfFdPNK8"},
-    {commitment:"Kubox India white paper — waiting on compiled FAQ from Abhi/Garfield before answering", meeting:"Q Box Market Strategy Meeting", date:"2026-06-18", due:"", status:"open", url:"https://otter.ai/u/RibPt4dfGc4sx5fU0RmCub3aLkA"}
+  scheduled:[],
+  projects:[
+    {project:"PADCO Parts Scan",stage:"Production",summary:"Weekday Facebook Marketplace scan → Sheet → email.",last_activity:"2026-07-27",next_action:"Monitor daily finds; no action needed",stalled:"no"},
+    {project:"Cross-Border Lead Gen Engine",stage:"Production",summary:"ZoomInfo-fed daily scan → draft outreach. 69 leads in a week.",last_activity:"2026-07-27",next_action:"Route drafts to Armando; connect ZoomInfo API via Rick",stalled:"no"},
+    {project:"OADA Automated Rate Engine",stage:"Development & Staging",summary:"Transfer-pricing rate engine for Telsa agents.",last_activity:"2026-07-14",next_action:"Add probation-tier markup + fixed FX; surface assumptions",stalled:"no"},
+    {project:"Classic Moving Follow-up Automation",stage:"Development & Staging",summary:"Non-MAT agent rate follow-ups at classicmoving.inflectionpointnow.com.",last_activity:"2026-07-12",next_action:"Ship beta (committed ~2 wks); compile inputs from Otso",stalled:"yes"},
+    {project:"Q Box Student-Relocation",stage:"Architecture & Planning",summary:"White paper + operating model for India→AU/CA/US student moves.",last_activity:"2026-06-18",next_action:"Answer FAQ so team can finalize white paper",stalled:"yes"},
+    {project:"AI Personal Assistant",stage:"Architecture & Planning",summary:"Daily email/Otter/project scan → drafts, follow-ups, commitments, funnel.",last_activity:"2026-07-28",next_action:"Live — status + comments now editable",stalled:"no"}
   ],
-  projects: [
-    {project:"PADCO Parts Scan", stage:"Live", summary:"Weekday Facebook Marketplace scan → Sheet → email. Live reference automation.", last_activity:"2026-07-27", next_action:"Monitor daily finds; no action needed", stalled:"no"},
-    {project:"InflectionOS Daily Brief", stage:"Live", summary:"Daily content brief from Topic Inbox → Gmail.", last_activity:"2026-07-27", next_action:"Running; watch topic inbox depth", stalled:"no"},
-    {project:"Cross-Border Lead Gen Engine", stage:"Live", summary:"ZoomInfo-fed daily scan → draft outreach. 69 leads in a week.", last_activity:"2026-07-27", next_action:"Route drafts to Armando's inbox; connect ZoomInfo API via Rick", stalled:"no"},
-    {project:"OADA Automated Rate Engine", stage:"Development", summary:"Transfer-pricing rate engine for Telsa agents; markup tiers + assumptions panel.", last_activity:"2026-07-14", next_action:"Add probation-tier markup + fixed FX rate; surface assumptions", stalled:"no"},
-    {project:"Cross-Border LTL Quote Engine", stage:"Development", summary:"US↔MX small-move quotes; bilingual output.", last_activity:"2026-07-13", next_action:"Fix bilingual 'both' option error", stalled:"no"},
-    {project:"Classic Moving / MATT Follow-up Automation", stage:"Development", summary:"Non-MAT agent rate follow-ups; hosted at classicmoving.inflectionpointnow.com. Carl met with Ivan & Stuti; awaiting their inputs so Bill can build.", last_activity:"2026-07-28", next_action:"Chase Carl/Ivan/Stuti for remaining inputs, then build (Bill targeting this week)", stalled:"no"},
-    {project:"MoveWare Profit-Discrepancy Automation", stage:"Ideation", summary:"Ingest MoveWare cost/invoice data, flag real-vs-estimated profit gaps.", last_activity:"2026-07-14", next_action:"Confirm MoveWare API access + sample audit report", stalled:"no"},
-    {project:"Kubox Student-Relocation", stage:"Ideation", summary:"White paper + operating model for India→AU/CA/US student moves on Kubox.", last_activity:"2026-06-18", next_action:"Answer FAQ so team can finalize white paper", stalled:"yes"},
-    {project:"Bill AI — Personal Assistant (this)", stage:"Development", summary:"Daily email/Otter/project scan → drafts, follow-ups, commitments, funnel nudges. Dashboard live; needs Sheet writes + InflectionPoint Gmail.", last_activity:"2026-07-28", next_action:"Re-auth Gmail as bill.brill@inflectionpointnow.com; wire Sheet writes; then 9 AM run goes full", stalled:"no"}
+  ideas:[
+    {idea:"Route leads into separate follow-up tracks by engagement (commercial vs supply chain)",source:"otter",logged:"2026-07-13",status:"active",notes:"Tailored cadence per account type"},
+    {idea:"Affiliate / referral link for Trans Impact ↔ Q Box cross-sell",source:"otter",logged:"2026-06-30",status:"parking",notes:"qbox.com/transimpact commissionable URL"}
   ],
-  ideas: [
-    {idea:"Route leads into separate follow-up tracks by engagement (commercial vs supply chain)", source:"otter", logged:"2026-07-13", status:"active", notes:"Tailored cadence per account type"},
-    {idea:"Affiliate / referral link for Trans Impact ↔ Kubox cross-sell", source:"otter", logged:"2026-06-30", status:"parking", notes:"kubox.com/transimpact commissionable URL"},
-    {idea:"Switch outreach to USA Home Listings lead aggregator", source:"otter", logged:"2026-07-27", status:"parking", notes:"Dissatisfaction with current MLS source"},
-    {idea:"Convert automation library email from Gmail → Thelsa mail server for live", source:"otter", logged:"2026-05-20", status:"active", notes:"Production hardening for Thelsa automations"}
+  metrics:[
+    {label:"Emails triaged / day",value:"—",note:"populates after first live run"},
+    {label:"Median response time",value:"—",note:"tracked across all four accounts"},
+    {label:"Meeting commitments closed",value:"—",note:"status flipped to Action Taken"},
+    {label:"Comment-driven follow-ups",value:"—",note:"scheduled from your comments"}
   ],
-  metrics: [
-    {label:"Emails triaged / day", value:"—", note:"populates after first live run"},
-    {label:"Median response time", value:"—", note:"tracked across all four accounts"},
-    {label:"Follow-ups avoided by reply", value:"—", note:"replies that arrived before the nudge sent"},
-    {label:"Tasks completed vs carried", value:"—", note:"rolling daily list health"},
-    {label:"Meeting commitments closed", value:"—", note:"open items tracked (Otter)"},
-    {label:"Projects advanced this week", value:"—", note:"movement through the funnel"}
-  ],
-  /* Client + internal automation health — checked each run (trigger status, site reachability, data freshness). */
-  health: [
-    {automation:"PADCO Daily Parts Scan", platform:"Claude + Google Sheets", status:"healthy", detail:"Trigger enabled; last scan ran on schedule", url:"https://ops.inflectionpointnow.com/padco.html", checked:"2026-07-28"},
-    {automation:"InflectionOS Daily Brief", platform:"Make.com #5156133", status:"healthy", detail:"Scenario on; brief delivered 7:00 AM", url:"https://us2.make.com/5156133/edit", checked:"2026-07-28"},
-    {automation:"Cross-Border Lead Gen Engine (Thelsa)", platform:"ZoomInfo/SerpApi + Render + Claude", status:"degraded", detail:"2026-07-28: SerpApi monthly searches EXHAUSTED - 0 new leads; Render thelsa-lead-gen server failure (exit 22). 10 leads still waiting to assign.", url:"", checked:"2026-07-28"},
-    {automation:"Cross-Border LTL Quote Engine", platform:"Claude + Sheets", status:"down", detail:"Bilingual 'both' option throws an error — needs a fix", url:"", checked:"2026-07-28"},
-    {automation:"OADA Automated Rate Engine", platform:"Claude + Sheets", status:"building", detail:"In staging — probation-tier markup + fixed FX pending", url:"", checked:"2026-07-28"},
-    {automation:"Classic Moving / MATT Follow-up", platform:"classicmoving.inflectionpointnow.com", status:"building", detail:"In build — blocked waiting on Carl/Ivan/Stuti inputs; Bill targeting this week", url:"https://classicmoving.inflectionpointnow.com", checked:"2026-07-28"},
-    {automation:"PXC Singapore Follow-up", platform:"Outlook + Claude", status:"healthy", detail:"Running; reported 12x ROI in 6 weeks", url:"", checked:"2026-07-28"},
-    {automation:"AI Personal Assistant", platform:"Claude + Google Sheets", status:"healthy", detail:"Scheduled weekdays 9:00 AM CT; trigger enabled", url:"https://ops.inflectionpointnow.com/assistant.html", checked:"2026-07-28"},
-    {automation:"Automation Library site", platform:"Render static", status:"healthy", detail:"ops.inflectionpointnow.com responding", url:"https://ops.inflectionpointnow.com/", checked:"2026-07-28"}
+  health:[
+    {automation:"PADCO Daily Parts Scan",platform:"Claude + Google Sheets",status:"healthy",detail:"Trigger enabled; last scan ran on schedule",url:"https://ops.inflectionpointnow.com/padco.html",checked:"2026-07-28"},
+    {automation:"InflectionOS Daily Brief",platform:"Make.com #5156133",status:"healthy",detail:"Scenario on; brief delivered 7:00 AM",url:"https://us2.make.com/5156133/edit",checked:"2026-07-28"},
+    {automation:"Cross-Border LTL Quote Engine",platform:"Claude + Sheets",status:"down",detail:"Bilingual 'both' option throws an error — needs a fix",url:"",checked:"2026-07-28"},
+    {automation:"Classic Moving Follow-up",platform:"classicmoving.inflectionpointnow.com",status:"building",detail:"Beta not yet shipped (committed ~2 weeks)",url:"https://classicmoving.inflectionpointnow.com",checked:"2026-07-28"},
+    {automation:"AI Personal Assistant",platform:"Claude + Apps Script + Sheets",status:"healthy",detail:"Scheduled 9 AM CT; write API live",url:"https://ops.inflectionpointnow.com/assistant.html",checked:"2026-07-28"}
   ]
 };
 
-/* ---------- CSV parse ---------- */
+/* ---- CSV parse ---- */
 function parseCSV(text){
   const rows=[]; let i=0,f="",row=[],q=false;
   while(i<text.length){const c=text[i];
@@ -282,236 +274,138 @@ function objs(text){
   return rows.slice(1).map(r=>{const o={};hdr.forEach((h,i)=>o[h]=r[i]!=null?r[i]:"");return o;});
 }
 async function pull(tab){
-  const url=csvUrl(tab); if(!url) return null;
-  try{ const r=await fetch(url,{cache:"no-store"}); if(r.ok){const o=objs(await r.text()); if(o.length) return o;} }catch(e){}
+  try{ const r=await fetch(csvUrl(tab),{cache:"no-store"}); if(r.ok){const o=objs(await r.text()); if(o.length) return o;} }catch(e){}
   return null;
 }
 
-/* ---------- state ---------- */
 let DATA = JSON.parse(JSON.stringify(SEED));
 let LIVE = false;
+function seedTag(){ return LIVE ? "" : `<span class="seed-note"> · seed data until first live run (edits still save)</span>`; }
+function h(title, sub){ return `<div class="view-title">${title}</div><p class="view-sub">${sub}</p>`; }
+function tbl(headers, rows){ return `<table><thead><tr>${headers.map(x=>`<th>${x}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr${r._cls?` class="${r._cls}"`:""}>${(r.cells||r).map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table>`; }
 
-/* ---------- renderers ---------- */
-function overdue(due){ if(!due) return false; return due < TODAY; }
-const TODAY = "2026-07-28";
-
-function h(title, sub){ return `<div class="view-head"><span class="view-title">${title}</span></div><p class="view-sub">${sub}</p>`; }
-function seedTag(){ return LIVE ? "" : `<span class="seed-note"> · showing seed data until first live run</span>`; }
-
-function platformName(u){const s=norm(u);if(!u||u==="#")return "";if(s.includes("mail.google")||s.includes("gmail"))return "Gmail";if(s.includes("otter.ai"))return "Otter";if(s.includes("godaddy"))return "GoDaddy";if(s.includes("intuit")||s.includes("quickbooks"))return "QuickBooks";if(s.includes("render.com"))return "Render";if(s.includes("docs.google")||s.includes("spreadsheets"))return "Sheet";if(s.includes("make.com"))return "Make";if(s.includes("linkedin"))return "LinkedIn";if(s.includes("whatsapp"))return "WhatsApp";if(s.includes("admin.google"))return "Google Admin";if(s.includes("inflectionpointnow.com"))return "Dashboard";return "Open";}
-function viewCell(url){if(!url||url==="#")return `<span class="muted">\u2014</span>`;return `<a class="view-link" href="${esc(url)}" target="_blank" rel="noopener">\u2192 ${platformName(url)}</a>`;}
+/* ---- renderers ---- */
+function actionRows(items, tab){
+  return items.map(a=>({ _cls: TAKEN(a.status)?"done":"", cells:[
+    acctChip(a.account),
+    `<span class="prime">${esc(a.subject)}</span><div class="muted" style="font-size:12px">${esc(a.from||"")}${a.project?" · "+esc(a.project):""}</div>`,
+    esc(a.suggested_action||""),
+    a.priority?priChip(a.priority):"",
+    statusToggle(tab, a.id, a.status),
+    commentBox(tab, a.id, a.comment)
+  ]}));
+}
 function renderToday(el){
-  const acts = DATA.actions;
-  const open = DATA.commitments.filter(c=>norm(c.status)==="open");
-  const wait = DATA.waiting;
-  let html = h("Today", "Your prioritized queue for "+TODAY+" — highest-impact actions first, pulled across all four identities. Status is reconciled at the 6:00 PM run: <span style=\"color:var(--status-live);font-weight:700\">✓ done</span> · <span style=\"color:#e0564f;font-weight:700\">✗ outstanding</span>."+seedTag());
-  // priority actions table
-  html += `<div class="group-label">Priority actions</div>`;
-  html += acts.length ? tbl(
-    ["", "From", "Subject", "Suggested action", "Priority", "View"],
-    acts.slice().sort(byPri).map(a=>[
-      acctChip(a.account),
-      esc(a.from),
-      `${doneGlyph(a.status)}<span class="prime">${esc(a.subject)}</span><div class="muted" style="font-size:12px">${esc(a.project||"")}</div>`,
-      esc(a.suggested_action),
-      priChip(a.priority),
-      viewCell(a.url)
-    ])
-  ) : `<div class="empty">Nothing queued.</div>`;
-  // commitments alert strip
-  html += `<div class="group-label">Meeting commitments needing attention</div>`;
-  html += open.length ? tbl(
-    ["Commitment","Meeting","Due","View"],
-    open.slice(0,5).map(c=>[
-      `${doneGlyph(c.status)}<span class="prime">${esc(c.commitment)}</span>`,
-      esc(c.meeting)+`<div class="muted" style="font-size:12px">${esc(c.date)}</div>`,
-      c.due?`<span class="due ${overdue(c.due)?"over":""}">${esc(c.due)}${overdue(c.due)?" · overdue":""}</span>`:`<span class="muted">no date</span>`,
-      viewCell(c.url)
-    ])
-  ) : `<div class="empty">No open commitments.</div>`;
+  const acts=DATA.actions, open=DATA.commitments.filter(c=>!TAKEN(c.status));
+  let html=h("Today", "Your prioritized queue for "+TODAY+". Flip Status when you act, and drop a comment (it saves to the Sheet and the next run reads it)."+seedTag());
+  html+=`<div class="group-label">Priority actions</div>`;
+  html+= acts.length ? tbl(["","Subject","Suggested action","Priority","Status","Comment"], actionRows(acts.slice().sort(byPri),"actions")) : `<div class="empty">Nothing queued.</div>`;
+  html+=`<div class="group-label">Meeting commitments needing attention</div>`;
+  html+= open.length ? tbl(["Commitment","Meeting","Due","Status","Comment"], open.slice(0,6).map(c=>({cells:[
+    `<span class="prime">${esc(c.commitment)}</span>`,
+    esc(c.meeting)+`<div class="muted" style="font-size:12px">${esc(c.date)}</div>`,
+    c.due?`<span class="due ${overdue(c.due)?"over":""}">${esc(c.due)}${overdue(c.due)?" · overdue":""}</span>`:`<span class="muted">—</span>`,
+    statusToggle("commitments",c.id,c.status),
+    commentBox("commitments",c.id,c.comment)
+  ]}))) : `<div class="empty">No open commitments.</div>`;
   el.innerHTML=html;
 }
 function byPri(a,b){const r={high:0,med:1,medium:1,low:2};return (r[norm(a.priority)]??3)-(r[norm(b.priority)]??3);}
 
 function renderApprovals(el){
   const rows=DATA.approvals;
-  let html=h("Pending approval", "Drafts and follow-ups the assistant prepared. Nothing sends until you approve it (draft-and-queue mode)."+seedTag());
-  html += rows.length ? tbl(
-    ["","Type","Item","Detail","View"],
-    rows.map(r=>[
-      acctChip(r.account),
-      `<span class="badge b-gold">${esc(r.type)}</span>`,
-      `<span class="prime">${esc(r.subject)}</span><div class="muted" style="font-size:12px">${esc(r.who||"")}</div>`,
-      esc(r.note),
-      viewCell(r.url)
-    ])
-  ) : `<div class="empty">Nothing awaiting approval.</div>`;
+  let html=h("Pending approval","Drafts and follow-ups the assistant prepared. Nothing sends until you approve it."+seedTag());
+  html+= rows.length ? tbl(["","Type","Item","Detail",""], rows.map(r=>({cells:[
+    acctChip(r.account), `<span class="badge b-gold">${esc(r.type)}</span>`,
+    `<span class="prime">${esc(r.subject)}</span><div class="muted" style="font-size:12px">${esc(r.who||"")}</div>`,
+    esc(r.note), `<a class="view-link" href="${esc(r.url)}" target="_blank" rel="noopener">Review ↗</a>`
+  ]}))) : `<div class="empty">Nothing awaiting approval.</div>`;
   el.innerHTML=html;
 }
-
 function renderWaiting(el){
   const rows=DATA.waiting;
-  let html=h("Waiting on replies", "Outbound threads with no response. Follow-up fires at the agreed timeline or 48h; a second on the same cadence; then it's flagged for you."+seedTag());
-  html += rows.length ? tbl(
-    ["","Recipient","Subject","Sent","Follow-ups","Next action","View"],
-    rows.map(r=>{
-      const flagged=norm(r.status)==="flagged";
-      return [
-        acctChip(r.account),
-        esc(r.recipient),
-        `<span class="prime">${esc(r.subject)}</span>`,
-        `<span class="nums muted">${esc(r.sent)}</span>`,
-        `<span class="badge ${flagged?"b-alert":Number(r.followups)>0?"b-progress":"b-planned"}"><span class="dot"></span>${esc(r.followups)}/2</span>`,
-        flagged?`<span class="pri pri-high">${esc(r.next)}</span>`:`<span class="due ${overdue((r.next||"").slice(0,10))?"over":""}">${esc(r.next)}</span>`,
-        viewCell(r.url)
-      ];
-    })
-  ) : `<div class="empty">Not waiting on anyone.</div>`;
+  let html=h("Waiting on replies","Outbound threads with no response. Follow-up fires at the agreed timeline or 48h; a second on the same cadence; then it's flagged."+seedTag());
+  html+= rows.length ? tbl(["","Recipient","Subject","Follow-ups","Next action","Status","Comment"], rows.map(r=>{
+    const flagged=/flag/.test(norm(r.next))||/flag/.test(norm(r.status));
+    return {_cls:TAKEN(r.status)?"done":"", cells:[
+      acctChip(r.account), esc(r.recipient), `<span class="prime">${esc(r.subject)}</span><div class="muted" style="font-size:12px">sent ${esc(r.sent)}</div>`,
+      `<span class="badge ${flagged?"b-alert":Number(r.followups)>0?"b-progress":"b-planned"}"><span class="dot"></span>${esc(r.followups)}/2</span>`,
+      `<span class="due ${overdue((r.next||'').slice(0,10))?'over':''}">${esc(r.next)}</span>`,
+      statusToggle("waiting_on",r.id,r.status), commentBox("waiting_on",r.id,r.comment)
+    ]};
+  })) : `<div class="empty">Not waiting on anyone.</div>`;
   el.innerHTML=html;
 }
-
 function renderCommitments(el){
-  const rows=DATA.commitments;
-  const open=rows.filter(c=>norm(c.status)==="open");
-  let html=h("Meeting commitments", "Action items <em>you</em> committed to, pulled from Otter.ai across the last ~14 days. Anything still open raises an alert."+seedTag());
-  html += open.length ? tbl(
-    ["Commitment","Meeting","Date","Due","View"],
-    open.map(c=>[
-      `${doneGlyph(c.status)}<span class="prime">${esc(c.commitment)}</span>`,
-      esc(c.meeting),
-      `<span class="nums muted">${esc(c.date)}</span>`,
-      c.due?`<span class="due ${overdue(c.due)?"over":""}">${esc(c.due)}${overdue(c.due)?" · overdue":""}</span>`:`<span class="muted">—</span>`,
-      viewCell(c.url)
-    ])
-  ) : `<div class="empty">No open commitments 🎉</div>`;
+  const rows=DATA.commitments.filter(c=>!TAKEN(c.status));
+  let html=h("Meeting commitments","Action items you committed to, from Otter.ai (last ~14 days). Mark Action Taken when done; comments here schedule follow-ups."+seedTag());
+  html+= rows.length ? tbl(["Commitment","Meeting","Date","Due","Status","Comment","Source"], rows.map(c=>({cells:[
+    `<span class="prime">${esc(c.commitment)}</span>`, esc(c.meeting), `<span class="nums muted">${esc(c.date)}</span>`,
+    c.due?`<span class="due ${overdue(c.due)?"over":""}">${esc(c.due)}${overdue(c.due)?" · overdue":""}</span>`:`<span class="muted">—</span>`,
+    statusToggle("commitments",c.id,c.status), commentBox("commitments",c.id,c.comment),
+    `<a class="view-link" href="${esc(c.url)}" target="_blank" rel="noopener">Otter ↗</a>`
+  ]}))) : `<div class="empty">No open commitments 🎉</div>`;
   el.innerHTML=html;
 }
-
+function renderUpcoming(el){
+  const rows=(DATA.scheduled||[]).filter(s=>norm(s.status)!=="done"&&norm(s.status)!=="cancelled");
+  let html=h("Upcoming","Future actions the assistant scheduled from your comments — e.g. “follow up tomorrow 9am if no reply.” Each runs at its time unless the condition clears."+seedTag());
+  html+= rows.length ? tbl(["When","Instruction","From","Condition","Status"], rows.map(s=>({cells:[
+    `<span class="nums">${esc(s.do_at||"")}</span>`, `<span class="prime">${esc(s.instruction)}</span>`,
+    esc(s.source||""), esc(s.condition||""),
+    `<span class="badge ${norm(s.status)==="pending"?"b-progress":"b-planned"}"><span class="dot"></span>${esc(s.status||"pending")}</span>`
+  ]}))) : `<div class="empty">No scheduled actions yet. Add a comment like “Follow up tomorrow 9am if no reply” on any item and the next run will schedule it here.</div>`;
+  el.innerHTML=html;
+}
 function renderFunnel(el){
-  const P=DATA.projects;
-  const stages=[["Live","h-prod"],["Development","h-dev"],["Ideation","h-arch"]];
+  const P=DATA.projects, stages=[["Production","h-prod"],["Development & Staging","h-dev"],["Architecture & Planning","h-arch"]];
   const stalled=P.filter(p=>norm(p.stalled)==="yes");
-  let html=h("Project funnel", "Every project by stage, moving Ideation → Development → Live. Stalled projects are flagged so nothing sits idle.");
-  if(stalled.length){
-    html+=`<div class="nudge"><strong>Push it forward</strong><ul>`+
-      stalled.map(p=>`<li><b>${esc(p.project)}</b> — ${esc(p.next_action)} <span class="muted">(no movement since ${esc(p.last_activity)})</span></li>`).join("")+
-      `</ul></div>`;
-  }
+  let html=h("Project funnel","Every project by stage. Stalled projects are flagged so nothing sits idle.");
+  if(stalled.length){ html+=`<div class="nudge"><strong>Push it forward</strong><ul>`+stalled.map(p=>`<li><b>${esc(p.project)}</b> — ${esc(p.next_action)} <span class="muted">(no movement since ${esc(p.last_activity)})</span></li>`).join("")+`</ul></div>`; }
   html+=`<div class="funnel">`;
   stages.forEach(([name,cls])=>{
     const items=P.filter(p=>norm(p.stage)===norm(name));
     html+=`<div class="col"><div class="col-head ${cls}"><h3>${name.replace(" & ","&nbsp;&&nbsp;")}</h3><span class="n">${items.length}</span></div>`;
-    html+= items.length ? items.map(p=>`
-      <div class="pcard ${norm(p.stalled)==="yes"?"stalled":""}">
-        <h4>${esc(p.project)}</h4>
-        <p>${esc(p.summary)}</p>
-        <div class="next">${esc(p.next_action)}</div>
-        <div class="foot">
-          <span class="ago">Last activity ${esc(p.last_activity)}</span>
-          ${norm(p.stalled)==="yes"?`<span class="badge b-alert"><span class="dot"></span>Stalled</span>`:``}
-        </div>
-      </div>`).join("") : `<div class="empty">Empty</div>`;
+    html+= items.length ? items.map(p=>`<div class="pcard ${norm(p.stalled)==="yes"?"stalled":""}"><h4>${esc(p.project)}</h4><p>${esc(p.summary)}</p><div class="next">${esc(p.next_action)}</div><div class="foot"><span class="ago">Last activity ${esc(p.last_activity)}</span>${norm(p.stalled)==="yes"?`<span class="badge b-alert"><span class="dot"></span>Stalled</span>`:``}</div></div>`).join("") : `<div class="empty">Empty</div>`;
     html+=`</div>`;
   });
-  html+=`</div>`;
-  el.innerHTML=html;
-}
-
-function renderIdeas(el){
-  const rows=DATA.ideas;
-  let html=h("Idea backlog", "Product-development ideas surfaced from meetings and email, so they get developed deliberately instead of forgotten."+seedTag());
-  html += rows.length ? tbl(
-    ["Idea","Source","Logged","Status","Notes"],
-    rows.map(r=>[
-      `<span class="prime">${esc(r.idea)}</span>`,
-      `<span class="badge b-planned">${esc(r.source)}</span>`,
-      `<span class="nums muted">${esc(r.logged)}</span>`,
-      `<span class="badge ${norm(r.status)==="active"?"b-progress":norm(r.status)==="promoted"?"b-live":"b-planned"}">${esc(r.status)}</span>`,
-      `<span class="muted">${esc(r.notes)}</span>`
-    ])
-  ) : `<div class="empty">No ideas logged.</div>`;
-  el.innerHTML=html;
-}
-
-function renderCommand(el){
-  const rows=DATA.mailboxes||[];
-  const num=x=>Number(x)||0, yes=x=>x===true||norm(x)==="yes";
-  let html=h("Command Center", "Every professional mailbox at a glance — drafts waiting to send, replies you owe, and follow-ups you\'re chasing. Counts are reconciled server-side across all four accounts by the mailbox service."+seedTag());
-  html+=`<div class="funnel" style="grid-template-columns:repeat(auto-fit,minmax(238px,1fr))">`+rows.map(m=>{
-    const counted=yes(m.counted)||norm(m.status)==="ok";
-    const fu=num(m.campaign_followup), au=num(m.auto_draft), ma=num(m.manual_draft), dt=num(m.drafts_total), approx=yes(m.approximate);
-    if(!counted){
-      return `<div class="col" style="padding:18px 20px"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="prime">${esc(m.identity)}</span><span class="badge b-alert"><span class="dot"></span>Not counted</span></div><div class="muted" style="font-size:12px;margin-top:4px">${esc(m.address)}</div><div class="muted" style="margin-top:14px">${esc(m.error||m.status||"unreachable")}</div></div>`;
-    }
-    return `<div class="col" style="padding:18px 20px">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="prime">${esc(m.identity)}</span><span class="badge b-live"><span class="dot"></span>ok</span></div>
-      <div class="muted" style="font-size:12px;margin-top:4px">${esc(m.address)}</div>
-      <div style="display:flex;align-items:baseline;gap:8px;margin-top:16px"><span class="stat-count" style="font-size:34px">${approx?"~":""}${dt}</span><span class="stat-label">drafts to send${approx?" (approx)":""}</span></div>
-      <div class="muted" style="font-size:12px;margin-top:6px">${fu} follow-up · ${au} auto · ${ma} manual</div>
-      <div style="display:flex;gap:20px;margin-top:16px"><div><div class="stat-count" style="font-size:22px">${num(m.needs_reply)}</div><div class="stat-label">replies needed</div></div><div><div class="stat-count" style="font-size:22px">${num(m.waiting_on)}</div><div class="stat-label">waiting-on</div></div></div>
-      <div class="muted" style="font-size:11px;margin-top:14px">as of ${esc(m.as_of||"—")}</div>
-    </div>`;
-  }).join("")+`</div>`;
-  el.innerHTML=html;
+  html+=`</div>`; el.innerHTML=html;
 }
 function renderHealth(el){
-  const rows=DATA.health||[];
-  const bad=rows.filter(r=>["down","degraded"].includes(norm(r.status)));
-  let html=h("Automation health", "Every client &amp; internal automation, checked each run — trigger status, site reachability, and data freshness. Anything not green is flagged so you know what to fix."+seedTag());
-  if(bad.length){
-    html+=`<div class="nudge" style="border-left-color:var(--alert);background:rgba(217,105,79,0.06)"><strong style="color:var(--alert)">Needs attention</strong><ul>`+
-      bad.map(r=>`<li><b>${esc(r.automation)}</b> — ${esc(r.detail)}</li>`).join("")+`</ul></div>`;
-  }
-  html += rows.length ? tbl(
-    ["Automation","Platform","Status","Detail","View"],
-    rows.map(r=>{
-      const s=norm(r.status);
-      const cls=s==="healthy"?"b-live":s==="down"?"b-alert":s==="degraded"?"b-progress":"b-planned";
-      const label=s==="building"?"In build":s.charAt(0).toUpperCase()+s.slice(1);
-      return [
-        `<span class="prime">${esc(r.automation)}</span>`,
-        `<span class="muted">${esc(r.platform)}</span>`,
-        `<span class="badge ${cls}"><span class="dot"></span>${label}</span>`,
-        esc(r.detail),
-        viewCell(r.url)
-      ];
-    })
-  ) : `<div class="empty">No automations registered yet.</div>`;
+  const rows=DATA.health||[], bad=rows.filter(r=>["down","degraded"].includes(norm(r.status)));
+  let html=h("Automation health","Every client + internal automation, checked each run. Anything not green is flagged."+seedTag());
+  if(bad.length){ html+=`<div class="nudge" style="border-left-color:var(--alert);background:rgba(217,105,79,0.06)"><strong style="color:var(--alert)">Needs attention</strong><ul>`+bad.map(r=>`<li><b>${esc(r.automation)}</b> — ${esc(r.detail)}</li>`).join("")+`</ul></div>`; }
+  html+= rows.length ? tbl(["Automation","Platform","Status","Detail",""], rows.map(r=>{
+    const s=norm(r.status), cls=s==="healthy"?"b-live":s==="down"?"b-alert":s==="degraded"?"b-progress":"b-planned", label=s==="building"?"In build":s.charAt(0).toUpperCase()+s.slice(1);
+    return {cells:[`<span class="prime">${esc(r.automation)}</span>`, `<span class="muted">${esc(r.platform)}</span>`, `<span class="badge ${cls}"><span class="dot"></span>${label}</span>`, esc(r.detail), r.url?`<a class="view-link" href="${esc(r.url)}" target="_blank" rel="noopener">Open ↗</a>`:`<span class="muted">—</span>`]};
+  })) : `<div class="empty">No automations registered yet.</div>`;
+  el.innerHTML=html;
+}
+function renderIdeas(el){
+  const rows=DATA.ideas;
+  let html=h("Idea backlog","Product-development ideas surfaced from meetings and email."+seedTag());
+  html+= rows.length ? tbl(["Idea","Source","Logged","Status","Notes"], rows.map(r=>({cells:[
+    `<span class="prime">${esc(r.idea)}</span>`, `<span class="badge b-planned">${esc(r.source)}</span>`, `<span class="nums muted">${esc(r.logged)}</span>`,
+    `<span class="badge ${norm(r.status)==="active"?"b-progress":norm(r.status)==="promoted"?"b-live":"b-planned"}">${esc(r.status)}</span>`, `<span class="muted">${esc(r.notes)}</span>`
+  ]}))) : `<div class="empty">No ideas logged.</div>`;
   el.innerHTML=html;
 }
 function renderMetrics(el){
   const rows=DATA.metrics;
-  let html=h("Metrics", "How the assistant is performing. Tiles populate after the first live run and trend over time."+seedTag());
-  html+=`<div class="funnel">`+rows.map(m=>`
-    <div class="col" style="padding:20px 22px 22px">
-      <div class="stat-label" style="margin-bottom:10px">${esc(m.label)}</div>
-      <div class="stat-count" style="font-size:34px">${esc(m.value)}</div>
-      <div class="muted" style="font-size:12px;margin-top:8px">${esc(m.note)}</div>
-    </div>`).join("")+`</div>`;
+  let html=h("Metrics","How the assistant is performing. Populates after the first live run."+seedTag());
+  html+=`<div class="funnel">`+rows.map(m=>`<div class="col" style="padding:20px 22px 22px"><div class="stat-label" style="margin-bottom:10px">${esc(m.label)}</div><div class="stat-count" style="font-size:34px">${esc(m.value)}</div><div class="muted" style="font-size:12px;margin-top:8px">${esc(m.note)}</div></div>`).join("")+`</div>`;
   el.innerHTML=html;
 }
 
-/* ---------- table helper ---------- */
-function tbl(headers, rows){
-  return `<table><thead><tr>${headers.map(x=>`<th>${x}</th>`).join("")}</tr></thead><tbody>${
-    rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")
-  }</tbody></table>`;
-}
-
-/* ---------- nav + tiles ---------- */
-const VIEWS=[
-  ["today","Today"],["command","Command Center"],["approvals","Approvals"],["waiting","Waiting-On"],
-  ["commitments","Commitments"],["funnel","Funnel"],["health","Health"],["ideas","Ideas"],["metrics","Metrics"]
-];
-const R={today:renderToday,command:renderCommand,approvals:renderApprovals,waiting:renderWaiting,commitments:renderCommitments,funnel:renderFunnel,health:renderHealth,ideas:renderIdeas,metrics:renderMetrics};
-
+/* ---- nav / counts / boot ---- */
+const VIEWS=[["today","Today"],["approvals","Approvals"],["waiting","Waiting-On"],["commitments","Commitments"],["upcoming","Upcoming"],["funnel","Funnel"],["health","Health"],["ideas","Ideas"],["metrics","Metrics"]];
+const R={today:renderToday,approvals:renderApprovals,waiting:renderWaiting,commitments:renderCommitments,upcoming:renderUpcoming,funnel:renderFunnel,health:renderHealth,ideas:renderIdeas,metrics:renderMetrics};
 function counts(){
-  const openC=DATA.commitments.filter(c=>norm(c.status)==="open").length;
   return {
     approvals:DATA.approvals.length,
-    waiting:DATA.waiting.filter(w=>norm(w.status)!=="done").length,
-    commitments:openC,
-    command:(DATA.mailboxes||[]).reduce((n,m)=>n+(Number(m.drafts_total)||0),0),
+    waiting:DATA.waiting.filter(w=>!TAKEN(w.status)).length,
+    commitments:DATA.commitments.filter(c=>!TAKEN(c.status)).length,
+    upcoming:(DATA.scheduled||[]).filter(s=>norm(s.status)!=="done").length,
     health:(DATA.health||[]).filter(r=>["down","degraded"].includes(norm(r.status))).length
   };
 }
@@ -520,62 +414,78 @@ function buildNav(){
   document.getElementById("nav").innerHTML=VIEWS.map(([id,label],i)=>{
     let pill="";
     if(id==="approvals"&&c.approvals) pill=`<span class="pill">${c.approvals}</span>`;
-    if(id==="command"&&c.command) pill=`<span class="pill">${c.command}</span>`;
     if(id==="waiting"&&c.waiting) pill=`<span class="pill">${c.waiting}</span>`;
     if(id==="commitments"&&c.commitments) pill=`<span class="pill alert">${c.commitments}</span>`;
+    if(id==="upcoming"&&c.upcoming) pill=`<span class="pill">${c.upcoming}</span>`;
     if(id==="health"&&c.health) pill=`<span class="pill alert">${c.health}</span>`;
     return `<button data-go="${id}" class="${i===0?"on":""}">${label}${pill}</button>`;
   }).join("");
   document.querySelectorAll("#nav button").forEach(b=>b.addEventListener("click",()=>go(b.dataset.go)));
 }
 function tiles(){
-  document.getElementById("s-actions").textContent=DATA.actions.length;
-  document.getElementById("s-approval").textContent=DATA.approvals.length;
-  document.getElementById("s-waiting").textContent=DATA.waiting.filter(w=>norm(w.status)!=="done").length;
-  document.getElementById("s-commit").textContent=DATA.commitments.filter(c=>norm(c.status)==="open").length;
-  document.getElementById("s-projects").textContent=DATA.projects.length;
+  const c=counts();
+  document.getElementById("s-actions").textContent=DATA.actions.filter(a=>!TAKEN(a.status)).length;
+  document.getElementById("s-approval").textContent=c.approvals;
+  document.getElementById("s-waiting").textContent=c.waiting;
+  document.getElementById("s-commit").textContent=c.commitments;
+  document.getElementById("s-upcoming").textContent=c.upcoming;
   document.getElementById("updated").textContent="Last run: "+(LIVE?"live (Google Sheets)":"seed · pending first scan");
 }
 function go(id){
   document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.go===id));
-  document.querySelectorAll(".view").forEach(v=>{
-    const on=v.dataset.v===id; v.classList.toggle("on",on);
-    if(on) R[id](v);
-  });
+  document.querySelectorAll(".view").forEach(v=>{ const on=v.dataset.v===id; v.classList.toggle("on",on); if(on) R[id](v); });
 }
-function renderAll(){ buildNav(); tiles(); go("today"); }
+function renderAll(){ buildNav(); tiles(); const active=document.querySelector("#nav button.on"); go(active?active.dataset.go:"today"); }
 
-/* ---------- boot: seed first, then hydrate from Sheet ---------- */
-async function load(){
-  const tabs=["actions","waiting_on","tasks","commitments","projects","ideas","metrics","health","mailbox_summary"];
-  const got=await Promise.all(tabs.map(pull));
-  let any=false;
-  if(got[0]){DATA.actions=got[0];any=true;}
-  if(got[1]){DATA.waiting=got[1];any=true;}
-  if(got[3]){DATA.commitments=got[3];any=true;}
-  if(got[4]){DATA.projects=got[4];any=true;}
-  if(got[5]){DATA.ideas=got[5];any=true;}
-  if(got[6]){DATA.metrics=got[6];any=true;}
-  if(got[7]){DATA.health=got[7];any=true;}
-  if(got[8]){DATA.mailboxes=got[8];any=true;}
-  LIVE=any;
-  renderAll();
-}
-/* ---------- Run now (manual trigger) ----------
-   The scan runs inside Bill's logged-in Chrome (Gmail ×4, Otter, WhatsApp), so it's
-   launched by asking Claude — that fires the full scan instantly. This button copies
-   the run command to the clipboard for a one-click hand-off. */
-const RUN_CMD = "Run my AI Personal Assistant now";
-function showToast(msg, ms){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'), ms||4500); }
-document.getElementById('runNow').addEventListener('click', async ()=>{
-  try{
-    await navigator.clipboard.writeText(RUN_CMD);
-    showToast('Copied “'+RUN_CMD+'”. Paste it to Claude (or just say it) to fire the full scan — email ×4, Otter, WhatsApp, funnel. Keep your Mac awake with the Claude app open.',7000);
-  }catch(e){
-    showToast('To run on demand, open Claude and say “'+RUN_CMD+'.” It fires the full scan instantly. Keep your Mac awake with the Claude app open.',7000);
-  }
+/* ---- edit handlers (delegated) ---- */
+document.addEventListener("click", async (e)=>{
+  const btn=e.target.closest(".stbtn"); if(!btn) return;
+  const tab=btn.dataset.tab, id=btn.dataset.id;
+  const nowTaken=btn.classList.contains("st-taken");
+  const next=nowTaken?"Action Needed":"Action Taken";
+  btn.classList.add("st-saving");
+  const ok=await saveCell(tab,id,"status",next);
+  btn.classList.remove("st-saving");
+  if(ok){
+    // update in-memory + re-render current view
+    const coll = tab==="waiting_on"?DATA.waiting:(DATA[tab]||[]);
+    const row=coll.find(x=>String(x.id)===String(id)); if(row) row.status=next;
+    showToast('Status → '+next+' (saved)');
+    buildNav(); tiles(); const a=document.querySelector("#nav button.on"); if(a) go(a.dataset.go);
+  } else { showToast('Could not save — try again.'); }
+});
+document.addEventListener("change", async (e)=>{
+  const box=e.target.closest(".cmt"); if(!box) return;
+  const tab=box.dataset.tab, id=box.dataset.id, val=box.value;
+  const ok=await saveCell(tab,id,"comment",val);
+  if(ok){ box.classList.add("saved"); setTimeout(()=>box.classList.remove("saved"),1500);
+    const coll = tab==="waiting_on"?DATA.waiting:(DATA[tab]||[]); const row=coll.find(x=>String(x.id)===String(id)); if(row) row.comment=val;
+    showToast('Comment saved — the next run will read it for follow-ups.');
+  } else { showToast('Could not save comment — try again.'); }
 });
 
+/* ---- Run now: copy the command ---- */
+const RUN_CMD="Run my AI Personal Assistant now";
+document.getElementById("runNow").addEventListener("click", async ()=>{
+  try{ await navigator.clipboard.writeText(RUN_CMD); showToast('Copied “'+RUN_CMD+'”. Paste it to Claude to fire the full scan. Keep your Mac awake with the Claude app open.',6500); }
+  catch(e){ showToast('To run on demand, open Claude and say “'+RUN_CMD+'.”',6500); }
+});
+
+/* ---- boot: seed, then hydrate from the Sheet ---- */
+async function load(){
+  const tabs=["actions","waiting_on","commitments","scheduled","projects","ideas","metrics","health"];
+  const g=await Promise.all(tabs.map(pull));
+  let any=false;
+  if(g[0]){DATA.actions=g[0];any=true;}
+  if(g[1]){DATA.waiting=g[1];any=true;}
+  if(g[2]){DATA.commitments=g[2];any=true;}
+  if(g[3]){DATA.scheduled=g[3];any=true;}
+  if(g[4]){DATA.projects=g[4];any=true;}
+  if(g[5]){DATA.ideas=g[5];any=true;}
+  if(g[6]){DATA.metrics=g[6];any=true;}
+  if(g[7]){DATA.health=g[7];any=true;}
+  LIVE=any; renderAll();
+}
 renderAll();
 load();
 </script>
