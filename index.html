@@ -496,6 +496,18 @@
 <script>
   const AUTOMATIONS = [
     {
+      id: "ai-personal-assistant",
+      title: "AI Personal Assistant",
+      subtitle: "Daily Ops Command Center",
+      status: "progress",
+      description: "Weekday scan of four inboxes (inbox + sent), Otter.ai meetings, and every Claude project. Drafts suggested replies, auto-queues follow-ups (agreed timeline or 48h, second on the same cadence, then flags), surfaces meeting commitments from Otter with alerts, and keeps each project moving through the Production → Development & Staging → Architecture & Planning funnel. Delivers a 9:00 AM brief to bill.brill@inflectionpointnow.com.",
+      pipeline: ["Gmail ×4", "Otter.ai", "Claude", "Google Sheets", "Gmail"],
+      schedule: "Weekdays · 9:00 AM CST",
+      platform: "Claude + Google Sheets",
+      runnable: false,
+      dashboardUrl: "/assistant.html"
+    },
+    {
       id: "padco-parts-scan",
       title: "PADCO Parts Scan",
       subtitle: "Daily Marketplace Scanner",

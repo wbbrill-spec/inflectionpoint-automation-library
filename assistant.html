@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Personal Assistant — InflectionPoint</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold:#B8963E; --gold-light:#D4AF60; --dark:#1a1a1a; --mid:#2e2e2e;
+      --surface:#242424; --border:rgba(184,150,62,0.2); --text:#e8e4dc; --text-muted:#8a8680;
+      --live:#4caf7d; --progress:#e09b3d; --planned:#5a7fa8; --alert:#d9694f;
+    }
+    body { font-family:'DM Sans',sans-serif; background:var(--dark); color:var(--text); min-height:100vh; display:flex; flex-direction:column; }
+    header { display:flex; align-items:center; justify-content:space-between; padding:24px 48px; border-bottom:1px solid var(--border); background:rgba(26,26,26,0.95); position:sticky; top:0; z-index:100; backdrop-filter:blur(8px); }
+    .logo-wrap img { height:52px; width:auto; display:block; }
+    .back { font-size:11px; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-muted); text-decoration:none; transition:color .2s; }
+    .back:hover { color:var(--gold); }
+    .hero { padding:56px 48px 28px; border-bottom:1px solid var(--border); position:relative; overflow:hidden; }
+    .hero::before { content:''; position:absolute; top:-60px; right:-60px; width:400px; height:400px; background:radial-gradient(circle, rgba(184,150,62,0.06) 0%, transparent 70%); pointer-events:none; }
+    .hero-eyebrow { font-size:11px; font-weight:500; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); margin-bottom:14px; }
+    .hero-title { font-family:'Cormorant Garamond',serif; font-size:clamp(30px,4vw,46px); font-weight:300; line-height:1.1; margin-bottom:14px; }
+    .hero-title em { font-style:italic; color:var(--gold-light); }
+    .hero-description { font-size:14px; font-weight:300; color:var(--text-muted); line-height:1.7; max-width:600px; }
+    .stats-bar { display:flex; padding:0 48px; border-bottom:1px solid var(--border); flex-wrap:wrap; }
+    .stat { display:flex; align-items:baseline; gap:8px; padding:18px 28px 18px 0; margin-right:28px; border-right:1px solid var(--border); }
+    .stat:last-child { border-right:none; }
+    .stat-count { font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:500; color:var(--text); }
+    .stat-count.warn { color:var(--progress); }
+    .stat-count.alert { color:var(--alert); }
+    .stat-label { font-size:12px; color:var(--text-muted); letter-spacing:0.05em; }
+    /* NAV */
+    nav.views { display:flex; flex-wrap:wrap; gap:4px; padding:20px 48px 0; }
+    nav.views button { border:0; background:transparent; color:var(--text-muted); font-family:'DM Sans',sans-serif; font-size:11px; font-weight:500; letter-spacing:0.15em; text-transform:uppercase; padding:10px 16px; cursor:pointer; border-bottom:2px solid transparent; transition:all .2s; }
+    nav.views button:hover { color:var(--text); }
+    nav.views button.on { color:var(--gold); border-bottom-color:var(--gold); }
+    nav.views button .pill { display:inline-block; margin-left:6px; font-size:10px; background:rgba(184,150,62,0.15); color:var(--gold-light); border-radius:10px; padding:1px 7px; }
+    nav.views button .pill.alert { background:rgba(217,105,79,0.18); color:var(--alert); }
+    .wrap { padding:28px 48px 48px; flex:1; }
+    .view { display:none; }
+    .view.on { display:block; }
+    .view-head { display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:6px; }
+    .view-title { font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:500; }
+    .view-sub { font-size:13px; color:var(--text-muted); font-weight:300; margin-bottom:20px; line-height:1.6; max-width:640px; }
+    /* GROUP */
+    .group-label { font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--text-muted); margin:26px 0 12px; display:flex; align-items:center; gap:10px; }
+    .group-label::after { content:''; flex:1; height:1px; background:var(--border); }
+    /* TABLE */
+    table { width:100%; border-collapse:collapse; }
+    thead th { text-align:left; font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--text-muted); font-weight:500; padding:12px 14px; border-bottom:1px solid var(--border); }
+    tbody td { padding:14px 14px; border-bottom:1px solid var(--border); vertical-align:top; font-size:14px; font-weight:300; line-height:1.5; }
+    tbody tr:hover { background:rgba(184,150,62,0.04); }
+    .prime { font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:500; color:var(--text); line-height:1.3; }
+    .muted { color:var(--text-muted); }
+    .nums { font-variant-numeric:tabular-nums; }
+    a.view-link { color:var(--gold); text-decoration:none; font-size:12px; letter-spacing:0.08em; white-space:nowrap; }
+    a.view-link:hover { color:var(--gold-light); text-decoration:underline; }
+    /* BADGES */
+    .badge { display:inline-flex; align-items:center; gap:6px; font-size:10px; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; padding:4px 9px; border-radius:2px; white-space:nowrap; border:1px solid transparent; }
+    .dot { width:6px; height:6px; border-radius:50%; background:currentColor; flex-shrink:0; }
+    .b-live { background:rgba(76,175,125,0.12); color:var(--live); border-color:rgba(76,175,125,0.25); }
+    .b-progress { background:rgba(224,155,61,0.12); color:var(--progress); border-color:rgba(224,155,61,0.25); }
+    .b-planned { background:rgba(90,127,168,0.12); color:var(--planned); border-color:rgba(90,127,168,0.25); }
+    .b-alert { background:rgba(217,105,79,0.14); color:var(--alert); border-color:rgba(217,105,79,0.3); }
+    .b-gold { background:rgba(184,150,62,0.12); color:var(--gold-light); border-color:rgba(184,150,62,0.25); }
+    /* identity chips */
+    .acct { font-size:9px; letter-spacing:0.1em; text-transform:uppercase; padding:3px 7px; border-radius:2px; border:1px solid transparent; white-space:nowrap; }
+    .acct-ip { background:rgba(184,150,62,0.12); color:var(--gold-light); border-color:rgba(184,150,62,0.25); }
+    .acct-lsa { background:rgba(90,127,168,0.12); color:#8fb2de; border-color:rgba(90,127,168,0.25); }
+    .acct-kubox { background:rgba(76,175,125,0.12); color:var(--live); border-color:rgba(76,175,125,0.25); }
+    .acct-drums { background:rgba(160,120,190,0.14); color:#c4a2dc; border-color:rgba(160,120,190,0.3); }
+    .pri { font-size:10px; letter-spacing:0.1em; text-transform:uppercase; font-weight:500; }
+    .pri-high { color:var(--alert); }
+    .pri-med { color:var(--progress); }
+    .pri-low { color:var(--text-muted); }
+    .due { font-size:12px; }
+    .due.over { color:var(--alert); font-weight:500; }
+    /* FUNNEL */
+    .funnel { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+    .col { background:var(--surface); border:1px solid var(--border); border-radius:2px; padding:0 0 12px; }
+    .col-head { padding:16px 18px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+    .col-head h3 { font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:500; }
+    .col-head .n { font-size:12px; color:var(--text-muted); font-variant-numeric:tabular-nums; }
+    .col-head.h-prod { border-top:2px solid var(--live); }
+    .col-head.h-dev { border-top:2px solid var(--progress); }
+    .col-head.h-arch { border-top:2px solid var(--planned); }
+    .pcard { margin:12px 14px 0; padding:14px; border:1px solid var(--border); border-radius:2px; background:rgba(255,255,255,0.015); }
+    .pcard.stalled { border-color:rgba(217,105,79,0.4); }
+    .pcard h4 { font-family:'Cormorant Garamond',serif; font-size:16px; font-weight:500; margin-bottom:6px; }
+    .pcard p { font-size:12px; color:var(--text-muted); line-height:1.5; margin-bottom:10px; }
+    .pcard .next { font-size:12px; color:var(--text); border-left:2px solid var(--gold); padding-left:8px; line-height:1.4; }
+    .pcard .foot { display:flex; align-items:center; justify-content:space-between; margin-top:10px; }
+    .pcard .ago { font-size:10px; color:var(--text-muted); letter-spacing:0.05em; }
+    /* nudge banner */
+    .nudge { background:rgba(184,150,62,0.06); border:1px solid var(--border); border-left:3px solid var(--gold); border-radius:2px; padding:16px 20px; margin-bottom:22px; }
+    .nudge strong { font-family:'Cormorant Garamond',serif; font-size:16px; font-weight:500; color:var(--gold-light); }
+    .nudge ul { margin:8px 0 0 18px; }
+    .nudge li { font-size:13px; color:var(--text); line-height:1.7; }
+    .empty { padding:40px 14px; text-align:center; color:var(--text-muted); font-size:13px; }
+    footer { padding:20px 48px; border-top:1px solid var(--border); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+    .footer-text { font-size:11px; color:var(--text-muted); opacity:0.55; letter-spacing:0.1em; }
+    .seed-note { font-size:10px; color:var(--progress); opacity:0.8; letter-spacing:0.05em; }
+    @media (max-width:820px){ .funnel{grid-template-columns:1fr;} }
+    @media (max-width:600px){ header,.hero,.stats-bar,nav.views,.wrap,footer{padding-left:20px;padding-right:20px;} .hide-sm{display:none;} }
+  </style>
+</head>
+<body>
+<header>
+  <div class="logo-wrap"><img src="logo.png" alt="InflectionPoint Consulting" /></div>
+  <a class="back" href="/">← Automation Library</a>
+</header>
+
+<section class="hero">
+  <div class="hero-eyebrow">AI PERSONAL ASSISTANT · DF-AUTO-ASSISTANT</div>
+  <h1 class="hero-title">Your daily <em>command center.</em></h1>
+  <p class="hero-description">A weekday scan of four inboxes, Otter.ai meetings, and every Claude project — drafting replies, chasing follow-ups, surfacing what you committed to in meetings, and keeping each project moving through the funnel. Everything the 9:00&nbsp;AM brief flags, tracked here.</p>
+</section>
+
+<div class="stats-bar">
+  <div class="stat"><span class="stat-count" id="s-actions">0</span><span class="stat-label">Actions today</span></div>
+  <div class="stat"><span class="stat-count warn" id="s-approval">0</span><span class="stat-label">Awaiting approval</span></div>
+  <div class="stat"><span class="stat-count warn" id="s-waiting">0</span><span class="stat-label">Waiting on replies</span></div>
+  <div class="stat"><span class="stat-count alert" id="s-commit">0</span><span class="stat-label">Open commitments</span></div>
+  <div class="stat"><span class="stat-count" id="s-projects">0</span><span class="stat-label">Projects tracked</span></div>
+</div>
+
+<nav class="views" id="nav"></nav>
+
+<div class="wrap">
+  <section class="view on" data-v="today"></section>
+  <section class="view" data-v="approvals"></section>
+  <section class="view" data-v="waiting"></section>
+  <section class="view" data-v="commitments"></section>
+  <section class="view" data-v="funnel"></section>
+  <section class="view" data-v="ideas"></section>
+  <section class="view" data-v="metrics"></section>
+</div>
+
+<footer>
+  <span class="footer-text">InflectionPoint Consulting — AI Personal Assistant · Internal Operations</span>
+  <span class="footer-text" id="updated">Last run: —</span>
+</footer>
+
+<script>
+/* ============================================================
+   DATA SOURCE — Google Sheet "Bill Assistant — Ops Data"
+   One tab per dataset, published anyone-with-link Viewer.
+   Fill SHEET_ID + per-tab GID after the Sheet is created; until
+   then the page renders the seed data below so it never looks empty.
+   ============================================================ */
+const SHEET_ID = "1ExqJR6K-ez41VTr6iwwOCSgX_iYqYatkST79RY39PYk";
+const TAB = { actions:"actions", waiting_on:"waiting_on", tasks:"tasks", commitments:"commitments", projects:"projects", ideas:"ideas", metrics:"metrics" };
+// Read each tab by NAME via the gviz CSV endpoint (no gid hunting). Requires the Sheet shared "anyone with link → Viewer".
+const csvUrl = tab => (SHEET_ID && !SHEET_ID.startsWith("REPLACE"))
+  ? `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(TAB[tab]||tab)}` : null;
+
+/* ---------- identity helpers ---------- */
+const ACCTS = {
+  "bill.brill@inflectionpointnow.com": {short:"InflectionPoint", cls:"acct-ip"},
+  "bbrill@thelsa.com":                 {short:"LSA",            cls:"acct-lsa"},
+  "billbrill@thekubox.com":            {short:"Kubox",          cls:"acct-kubox"},
+  "info@panamericandrums.com":         {short:"Pan Am Drums",   cls:"acct-drums"}
+};
+function acctChip(a){ const m = ACCTS[a] || {short:(a||"—"), cls:"acct-ip"}; return `<span class="acct ${m.cls}">${esc(m.short)}</span>`; }
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+function norm(s){return String(s||"").trim().toLowerCase();}
+function priChip(p){const n=norm(p);const c=n==="high"?"pri-high":n==="med"||n==="medium"?"pri-med":"pri-low";return `<span class="pri ${c}">${esc(p||"low")}</span>`;}
+
+/* ---------- SEED DATA (replaced live from the Sheet) ----------
+   Commitments below are REAL items surfaced by the Otter.ai scan on 2026-07-27.
+   Email-derived rows (actions / waiting_on) are illustrative samples until the first live scan. */
+const SEED = {
+  actions: [
+    {account:"bill.brill@inflectionpointnow.com", from:"Carl Häggström", subject:"Matt destination-rate automation — data fields", project:"PXC Follow-up Automation", priority:"high", suggested_action:"Reply with the specific data fields + examples needed", draft_status:"drafted", url:"#"},
+    {account:"billbrill@thekubox.com", from:"Garfield", subject:"Q Box student-relocation white paper — FAQ answers", project:"Q Box India", priority:"med", suggested_action:"Provide detailed FAQ answers to the internal team", draft_status:"drafted", url:"#"},
+    {account:"bbrill@thelsa.com", from:"Lupita Gonzalez", subject:"OADA rate engine — standard quote exclusions", project:"OADA Rate Engine", priority:"med", suggested_action:"Confirm exclusions list added before remarks section", draft_status:"needs draft", url:"#"},
+    {account:"info@panamericandrums.com", from:"Marketplace alert", subject:"New junior drum set near Katy, TX", project:"PADCO Parts Scan", priority:"low", suggested_action:"Review PADCO match — confirm or dismiss", draft_status:"n/a", url:"#"}
+  ],
+  approvals: [
+    {account:"bbrill@thelsa.com", type:"Reply draft", subject:"Otso — revised Classic Moving proposal & agreement", who:"Otso Massala", note:"Draft ready: revised plan + simple agreement for signature", url:"#"},
+    {account:"bill.brill@inflectionpointnow.com", type:"Follow-up #1", subject:"Rick — ZoomInfo API key screen-share", who:"Rick", note:"48h elapsed, no reply — nudge queued", url:"#"},
+    {account:"billbrill@thekubox.com", type:"Follow-up #1", subject:"Trans Impact — intro to John Chris @ Q Box", who:"John", note:"Awaiting deck + one-pager; gentle nudge queued", url:"#"}
+  ],
+  waiting: [
+    {account:"bill.brill@inflectionpointnow.com", recipient:"Carl Häggström", subject:"PXC data for automation proposal", sent:"2026-07-24", agreed_due:"2026-07-31", followups:"0", next:"2026-07-31 (agreed timeline)", status:"waiting"},
+    {account:"bbrill@thelsa.com", recipient:"Otso Massala", subject:"Review of revised proposal & impact numbers", sent:"2026-07-23", agreed_due:"", followups:"1", next:"2026-07-27 (48h cadence)", status:"followup-1"},
+    {account:"bill.brill@inflectionpointnow.com", recipient:"Rick", subject:"ZoomInfo API key handoff", sent:"2026-07-22", agreed_due:"", followups:"2", next:"— flagged for manual decision", status:"flagged"}
+  ],
+  /* REAL Otter commitments (2026-07-27 scan, past ~14 days + notable open items) */
+  commitments: [
+    {commitment:"Finish DKIM registration and confirm it is live in Google Admin", meeting:"Email Campaign Optimization Meeting", date:"2026-07-27", due:"2026-07-29", status:"open", url:"https://otter.ai/u/iXs6xSTZpPuUy1W7bs7-p6lhAfE"},
+    {commitment:"Set up A/B testing with balanced subject-line variants", meeting:"Email Campaign Optimization Meeting", date:"2026-07-27", due:"", status:"open", url:"https://otter.ai/u/iXs6xSTZpPuUy1W7bs7-p6lhAfE"},
+    {commitment:"Remove duplicate auto-signature text from draft emails", meeting:"Email Campaign Optimization Meeting", date:"2026-07-27", due:"", status:"open", url:"https://otter.ai/u/iXs6xSTZpPuUy1W7bs7-p6lhAfE"},
+    {commitment:"Split the invoice into two ($800 + remaining balance)", meeting:"Email Campaign Optimization Meeting", date:"2026-07-27", due:"", status:"open", url:"https://otter.ai/u/iXs6xSTZpPuUy1W7bs7-p6lhAfE"},
+    {commitment:"Send a one-page summary of the proposed automation approach", meeting:"AI Automation Presentation", date:"2026-07-27", due:"", status:"open", url:"https://otter.ai/u/ygzW-ovVUfE6ZeJ4Tt7c0WAtz-8"},
+    {commitment:"Develop MoveWare cost/invoicing profit-discrepancy automation (replace manual costing review)", meeting:"Logistics Process Improvement Meeting", date:"2026-07-14", due:"", status:"open", url:"https://otter.ai/u/MlWo0Fy9Bt0FkAFfquH3fX9iYcA"},
+    {commitment:"Prepare & distribute written meeting notes with follow-up actions", meeting:"Logistics Process Improvement Meeting", date:"2026-07-14", due:"", status:"open", url:"https://otter.ai/u/MlWo0Fy9Bt0FkAFfquH3fX9iYcA"},
+    {commitment:"Contact Rick, text next steps, schedule screen-share to share ZoomInfo API key", meeting:"William's Meeting Notes", date:"2026-07-13", due:"", status:"open", url:"https://otter.ai/u/EoyEitbcRnXuLjyhJKpzGwbNvic"},
+    {commitment:"Fix scheduler bug creating duplicate automated follow-up emails", meeting:"William's Meeting Notes", date:"2026-07-13", due:"", status:"open", url:"https://otter.ai/u/EoyEitbcRnXuLjyhJKpzGwbNvic"},
+    {commitment:"Deliver working Classic Moving follow-up automation beta (~2 weeks)", meeting:"Otso Bill Carl automation talks", date:"2026-07-12", due:"2026-07-26", status:"open", url:"https://otter.ai/u/HJyylwxb8-WkaVxlZd7AfFdPNK8"},
+    {commitment:"Compile consolidated list of required inputs for Classic Moving / Family Movers", meeting:"Otso Bill Carl automation talks", date:"2026-07-12", due:"", status:"open", url:"https://otter.ai/u/HJyylwxb8-WkaVxlZd7AfFdPNK8"},
+    {commitment:"Provide detailed answers to the Q Box FAQ for the white paper", meeting:"Q Box Market Strategy Meeting", date:"2026-06-18", due:"", status:"open", url:"https://otter.ai/u/RibPt4dfGc4sx5fU0RmCub3aLkA"}
+  ],
+  projects: [
+    {project:"PADCO Parts Scan", stage:"Production", summary:"Weekday Facebook Marketplace scan → Sheet → email. Live reference automation.", last_activity:"2026-07-27", next_action:"Monitor daily finds; no action needed", stalled:"no"},
+    {project:"InflectionOS Daily Brief", stage:"Production", summary:"Daily content brief from Topic Inbox → Gmail.", last_activity:"2026-07-27", next_action:"Running; watch topic inbox depth", stalled:"no"},
+    {project:"Cross-Border Lead Gen Engine", stage:"Production", summary:"ZoomInfo-fed daily scan → draft outreach. 69 leads in a week.", last_activity:"2026-07-27", next_action:"Route drafts to Armando's inbox; connect ZoomInfo API via Rick", stalled:"no"},
+    {project:"OADA Automated Rate Engine", stage:"Development & Staging", summary:"Transfer-pricing rate engine for Telsa agents; markup tiers + assumptions panel.", last_activity:"2026-07-14", next_action:"Add probation-tier markup + fixed FX rate; surface assumptions", stalled:"no"},
+    {project:"Cross-Border LTL Quote Engine", stage:"Development & Staging", summary:"US↔MX small-move quotes; bilingual output.", last_activity:"2026-07-13", next_action:"Fix bilingual 'both' option error", stalled:"no"},
+    {project:"Classic Moving Follow-up Automation", stage:"Development & Staging", summary:"Non-MAT agent rate follow-ups; hosted at classicmoving.inflectionpointnow.com.", last_activity:"2026-07-12", next_action:"Ship beta (committed ~2 wks); compile required inputs from Otso", stalled:"yes"},
+    {project:"MoveWare Profit-Discrepancy Automation", stage:"Architecture & Planning", summary:"Ingest MoveWare cost/invoice data, flag real-vs-estimated profit gaps.", last_activity:"2026-07-14", next_action:"Confirm MoveWare API access + sample audit report", stalled:"no"},
+    {project:"Q Box Student-Relocation", stage:"Architecture & Planning", summary:"White paper + operating model for India→AU/CA/US student moves on Q Box.", last_activity:"2026-06-18", next_action:"Answer FAQ so team can finalize white paper", stalled:"yes"},
+    {project:"AI Personal Assistant (this)", stage:"Architecture & Planning", summary:"Daily email/Otter/project scan → drafts, follow-ups, commitments, funnel nudges.", last_activity:"2026-07-28", next_action:"Build Sheet + dashboard, schedule 9 AM run", stalled:"no"}
+  ],
+  ideas: [
+    {idea:"Route leads into separate follow-up tracks by engagement (commercial vs supply chain)", source:"otter", logged:"2026-07-13", status:"active", notes:"Tailored cadence per account type"},
+    {idea:"Affiliate / referral link for Trans Impact ↔ Q Box cross-sell", source:"otter", logged:"2026-06-30", status:"parking", notes:"qbox.com/transimpact commissionable URL"},
+    {idea:"Switch outreach to USA Home Listings lead aggregator", source:"otter", logged:"2026-07-27", status:"parking", notes:"Dissatisfaction with current MLS source"},
+    {idea:"Convert automation library email from Gmail → Telsa mail server for live", source:"otter", logged:"2026-05-20", status:"active", notes:"Production hardening for LSA automations"}
+  ],
+  metrics: [
+    {label:"Emails triaged / day", value:"—", note:"populates after first live run"},
+    {label:"Median response time", value:"—", note:"tracked across all four accounts"},
+    {label:"Follow-ups avoided by reply", value:"—", note:"replies that arrived before the nudge sent"},
+    {label:"Tasks completed vs carried", value:"—", note:"rolling daily list health"},
+    {label:"Meeting commitments closed", value:"—", note:"of 12 currently open (Otter)"},
+    {label:"Projects advanced this week", value:"—", note:"movement through the funnel"}
+  ]
+};
+
+/* ---------- CSV parse ---------- */
+function parseCSV(text){
+  const rows=[]; let i=0,f="",row=[],q=false;
+  while(i<text.length){const c=text[i];
+    if(q){ if(c==='"'){ if(text[i+1]==='"'){f+='"';i++;} else q=false; } else f+=c; }
+    else { if(c==='"')q=true; else if(c===','){row.push(f);f="";} else if(c==='\n'){row.push(f);rows.push(row);row=[];f="";} else if(c!=='\r')f+=c; }
+    i++;
+  }
+  if(f.length||row.length){row.push(f);rows.push(row);}
+  return rows;
+}
+function objs(text){
+  const rows=parseCSV(text).filter(r=>r.length&&r.some(c=>c.trim()!==""));
+  if(rows.length<1)return[];
+  const hdr=rows[0].map(h=>norm(h));
+  return rows.slice(1).map(r=>{const o={};hdr.forEach((h,i)=>o[h]=r[i]!=null?r[i]:"");return o;});
+}
+async function pull(tab){
+  const url=csvUrl(tab); if(!url) return null;
+  try{ const r=await fetch(url,{cache:"no-store"}); if(r.ok){const o=objs(await r.text()); if(o.length) return o;} }catch(e){}
+  return null;
+}
+
+/* ---------- state ---------- */
+let DATA = JSON.parse(JSON.stringify(SEED));
+let LIVE = false;
+
+/* ---------- renderers ---------- */
+function overdue(due){ if(!due) return false; return due < TODAY; }
+const TODAY = "2026-07-28";
+
+function h(title, sub){ return `<div class="view-head"><span class="view-title">${title}</span></div><p class="view-sub">${sub}</p>`; }
+function seedTag(){ return LIVE ? "" : `<span class="seed-note"> · showing seed data until first live run</span>`; }
+
+function renderToday(el){
+  const acts = DATA.actions;
+  const open = DATA.commitments.filter(c=>norm(c.status)==="open");
+  const wait = DATA.waiting;
+  let html = h("Today", "Your prioritized queue for "+TODAY+" — highest-impact actions first, pulled across all four identities."+seedTag());
+  // priority actions table
+  html += `<div class="group-label">Priority actions</div>`;
+  html += acts.length ? tbl(
+    ["", "From", "Subject", "Suggested action", "Priority", ""],
+    acts.slice().sort(byPri).map(a=>[
+      acctChip(a.account),
+      esc(a.from),
+      `<span class="prime">${esc(a.subject)}</span><div class="muted" style="font-size:12px">${esc(a.project||"")}</div>`,
+      esc(a.suggested_action),
+      priChip(a.priority),
+      a.url&&a.url!=="#"?`<a class="view-link" href="${esc(a.url)}" target="_blank" rel="noopener">Open ↗</a>`:`<span class="muted">draft</span>`
+    ])
+  ) : `<div class="empty">Nothing queued.</div>`;
+  // commitments alert strip
+  html += `<div class="group-label">Meeting commitments needing attention</div>`;
+  html += open.length ? tbl(
+    ["Commitment","Meeting","Due",""],
+    open.slice(0,5).map(c=>[
+      `<span class="prime">${esc(c.commitment)}</span>`,
+      esc(c.meeting)+`<div class="muted" style="font-size:12px">${esc(c.date)}</div>`,
+      c.due?`<span class="due ${overdue(c.due)?"over":""}">${esc(c.due)}${overdue(c.due)?" · overdue":""}</span>`:`<span class="muted">no date</span>`,
+      `<a class="view-link" href="${esc(c.url)}" target="_blank" rel="noopener">Otter ↗</a>`
+    ])
+  ) : `<div class="empty">No open commitments.</div>`;
+  el.innerHTML=html;
+}
+function byPri(a,b){const r={high:0,med:1,medium:1,low:2};return (r[norm(a.priority)]??3)-(r[norm(b.priority)]??3);}
+
+function renderApprovals(el){
+  const rows=DATA.approvals;
+  let html=h("Pending approval", "Drafts and follow-ups the assistant prepared. Nothing sends until you approve it (draft-and-queue mode)."+seedTag());
+  html += rows.length ? tbl(
+    ["","Type","Item","Detail",""],
+    rows.map(r=>[
+      acctChip(r.account),
+      `<span class="badge b-gold">${esc(r.type)}</span>`,
+      `<span class="prime">${esc(r.subject)}</span><div class="muted" style="font-size:12px">${esc(r.who||"")}</div>`,
+      esc(r.note),
+      `<a class="view-link" href="${esc(r.url)}" target="_blank" rel="noopener">Review ↗</a>`
+    ])
+  ) : `<div class="empty">Nothing awaiting approval.</div>`;
+  el.innerHTML=html;
+}
+
+function renderWaiting(el){
+  const rows=DATA.waiting;
+  let html=h("Waiting on replies", "Outbound threads with no response. Follow-up fires at the agreed timeline or 48h; a second on the same cadence; then it's flagged for you."+seedTag());
+  html += rows.length ? tbl(
+    ["","Recipient","Subject","Sent","Follow-ups","Next action"],
+    rows.map(r=>{
+      const flagged=norm(r.status)==="flagged";
+      return [
+        acctChip(r.account),
+        esc(r.recipient),
+        `<span class="prime">${esc(r.subject)}</span>`,
+        `<span class="nums muted">${esc(r.sent)}</span>`,
+        `<span class="badge ${flagged?"b-alert":Number(r.followups)>0?"b-progress":"b-planned"}"><span class="dot"></span>${esc(r.followups)}/2</span>`,
+        flagged?`<span class="pri pri-high">${esc(r.next)}</span>`:`<span class="due ${overdue((r.next||"").slice(0,10))?"over":""}">${esc(r.next)}</span>`
+      ];
+    })
+  ) : `<div class="empty">Not waiting on anyone.</div>`;
+  el.innerHTML=html;
+}
+
+function renderCommitments(el){
+  const rows=DATA.commitments;
+  const open=rows.filter(c=>norm(c.status)==="open");
+  let html=h("Meeting commitments", "Action items <em>you</em> committed to, pulled from Otter.ai across the last ~14 days. Anything still open raises an alert."+seedTag());
+  html += open.length ? tbl(
+    ["Commitment","Meeting","Date","Due","Source"],
+    open.map(c=>[
+      `<span class="prime">${esc(c.commitment)}</span>`,
+      esc(c.meeting),
+      `<span class="nums muted">${esc(c.date)}</span>`,
+      c.due?`<span class="due ${overdue(c.due)?"over":""}">${esc(c.due)}${overdue(c.due)?" · overdue":""}</span>`:`<span class="muted">—</span>`,
+      `<a class="view-link" href="${esc(c.url)}" target="_blank" rel="noopener">Otter ↗</a>`
+    ])
+  ) : `<div class="empty">No open commitments 🎉</div>`;
+  el.innerHTML=html;
+}
+
+function renderFunnel(el){
+  const P=DATA.projects;
+  const stages=[["Production","h-prod"],["Development & Staging","h-dev"],["Architecture & Planning","h-arch"]];
+  const stalled=P.filter(p=>norm(p.stalled)==="yes");
+  let html=h("Project funnel", "Every project by stage, moving Architecture & Planning → Development & Staging → Production. Stalled projects are flagged so nothing sits idle.");
+  if(stalled.length){
+    html+=`<div class="nudge"><strong>Push it forward</strong><ul>`+
+      stalled.map(p=>`<li><b>${esc(p.project)}</b> — ${esc(p.next_action)} <span class="muted">(no movement since ${esc(p.last_activity)})</span></li>`).join("")+
+      `</ul></div>`;
+  }
+  html+=`<div class="funnel">`;
+  stages.forEach(([name,cls])=>{
+    const items=P.filter(p=>norm(p.stage)===norm(name));
+    html+=`<div class="col"><div class="col-head ${cls}"><h3>${name.replace(" & ","&nbsp;&&nbsp;")}</h3><span class="n">${items.length}</span></div>`;
+    html+= items.length ? items.map(p=>`
+      <div class="pcard ${norm(p.stalled)==="yes"?"stalled":""}">
+        <h4>${esc(p.project)}</h4>
+        <p>${esc(p.summary)}</p>
+        <div class="next">${esc(p.next_action)}</div>
+        <div class="foot">
+          <span class="ago">Last activity ${esc(p.last_activity)}</span>
+          ${norm(p.stalled)==="yes"?`<span class="badge b-alert"><span class="dot"></span>Stalled</span>`:``}
+        </div>
+      </div>`).join("") : `<div class="empty">Empty</div>`;
+    html+=`</div>`;
+  });
+  html+=`</div>`;
+  el.innerHTML=html;
+}
+
+function renderIdeas(el){
+  const rows=DATA.ideas;
+  let html=h("Idea backlog", "Product-development ideas surfaced from meetings and email, so they get developed deliberately instead of forgotten."+seedTag());
+  html += rows.length ? tbl(
+    ["Idea","Source","Logged","Status","Notes"],
+    rows.map(r=>[
+      `<span class="prime">${esc(r.idea)}</span>`,
+      `<span class="badge b-planned">${esc(r.source)}</span>`,
+      `<span class="nums muted">${esc(r.logged)}</span>`,
+      `<span class="badge ${norm(r.status)==="active"?"b-progress":norm(r.status)==="promoted"?"b-live":"b-planned"}">${esc(r.status)}</span>`,
+      `<span class="muted">${esc(r.notes)}</span>`
+    ])
+  ) : `<div class="empty">No ideas logged.</div>`;
+  el.innerHTML=html;
+}
+
+function renderMetrics(el){
+  const rows=DATA.metrics;
+  let html=h("Metrics", "How the assistant is performing. Tiles populate after the first live run and trend over time."+seedTag());
+  html+=`<div class="funnel">`+rows.map(m=>`
+    <div class="col" style="padding:20px 22px 22px">
+      <div class="stat-label" style="margin-bottom:10px">${esc(m.label)}</div>
+      <div class="stat-count" style="font-size:34px">${esc(m.value)}</div>
+      <div class="muted" style="font-size:12px;margin-top:8px">${esc(m.note)}</div>
+    </div>`).join("")+`</div>`;
+  el.innerHTML=html;
+}
+
+/* ---------- table helper ---------- */
+function tbl(headers, rows){
+  return `<table><thead><tr>${headers.map(x=>`<th>${x}</th>`).join("")}</tr></thead><tbody>${
+    rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")
+  }</tbody></table>`;
+}
+
+/* ---------- nav + tiles ---------- */
+const VIEWS=[
+  ["today","Today"],["approvals","Approvals"],["waiting","Waiting-On"],
+  ["commitments","Commitments"],["funnel","Funnel"],["ideas","Ideas"],["metrics","Metrics"]
+];
+const R={today:renderToday,approvals:renderApprovals,waiting:renderWaiting,commitments:renderCommitments,funnel:renderFunnel,ideas:renderIdeas,metrics:renderMetrics};
+
+function counts(){
+  const openC=DATA.commitments.filter(c=>norm(c.status)==="open").length;
+  return {
+    approvals:DATA.approvals.length,
+    waiting:DATA.waiting.filter(w=>norm(w.status)!=="done").length,
+    commitments:openC
+  };
+}
+function buildNav(){
+  const c=counts();
+  document.getElementById("nav").innerHTML=VIEWS.map(([id,label],i)=>{
+    let pill="";
+    if(id==="approvals"&&c.approvals) pill=`<span class="pill">${c.approvals}</span>`;
+    if(id==="waiting"&&c.waiting) pill=`<span class="pill">${c.waiting}</span>`;
+    if(id==="commitments"&&c.commitments) pill=`<span class="pill alert">${c.commitments}</span>`;
+    return `<button data-go="${id}" class="${i===0?"on":""}">${label}${pill}</button>`;
+  }).join("");
+  document.querySelectorAll("#nav button").forEach(b=>b.addEventListener("click",()=>go(b.dataset.go)));
+}
+function tiles(){
+  document.getElementById("s-actions").textContent=DATA.actions.length;
+  document.getElementById("s-approval").textContent=DATA.approvals.length;
+  document.getElementById("s-waiting").textContent=DATA.waiting.filter(w=>norm(w.status)!=="done").length;
+  document.getElementById("s-commit").textContent=DATA.commitments.filter(c=>norm(c.status)==="open").length;
+  document.getElementById("s-projects").textContent=DATA.projects.length;
+  document.getElementById("updated").textContent="Last run: "+(LIVE?"live (Google Sheets)":"seed · pending first scan");
+}
+function go(id){
+  document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.go===id));
+  document.querySelectorAll(".view").forEach(v=>{
+    const on=v.dataset.v===id; v.classList.toggle("on",on);
+    if(on) R[id](v);
+  });
+}
+function renderAll(){ buildNav(); tiles(); go("today"); }
+
+/* ---------- boot: seed first, then hydrate from Sheet ---------- */
+async function load(){
+  const tabs=["actions","waiting_on","tasks","commitments","projects","ideas","metrics"];
+  const got=await Promise.all(tabs.map(pull));
+  const map={actions:0,waiting:1,commitments:3,projects:4,ideas:5,metrics:6}; // waiting_on→waiting
+  let any=false;
+  if(got[0]){DATA.actions=got[0];any=true;}
+  if(got[1]){DATA.waiting=got[1];any=true;}
+  if(got[3]){DATA.commitments=got[3];any=true;}
+  if(got[4]){DATA.projects=got[4];any=true;}
+  if(got[5]){DATA.ideas=got[5];any=true;}
+  if(got[6]){DATA.metrics=got[6];any=true;}
+  LIVE=any;
+  renderAll();
+}
+renderAll();
+load();
+</script>
+</body>
+</html>
