@@ -146,6 +146,7 @@
   <section class="view" data-v="commitments"></section>
   <section class="view" data-v="funnel"></section>
   <section class="view" data-v="ideas"></section>
+  <section class="view" data-v="health"></section>
   <section class="view" data-v="metrics"></section>
 </div>
 
@@ -164,7 +165,7 @@
    then the page renders the seed data below so it never looks empty.
    ============================================================ */
 const SHEET_ID = "1ExqJR6K-ez41VTr6iwwOCSgX_iYqYatkST79RY39PYk";
-const TAB = { actions:"actions", waiting_on:"waiting_on", tasks:"tasks", commitments:"commitments", projects:"projects", ideas:"ideas", metrics:"metrics" };
+const TAB = { actions:"actions", waiting_on:"waiting_on", tasks:"tasks", commitments:"commitments", projects:"projects", ideas:"ideas", metrics:"metrics", health:"health" };
 // Read each tab by NAME via the gviz CSV endpoint (no gid hunting). Requires the Sheet shared "anyone with link → Viewer".
 const csvUrl = tab => (SHEET_ID && !SHEET_ID.startsWith("REPLACE"))
   ? `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(TAB[tab]||tab)}` : null;
@@ -240,6 +241,18 @@ const SEED = {
     {label:"Tasks completed vs carried", value:"—", note:"rolling daily list health"},
     {label:"Meeting commitments closed", value:"—", note:"of 12 currently open (Otter)"},
     {label:"Projects advanced this week", value:"—", note:"movement through the funnel"}
+  ],
+  /* Client + internal automation health — checked each run (trigger status, site reachability, data freshness). */
+  health: [
+    {automation:"PADCO Daily Parts Scan", platform:"Claude + Google Sheets", status:"healthy", detail:"Trigger enabled; last scan ran on schedule", url:"https://ops.inflectionpointnow.com/padco.html", checked:"2026-07-28"},
+    {automation:"InflectionOS Daily Brief", platform:"Make.com #5156133", status:"healthy", detail:"Scenario on; brief delivered 7:00 AM", url:"https://us2.make.com/5156133/edit", checked:"2026-07-28"},
+    {automation:"Cross-Border Lead Gen Engine", platform:"ZoomInfo + Claude", status:"healthy", detail:"69 leads in the last 7 days", url:"", checked:"2026-07-28"},
+    {automation:"Cross-Border LTL Quote Engine", platform:"Claude + Sheets", status:"down", detail:"Bilingual 'both' option throws an error — needs a fix", url:"", checked:"2026-07-28"},
+    {automation:"OADA Automated Rate Engine", platform:"Claude + Sheets", status:"building", detail:"In staging — probation-tier markup + fixed FX pending", url:"", checked:"2026-07-28"},
+    {automation:"Classic Moving Follow-up", platform:"classicmoving.inflectionpointnow.com", status:"building", detail:"Beta not yet shipped (committed ~2 weeks)", url:"https://classicmoving.inflectionpointnow.com", checked:"2026-07-28"},
+    {automation:"PXC Singapore Follow-up", platform:"Outlook + Claude", status:"healthy", detail:"Running; reported 12x ROI in 6 weeks", url:"", checked:"2026-07-28"},
+    {automation:"AI Personal Assistant", platform:"Claude + Google Sheets", status:"healthy", detail:"Scheduled weekdays 9:00 AM CT; trigger enabled", url:"https://ops.inflectionpointnow.com/assistant.html", checked:"2026-07-28"},
+    {automation:"Automation Library site", platform:"Render static", status:"healthy", detail:"ops.inflectionpointnow.com responding", url:"https://ops.inflectionpointnow.com/", checked:"2026-07-28"}
   ]
 };
 
@@ -409,6 +422,31 @@ function renderIdeas(el){
   el.innerHTML=html;
 }
 
+function renderHealth(el){
+  const rows=DATA.health||[];
+  const bad=rows.filter(r=>["down","degraded"].includes(norm(r.status)));
+  let html=h("Automation health", "Every client &amp; internal automation, checked each run — trigger status, site reachability, and data freshness. Anything not green is flagged so you know what to fix."+seedTag());
+  if(bad.length){
+    html+=`<div class="nudge" style="border-left-color:var(--alert);background:rgba(217,105,79,0.06)"><strong style="color:var(--alert)">Needs attention</strong><ul>`+
+      bad.map(r=>`<li><b>${esc(r.automation)}</b> — ${esc(r.detail)}</li>`).join("")+`</ul></div>`;
+  }
+  html += rows.length ? tbl(
+    ["Automation","Platform","Status","Detail",""],
+    rows.map(r=>{
+      const s=norm(r.status);
+      const cls=s==="healthy"?"b-live":s==="down"?"b-alert":s==="degraded"?"b-progress":"b-planned";
+      const label=s==="building"?"In build":s.charAt(0).toUpperCase()+s.slice(1);
+      return [
+        `<span class="prime">${esc(r.automation)}</span>`,
+        `<span class="muted">${esc(r.platform)}</span>`,
+        `<span class="badge ${cls}"><span class="dot"></span>${label}</span>`,
+        esc(r.detail),
+        r.url?`<a class="view-link" href="${esc(r.url)}" target="_blank" rel="noopener">Open ↗</a>`:`<span class="muted">—</span>`
+      ];
+    })
+  ) : `<div class="empty">No automations registered yet.</div>`;
+  el.innerHTML=html;
+}
 function renderMetrics(el){
   const rows=DATA.metrics;
   let html=h("Metrics", "How the assistant is performing. Tiles populate after the first live run and trend over time."+seedTag());
@@ -431,16 +469,17 @@ function tbl(headers, rows){
 /* ---------- nav + tiles ---------- */
 const VIEWS=[
   ["today","Today"],["approvals","Approvals"],["waiting","Waiting-On"],
-  ["commitments","Commitments"],["funnel","Funnel"],["ideas","Ideas"],["metrics","Metrics"]
+  ["commitments","Commitments"],["funnel","Funnel"],["health","Health"],["ideas","Ideas"],["metrics","Metrics"]
 ];
-const R={today:renderToday,approvals:renderApprovals,waiting:renderWaiting,commitments:renderCommitments,funnel:renderFunnel,ideas:renderIdeas,metrics:renderMetrics};
+const R={today:renderToday,approvals:renderApprovals,waiting:renderWaiting,commitments:renderCommitments,funnel:renderFunnel,health:renderHealth,ideas:renderIdeas,metrics:renderMetrics};
 
 function counts(){
   const openC=DATA.commitments.filter(c=>norm(c.status)==="open").length;
   return {
     approvals:DATA.approvals.length,
     waiting:DATA.waiting.filter(w=>norm(w.status)!=="done").length,
-    commitments:openC
+    commitments:openC,
+    health:(DATA.health||[]).filter(r=>["down","degraded"].includes(norm(r.status))).length
   };
 }
 function buildNav(){
@@ -450,6 +489,7 @@ function buildNav(){
     if(id==="approvals"&&c.approvals) pill=`<span class="pill">${c.approvals}</span>`;
     if(id==="waiting"&&c.waiting) pill=`<span class="pill">${c.waiting}</span>`;
     if(id==="commitments"&&c.commitments) pill=`<span class="pill alert">${c.commitments}</span>`;
+    if(id==="health"&&c.health) pill=`<span class="pill alert">${c.health}</span>`;
     return `<button data-go="${id}" class="${i===0?"on":""}">${label}${pill}</button>`;
   }).join("");
   document.querySelectorAll("#nav button").forEach(b=>b.addEventListener("click",()=>go(b.dataset.go)));
@@ -473,9 +513,8 @@ function renderAll(){ buildNav(); tiles(); go("today"); }
 
 /* ---------- boot: seed first, then hydrate from Sheet ---------- */
 async function load(){
-  const tabs=["actions","waiting_on","tasks","commitments","projects","ideas","metrics"];
+  const tabs=["actions","waiting_on","tasks","commitments","projects","ideas","metrics","health"];
   const got=await Promise.all(tabs.map(pull));
-  const map={actions:0,waiting:1,commitments:3,projects:4,ideas:5,metrics:6}; // waiting_on→waiting
   let any=false;
   if(got[0]){DATA.actions=got[0];any=true;}
   if(got[1]){DATA.waiting=got[1];any=true;}
@@ -483,6 +522,7 @@ async function load(){
   if(got[4]){DATA.projects=got[4];any=true;}
   if(got[5]){DATA.ideas=got[5];any=true;}
   if(got[6]){DATA.metrics=got[6];any=true;}
+  if(got[7]){DATA.health=got[7];any=true;}
   LIVE=any;
   renderAll();
 }
