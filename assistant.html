@@ -118,7 +118,7 @@
 <header>
   <div class="logo-wrap"><img src="logo.png" alt="InflectionPoint Consulting" /></div>
   <div class="header-actions">
-    <button class="runbtn" id="runNow" title="Run the daily scan now"><svg viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><polygon points="2,1 11,6 2,11"/></svg> Run now</button>
+    <button class="runbtn" id="runNow" title="Copy the run command — paste it to Claude to fire the full scan"><svg viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><polygon points="2,1 11,6 2,11"/></svg> Run now</button>
     <a class="back" href="/">← Automation Library</a>
   </div>
 </header>
@@ -487,23 +487,17 @@ async function load(){
   renderAll();
 }
 /* ---------- Run now (manual trigger) ----------
-   A static page can't drive your browser or hold a secret, so it can't fire the
-   scan directly. Paste a Make.com (or other) webhook that fires the daily run
-   into RUN_WEBHOOK_URL and this button POSTs to it for true one-click runs.
-   Until then it points you to the reliable path (ask Claude to run it). */
-const RUN_WEBHOOK_URL = "";
+   The scan runs inside Bill's logged-in Chrome (Gmail ×4, Otter, WhatsApp), so it's
+   launched by asking Claude — that fires the full scan instantly. This button copies
+   the run command to the clipboard for a one-click hand-off. */
+const RUN_CMD = "Run my AI Personal Assistant now";
 function showToast(msg, ms){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'), ms||4500); }
-document.getElementById('runNow').addEventListener('click', async (e)=>{
-  const b=e.currentTarget;
-  if(RUN_WEBHOOK_URL){
-    b.disabled=true; showToast('Requesting a run…',2500);
-    try{
-      await fetch(RUN_WEBHOOK_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({source:'assistant-dashboard',requested_at:new Date().toISOString()})});
-      showToast('Run requested — your brief will arrive shortly. Keep your Mac awake with the Claude app open.',6000);
-    }catch(err){ showToast('Couldn’t reach the run webhook. Try again, or ask Claude to run it.',6000); }
-    setTimeout(()=>{ b.disabled=false; }, 4000);
-  } else {
-    showToast('Manual run isn’t wired to a webhook yet. In the meantime, open Claude and say “run my assistant now.”',7000);
+document.getElementById('runNow').addEventListener('click', async ()=>{
+  try{
+    await navigator.clipboard.writeText(RUN_CMD);
+    showToast('Copied “'+RUN_CMD+'”. Paste it to Claude (or just say it) to fire the full scan — email ×4, Otter, WhatsApp, funnel. Keep your Mac awake with the Claude app open.',7000);
+  }catch(e){
+    showToast('To run on demand, open Claude and say “'+RUN_CMD+'.” It fires the full scan instantly. Keep your Mac awake with the Claude app open.',7000);
   }
 });
 
