@@ -67,7 +67,7 @@
     .b-gold { background:rgba(184,150,62,0.12); color:var(--gold-light); border-color:rgba(184,150,62,0.25); }
     .acct { font-size:9px; letter-spacing:0.1em; text-transform:uppercase; padding:3px 7px; border-radius:2px; border:1px solid transparent; white-space:nowrap; }
     .acct-ip { background:rgba(184,150,62,0.12); color:var(--gold-light); border-color:rgba(184,150,62,0.25); }
-    .acct-thelsa { background:rgba(90,127,168,0.12); color:#8fb2de; border-color:rgba(90,127,168,0.25); }
+    .acct-lsa { background:rgba(90,127,168,0.12); color:#8fb2de; border-color:rgba(90,127,168,0.25); }
     .acct-kubox { background:rgba(76,175,125,0.12); color:var(--live); border-color:rgba(76,175,125,0.25); }
     .acct-drums { background:rgba(160,120,190,0.14); color:#c4a2dc; border-color:rgba(160,120,190,0.3); }
     .acct-whatsapp { background:rgba(76,175,125,0.12); color:var(--live); border-color:rgba(76,175,125,0.25); }
@@ -124,7 +124,7 @@
 </header>
 
 <section class="hero">
-  <div class="hero-eyebrow">AI PERSONAL ASSISTANT · AUTO-ASSISTANT</div>
+  <div class="hero-eyebrow">AI PERSONAL ASSISTANT · DF-AUTO-ASSISTANT</div>
   <h1 class="hero-title">Your daily <em>command center.</em></h1>
   <p class="hero-description">A weekday scan of four inboxes, Otter.ai meetings, and every Claude project — drafting replies, chasing follow-ups, surfacing commitments, and keeping each project moving. Toggle any item's <b>status</b> and leave a <b>comment</b> right here — your notes save to the Sheet and feed the next run.</p>
 </section>
@@ -141,6 +141,7 @@
 
 <div class="wrap">
   <section class="view on" data-v="today"></section>
+  <section class="view" data-v="tasks"></section>
   <section class="view" data-v="approvals"></section>
   <section class="view" data-v="waiting"></section>
   <section class="view" data-v="commitments"></section>
@@ -166,7 +167,7 @@
    ============================================================ */
 const SHEET_ID = "1ExqJR6K-ez41VTr6iwwOCSgX_iYqYatkST79RY39PYk";
 const API = "https://script.google.com/macros/s/AKfycbzF0U5Fck7vpa1U7LyqegN4b_CSM4ak4cldkL0UFmxUfeVtJ8i994AXCEfzuYoRWWk/exec";
-const TAB = { actions:"actions", waiting_on:"waiting_on", commitments:"commitments", scheduled:"scheduled", projects:"projects", ideas:"ideas", metrics:"metrics", health:"health" };
+const TAB = { tasks:"tasks", actions:"actions", waiting_on:"waiting_on", commitments:"commitments", scheduled:"scheduled", projects:"projects", ideas:"ideas", metrics:"metrics", health:"health" };
 const csvUrl = tab => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(TAB[tab]||tab)}`;
 const TODAY = "2026-07-28";
 
@@ -188,7 +189,7 @@ function showToast(msg, ms){ const t=document.getElementById('toast'); t.textCon
 /* ---- identity chips ---- */
 const ACCTS = {
   "bill.brill@inflectionpointnow.com":{short:"InflectionPoint",cls:"acct-ip"},
-  "bbrill@thelsa.com":{short:"Thelsa",cls:"acct-thelsa"},
+  "bbrill@thelsa.com":{short:"LSA",cls:"acct-lsa"},
   "billbrill@thekubox.com":{short:"Kubox",cls:"acct-kubox"},
   "info@panamericandrums.com":{short:"Pan Am Drums",cls:"acct-drums"},
   "whatsapp":{short:"WhatsApp",cls:"acct-whatsapp"}
@@ -207,15 +208,32 @@ function commentBox(tab, id, comment){
 
 /* ---- SEED (rendered until the live Sheet loads) — real Otter commitments + sample email items ---- */
 const SEED = {
+  tasks:[
+    {id:"t1",task:"Get TMS Relo automation project started (check email from Pilar)",category:"Client Projects",priority:"high",status:"Action Needed",comment:""},
+    {id:"t2",task:"Get Lauren's project started — import data and build the dashboard",category:"Client Projects",priority:"high",status:"Action Needed",comment:""},
+    {id:"t14",task:"Begin automated FAIM audit project",category:"Client Projects",priority:"med",status:"Action Needed",comment:""},
+    {id:"t15",task:"Import API info into the Thelsa automated file-audit project and begin coding",category:"Thelsa",priority:"high",status:"Action Needed",comment:""},
+    {id:"t12",task:"Build automation summary for Thelsa + status table for each",category:"Thelsa",priority:"med",status:"Action Needed",comment:""},
+    {id:"t13",task:"Follow up with Martha at Thelsa re: MATT moving meeting",category:"Thelsa",priority:"med",status:"Action Needed",comment:""},
+    {id:"t6",task:"Send NDA + brief product-automation summary to Paul",category:"Follow-ups",priority:"high",status:"Action Needed",comment:""},
+    {id:"t7",task:"Chase Carl for TFM items",category:"Follow-ups",priority:"high",status:"Action Needed",comment:""},
+    {id:"t8",task:"Follow up with Garfield on FAQ status",category:"Follow-ups",priority:"med",status:"Action Needed",comment:""},
+    {id:"t3",task:"Book Airbnb for Monterrey trip",category:"Trip · Monterrey",priority:"high",status:"Action Needed",comment:""},
+    {id:"t9",task:"Build itinerary for Monterrey trip",category:"Trip · Monterrey",priority:"med",status:"Action Needed",comment:""},
+    {id:"t10",task:"Build gameplan for CDMX",category:"Trip · CDMX",priority:"med",status:"Action Needed",comment:""},
+    {id:"t11",task:"Build intro/presentation deck for CDMX",category:"Trip · CDMX",priority:"high",status:"Action Needed",comment:""},
+    {id:"t4",task:"Find gym for Monterrey & CDMX",category:"Trip",priority:"low",status:"Action Needed",comment:""},
+    {id:"t5",task:"Create packing list for Mexico trip",category:"Trip",priority:"low",status:"Action Needed",comment:""}
+  ],
   actions:[
     {id:"a1",account:"bill.brill@inflectionpointnow.com",from:"Carl Häggström",subject:"Matt destination-rate automation — data fields",project:"PXC Follow-up Automation",priority:"high",suggested_action:"Reply with the specific data fields + examples needed",status:"Action Needed",comment:"",url:"#"},
-    {id:"a2",account:"billbrill@thekubox.com",from:"Garfield",subject:"Kubox student-relocation white paper — FAQ answers",project:"Kubox India",priority:"med",suggested_action:"Provide detailed FAQ answers to the internal team",status:"Action Needed",comment:"",url:"#"},
+    {id:"a2",account:"billbrill@thekubox.com",from:"Garfield",subject:"Q Box student-relocation white paper — FAQ answers",project:"Q Box India",priority:"med",suggested_action:"Provide detailed FAQ answers to the internal team",status:"Action Needed",comment:"",url:"#"},
     {id:"a3",account:"bbrill@thelsa.com",from:"Lupita Gonzalez",subject:"OADA rate engine — standard quote exclusions",project:"OADA Rate Engine",priority:"med",suggested_action:"Confirm exclusions list added before remarks section",status:"Action Needed",comment:"",url:"#"}
   ],
   approvals:[
     {account:"bbrill@thelsa.com",type:"Reply draft",subject:"Otso — revised Classic Moving proposal & agreement",who:"Otso Massala",note:"Draft ready: revised plan + simple agreement for signature",url:"#"},
     {account:"bill.brill@inflectionpointnow.com",type:"Follow-up #1",subject:"Rick — ZoomInfo API key screen-share",who:"Rick",note:"48h elapsed, no reply — nudge queued",url:"#"},
-    {account:"billbrill@thekubox.com",type:"Follow-up #1",subject:"Trans Impact — intro to John Chris @ Kubox",who:"John",note:"Awaiting deck + one-pager; gentle nudge queued",url:"#"}
+    {account:"billbrill@thekubox.com",type:"Follow-up #1",subject:"Trans Impact — intro to John Chris @ Q Box",who:"John",note:"Awaiting deck + one-pager; gentle nudge queued",url:"#"}
   ],
   waiting:[
     {id:"w1",account:"bill.brill@inflectionpointnow.com",recipient:"Carl Häggström",subject:"PXC data for automation proposal",sent:"2026-07-24",agreed_due:"2026-07-31",followups:"0",next:"2026-07-31 (agreed timeline)",status:"Action Needed",comment:""},
@@ -226,20 +244,20 @@ const SEED = {
     {id:"c1",commitment:"Finish DKIM registration and confirm it is live in Google Admin",meeting:"Email Campaign Optimization Meeting",date:"2026-07-27",due:"2026-07-29",status:"Action Needed",comment:"",url:"https://otter.ai/u/iXs6xSTZpPuUy1W7bs7-p6lhAfE"},
     {id:"c5",commitment:"Send a one-page summary of the proposed automation approach",meeting:"AI Automation Presentation",date:"2026-07-27",due:"",status:"Action Needed",comment:"",url:"https://otter.ai/u/ygzW-ovVUfE6ZeJ4Tt7c0WAtz-8"},
     {id:"c10",commitment:"Deliver working Classic Moving follow-up automation beta (~2 weeks)",meeting:"Otso Bill Carl automation talks",date:"2026-07-12",due:"2026-07-26",status:"Action Needed",comment:"",url:"https://otter.ai/u/HJyylwxb8-WkaVxlZd7AfFdPNK8"},
-    {id:"c12",commitment:"Provide detailed answers to the Kubox FAQ for the white paper",meeting:"Q Box Market Strategy Meeting",date:"2026-06-18",due:"",status:"Action Needed",comment:"",url:"https://otter.ai/u/RibPt4dfGc4sx5fU0RmCub3aLkA"}
+    {id:"c12",commitment:"Provide detailed answers to the Q Box FAQ for the white paper",meeting:"Q Box Market Strategy Meeting",date:"2026-06-18",due:"",status:"Action Needed",comment:"",url:"https://otter.ai/u/RibPt4dfGc4sx5fU0RmCub3aLkA"}
   ],
   scheduled:[],
   projects:[
     {project:"PADCO Parts Scan",stage:"Production",summary:"Weekday Facebook Marketplace scan → Sheet → email.",last_activity:"2026-07-27",next_action:"Monitor daily finds; no action needed",stalled:"no"},
     {project:"Cross-Border Lead Gen Engine",stage:"Production",summary:"ZoomInfo-fed daily scan → draft outreach. 69 leads in a week.",last_activity:"2026-07-27",next_action:"Route drafts to Armando; connect ZoomInfo API via Rick",stalled:"no"},
-    {project:"OADA Automated Rate Engine",stage:"Development & Staging",summary:"Transfer-pricing rate engine for Thelsa agents.",last_activity:"2026-07-14",next_action:"Add probation-tier markup + fixed FX; surface assumptions",stalled:"no"},
+    {project:"OADA Automated Rate Engine",stage:"Development & Staging",summary:"Transfer-pricing rate engine for Telsa agents.",last_activity:"2026-07-14",next_action:"Add probation-tier markup + fixed FX; surface assumptions",stalled:"no"},
     {project:"Classic Moving Follow-up Automation",stage:"Development & Staging",summary:"Non-MAT agent rate follow-ups at classicmoving.inflectionpointnow.com.",last_activity:"2026-07-12",next_action:"Ship beta (committed ~2 wks); compile inputs from Otso",stalled:"yes"},
-    {project:"Kubox Student-Relocation",stage:"Architecture & Planning",summary:"White paper + operating model for India→AU/CA/US student moves.",last_activity:"2026-06-18",next_action:"Answer FAQ so team can finalize white paper",stalled:"yes"},
+    {project:"Q Box Student-Relocation",stage:"Architecture & Planning",summary:"White paper + operating model for India→AU/CA/US student moves.",last_activity:"2026-06-18",next_action:"Answer FAQ so team can finalize white paper",stalled:"yes"},
     {project:"AI Personal Assistant",stage:"Architecture & Planning",summary:"Daily email/Otter/project scan → drafts, follow-ups, commitments, funnel.",last_activity:"2026-07-28",next_action:"Live — status + comments now editable",stalled:"no"}
   ],
   ideas:[
     {idea:"Route leads into separate follow-up tracks by engagement (commercial vs supply chain)",source:"otter",logged:"2026-07-13",status:"active",notes:"Tailored cadence per account type"},
-    {idea:"Affiliate / referral link for Trans Impact ↔ Kubox cross-sell",source:"otter",logged:"2026-06-30",status:"parking",notes:"qbox.com/transimpact commissionable URL"}
+    {idea:"Affiliate / referral link for Trans Impact ↔ Q Box cross-sell",source:"otter",logged:"2026-06-30",status:"parking",notes:"qbox.com/transimpact commissionable URL"}
   ],
   metrics:[
     {label:"Emails triaged / day",value:"—",note:"populates after first live run"},
@@ -294,6 +312,23 @@ function actionRows(items, tab){
     statusToggle(tab, a.id, a.status),
     commentBox(tab, a.id, a.comment)
   ]}));
+}
+function renderTasks(el){
+  const rows=DATA.tasks||[];
+  let html=h("Tasks", "Your working task list — client projects, Thelsa, trip prep, and follow-ups. Flip Status as you go; comments save to the Sheet and can schedule follow-ups."+seedTag());
+  const cats=[]; rows.forEach(r=>{const c=r.category||"Other"; if(!cats.includes(c))cats.push(c);});
+  if(!rows.length){ el.innerHTML=html+`<div class="empty">No tasks yet.</div>`; return; }
+  cats.forEach(cat=>{
+    const items=rows.filter(r=>(r.category||"Other")===cat).sort(byPri);
+    html+=`<div class="group-label">${esc(cat)}</div>`;
+    html+=tbl(["Task","Priority","Status","Comment"], items.map(t=>({_cls:TAKEN(t.status)?"done":"", cells:[
+      `<span class="prime">${esc(t.task)}</span>`,
+      t.priority?priChip(t.priority):"",
+      statusToggle("tasks",t.id,t.status),
+      commentBox("tasks",t.id,t.comment)
+    ]})));
+  });
+  el.innerHTML=html;
 }
 function renderToday(el){
   const acts=DATA.actions, open=DATA.commitments.filter(c=>!TAKEN(c.status));
@@ -398,10 +433,11 @@ function renderMetrics(el){
 }
 
 /* ---- nav / counts / boot ---- */
-const VIEWS=[["today","Today"],["approvals","Approvals"],["waiting","Waiting-On"],["commitments","Commitments"],["upcoming","Upcoming"],["funnel","Funnel"],["health","Health"],["ideas","Ideas"],["metrics","Metrics"]];
-const R={today:renderToday,approvals:renderApprovals,waiting:renderWaiting,commitments:renderCommitments,upcoming:renderUpcoming,funnel:renderFunnel,health:renderHealth,ideas:renderIdeas,metrics:renderMetrics};
+const VIEWS=[["today","Today"],["tasks","Tasks"],["approvals","Approvals"],["waiting","Waiting-On"],["commitments","Commitments"],["upcoming","Upcoming"],["funnel","Funnel"],["health","Health"],["ideas","Ideas"],["metrics","Metrics"]];
+const R={today:renderToday,tasks:renderTasks,approvals:renderApprovals,waiting:renderWaiting,commitments:renderCommitments,upcoming:renderUpcoming,funnel:renderFunnel,health:renderHealth,ideas:renderIdeas,metrics:renderMetrics};
 function counts(){
   return {
+    tasks:(DATA.tasks||[]).filter(t=>!TAKEN(t.status)).length,
     approvals:DATA.approvals.length,
     waiting:DATA.waiting.filter(w=>!TAKEN(w.status)).length,
     commitments:DATA.commitments.filter(c=>!TAKEN(c.status)).length,
@@ -413,6 +449,7 @@ function buildNav(){
   const c=counts();
   document.getElementById("nav").innerHTML=VIEWS.map(([id,label],i)=>{
     let pill="";
+    if(id==="tasks"&&c.tasks) pill=`<span class="pill">${c.tasks}</span>`;
     if(id==="approvals"&&c.approvals) pill=`<span class="pill">${c.approvals}</span>`;
     if(id==="waiting"&&c.waiting) pill=`<span class="pill">${c.waiting}</span>`;
     if(id==="commitments"&&c.commitments) pill=`<span class="pill alert">${c.commitments}</span>`;
@@ -473,9 +510,10 @@ document.getElementById("runNow").addEventListener("click", async ()=>{
 
 /* ---- boot: seed, then hydrate from the Sheet ---- */
 async function load(){
-  const tabs=["actions","waiting_on","commitments","scheduled","projects","ideas","metrics","health"];
+  const tabs=["actions","waiting_on","commitments","scheduled","projects","ideas","metrics","health","tasks"];
   const g=await Promise.all(tabs.map(pull));
   let any=false;
+  if(g[8]){DATA.tasks=g[8];any=true;}
   if(g[0]){DATA.actions=g[0];any=true;}
   if(g[1]){DATA.waiting=g[1];any=true;}
   if(g[2]){DATA.commitments=g[2];any=true;}
