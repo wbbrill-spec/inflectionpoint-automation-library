@@ -124,7 +124,7 @@
 </header>
 
 <section class="hero">
-  <div class="hero-eyebrow">AI PERSONAL ASSISTANT · DF-AUTO-ASSISTANT</div>
+  <div class="hero-eyebrow">AI PERSONAL ASSISTANT · AUTO-ASSISTANT</div>
   <h1 class="hero-title">Your daily <em>command center.</em></h1>
   <p class="hero-description">A weekday scan of four inboxes, Otter.ai meetings, and every Claude project — drafting replies, chasing follow-ups, surfacing commitments, and keeping each project moving. Toggle any item's <b>status</b> and leave a <b>comment</b> right here — your notes save to the Sheet and feed the next run.</p>
 </section>
@@ -169,7 +169,7 @@ const SHEET_ID = "1ExqJR6K-ez41VTr6iwwOCSgX_iYqYatkST79RY39PYk";
 const API = "https://script.google.com/macros/s/AKfycbzF0U5Fck7vpa1U7LyqegN4b_CSM4ak4cldkL0UFmxUfeVtJ8i994AXCEfzuYoRWWk/exec";
 const TAB = { tasks:"tasks", actions:"actions", waiting_on:"waiting_on", commitments:"commitments", scheduled:"scheduled", projects:"projects", ideas:"ideas", metrics:"metrics", health:"health" };
 const csvUrl = tab => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(TAB[tab]||tab)}`;
-const TODAY = "2026-07-28";
+const TODAY = new Date().toLocaleDateString("en-CA",{timeZone:"America/Chicago"}); // auto-advances (Central time), YYYY-MM-DD
 
 function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
 function norm(s){return String(s||"").trim().toLowerCase();}
