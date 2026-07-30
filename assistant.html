@@ -336,6 +336,23 @@ function renderToday(el){
   let html=h("Today", "Your prioritized queue for "+TODAY+". Flip Status when you act, and drop a comment (it saves to the Sheet and the next run reads it)."+seedTag());
   html+=`<div class="group-label">Priority actions</div>`;
   html+= acts.length ? tbl(["","Subject","Suggested action","Priority","Status","Comment"], actionRows(acts.slice().sort(byPri),"actions")) : `<div class="empty">All caught up — no open actions.${doneCount?` <span class="muted">(${doneCount} completed, hidden)</span>`:""}</div>`;
+  // --- your to-do list (open tasks), grouped by category ---
+  const openTasks=(DATA.tasks||[]).filter(t=>!TAKEN(t.status));
+  const doneTasks=(DATA.tasks||[]).length-openTasks.length;
+  html+=`<div class="group-label">Your to-do list${doneTasks?` <span class="muted" style="letter-spacing:0;text-transform:none">(${doneTasks} done, on Tasks tab)</span>`:""}</div>`;
+  if(openTasks.length){
+    const cats=[]; openTasks.forEach(t=>{const c=t.category||"Other"; if(!cats.includes(c))cats.push(c);});
+    cats.forEach(cat=>{
+      const items=openTasks.filter(t=>(t.category||"Other")===cat).sort(byPri);
+      html+=`<div style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-light);margin:16px 0 6px">${esc(cat)}</div>`;
+      html+=tbl(["Task","Priority","Status","Comment"], items.map(t=>({cells:[
+        `<span class="prime">${esc(t.task)}</span>`,
+        t.priority?priChip(t.priority):"",
+        statusToggle("tasks",t.id,t.status),
+        commentBox("tasks",t.id,t.comment)
+      ]})));
+    });
+  } else { html+=`<div class="empty">No open to-dos 🎉</div>`; }
   html+=`<div class="group-label">Meeting commitments needing attention</div>`;
   html+= open.length ? tbl(["Commitment","Meeting","Due","Status","Comment"], open.slice(0,6).map(c=>({cells:[
     `<span class="prime">${esc(c.commitment)}</span>`,
