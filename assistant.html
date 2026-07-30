@@ -331,10 +331,11 @@ function renderTasks(el){
   el.innerHTML=html;
 }
 function renderToday(el){
-  const acts=DATA.actions, open=DATA.commitments.filter(c=>!TAKEN(c.status));
+  const acts=DATA.actions.filter(a=>!TAKEN(a.status)), open=DATA.commitments.filter(c=>!TAKEN(c.status));
+  const doneCount=DATA.actions.length-acts.length;
   let html=h("Today", "Your prioritized queue for "+TODAY+". Flip Status when you act, and drop a comment (it saves to the Sheet and the next run reads it)."+seedTag());
   html+=`<div class="group-label">Priority actions</div>`;
-  html+= acts.length ? tbl(["","Subject","Suggested action","Priority","Status","Comment"], actionRows(acts.slice().sort(byPri),"actions")) : `<div class="empty">Nothing queued.</div>`;
+  html+= acts.length ? tbl(["","Subject","Suggested action","Priority","Status","Comment"], actionRows(acts.slice().sort(byPri),"actions")) : `<div class="empty">All caught up — no open actions.${doneCount?` <span class="muted">(${doneCount} completed, hidden)</span>`:""}</div>`;
   html+=`<div class="group-label">Meeting commitments needing attention</div>`;
   html+= open.length ? tbl(["Commitment","Meeting","Due","Status","Comment"], open.slice(0,6).map(c=>({cells:[
     `<span class="prime">${esc(c.commitment)}</span>`,
