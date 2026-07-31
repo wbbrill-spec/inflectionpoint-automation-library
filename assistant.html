@@ -195,7 +195,7 @@ const ACCTS = {
   "whatsapp":{short:"WhatsApp",cls:"acct-whatsapp"}
 };
 function acctChip(a){ const m=ACCTS[a]||{short:(a||"—"),cls:"acct-ip"}; return `<span class="acct ${m.cls}">${esc(m.short)}</span>`; }
-function priChip(p){const n=norm(p);const c=n==="high"?"pri-high":(n==="med"||n==="medium")?"pri-med":"pri-low";return `<span class="pri ${c}">${esc(p||"low")}</span>`;}
+function priChip(p){const n=norm(p);const c=(n==="high"||n==="urgent")?"pri-high":(n==="med"||n==="medium")?"pri-med":"pri-low";return `<span class="pri ${c}">${esc(p||"low")}</span>`;}
 
 /* ---- editable controls ---- */
 function statusToggle(tab, id, status){
@@ -331,9 +331,15 @@ function renderTasks(el){
   el.innerHTML=html;
 }
 function renderToday(el){
-  const acts=DATA.actions.filter(a=>!TAKEN(a.status)), open=DATA.commitments.filter(c=>!TAKEN(c.status));
-  const doneCount=DATA.actions.length-acts.length;
+  const allOpen=DATA.actions.filter(a=>!TAKEN(a.status)), open=DATA.commitments.filter(c=>!TAKEN(c.status));
+  const isUrgent=a=>norm(a.priority)==="urgent"||/^\s*(?:🔴\s*)?urgent\b/i.test(a.subject||"");
+  const urgent=allOpen.filter(isUrgent), acts=allOpen.filter(a=>!isUrgent(a));
+  const doneCount=DATA.actions.length-allOpen.length;
   let html=h("Today", "Your prioritized queue for "+TODAY+". Flip Status when you act, and drop a comment (it saves to the Sheet and the next run reads it)."+seedTag());
+  if(urgent.length){
+    html+=`<div class="group-label" style="color:var(--alert)">🔴 Urgent — do this first</div>`;
+    html+=tbl(["","Subject","Suggested action","Priority","Status","Comment"], actionRows(urgent.slice().sort(byPri),"actions"));
+  }
   html+=`<div class="group-label">Priority actions</div>`;
   html+= acts.length ? tbl(["","Subject","Suggested action","Priority","Status","Comment"], actionRows(acts.slice().sort(byPri),"actions")) : `<div class="empty">All caught up — no open actions.${doneCount?` <span class="muted">(${doneCount} completed, hidden)</span>`:""}</div>`;
   // --- your to-do list (open tasks), grouped by category ---
@@ -363,7 +369,7 @@ function renderToday(el){
   ]}))) : `<div class="empty">No open commitments.</div>`;
   el.innerHTML=html;
 }
-function byPri(a,b){const r={high:0,med:1,medium:1,low:2};return (r[norm(a.priority)]??3)-(r[norm(b.priority)]??3);}
+function byPri(a,b){const r={urgent:-1,high:0,med:1,medium:1,low:2};return (r[norm(a.priority)]??3)-(r[norm(b.priority)]??3);}
 
 function renderApprovals(el){
   const rows=DATA.approvals;
