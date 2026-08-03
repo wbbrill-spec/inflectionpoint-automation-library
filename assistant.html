@@ -67,7 +67,7 @@
     .b-gold { background:rgba(184,150,62,0.12); color:var(--gold-light); border-color:rgba(184,150,62,0.25); }
     .acct { font-size:9px; letter-spacing:0.1em; text-transform:uppercase; padding:3px 7px; border-radius:2px; border:1px solid transparent; white-space:nowrap; }
     .acct-ip { background:rgba(184,150,62,0.12); color:var(--gold-light); border-color:rgba(184,150,62,0.25); }
-    .acct-lsa { background:rgba(90,127,168,0.12); color:#8fb2de; border-color:rgba(90,127,168,0.25); }
+    .acct-thelsa { background:rgba(90,127,168,0.12); color:#8fb2de; border-color:rgba(90,127,168,0.25); }
     .acct-kubox { background:rgba(76,175,125,0.12); color:var(--live); border-color:rgba(76,175,125,0.25); }
     .acct-drums { background:rgba(160,120,190,0.14); color:#c4a2dc; border-color:rgba(160,120,190,0.3); }
     .acct-whatsapp { background:rgba(76,175,125,0.12); color:var(--live); border-color:rgba(76,175,125,0.25); }
@@ -189,7 +189,7 @@ function showToast(msg, ms){ const t=document.getElementById('toast'); t.textCon
 /* ---- identity chips ---- */
 const ACCTS = {
   "bill.brill@inflectionpointnow.com":{short:"InflectionPoint",cls:"acct-ip"},
-  "bbrill@thelsa.com":{short:"LSA",cls:"acct-lsa"},
+  "bbrill@thelsa.com":{short:"Thelsa",cls:"acct-thelsa"},
   "billbrill@thekubox.com":{short:"Kubox",cls:"acct-kubox"},
   "info@panamericandrums.com":{short:"Pan Am Drums",cls:"acct-drums"},
   "whatsapp":{short:"WhatsApp",cls:"acct-whatsapp"}
@@ -250,7 +250,7 @@ const SEED = {
   projects:[
     {project:"PADCO Parts Scan",stage:"Production",summary:"Weekday Facebook Marketplace scan → Sheet → email.",last_activity:"2026-07-27",next_action:"Monitor daily finds; no action needed",stalled:"no"},
     {project:"Cross-Border Lead Gen Engine",stage:"Production",summary:"ZoomInfo-fed daily scan → draft outreach. 69 leads in a week.",last_activity:"2026-07-27",next_action:"Route drafts to Armando; connect ZoomInfo API via Rick",stalled:"no"},
-    {project:"OADA Automated Rate Engine",stage:"Development & Staging",summary:"Transfer-pricing rate engine for Telsa agents.",last_activity:"2026-07-14",next_action:"Add probation-tier markup + fixed FX; surface assumptions",stalled:"no"},
+    {project:"OADA Automated Rate Engine",stage:"Development & Staging",summary:"Transfer-pricing rate engine for Thelsa agents.",last_activity:"2026-07-14",next_action:"Add probation-tier markup + fixed FX; surface assumptions",stalled:"no"},
     {project:"Classic Moving Follow-up Automation",stage:"Development & Staging",summary:"Non-MAT agent rate follow-ups at classicmoving.inflectionpointnow.com.",last_activity:"2026-07-12",next_action:"Ship beta (committed ~2 wks); compile inputs from Otso",stalled:"yes"},
     {project:"Q Box Student-Relocation",stage:"Architecture & Planning",summary:"White paper + operating model for India→AU/CA/US student moves.",last_activity:"2026-06-18",next_action:"Answer FAQ so team can finalize white paper",stalled:"yes"},
     {project:"AI Personal Assistant",stage:"Architecture & Planning",summary:"Daily email/Otter/project scan → drafts, follow-ups, commitments, funnel.",last_activity:"2026-07-28",next_action:"Live — status + comments now editable",stalled:"no"}
