@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>JSJ Lead Gen Engine</title>
+</head>
+<body>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Public+Sans:wght@400;500;600;700&display=swap">
+<style>
+  :root{
+    --ground:#F7F5F0; --surface:#FFFFFF; --surface2:#F0EDE5;
+    --ink:#20242B; --ink2:#5A5F6A; --ink3:#8A8F99;
+    --line:#E3DFD4; --line2:#D2CDBF;
+    --accent:#8C6A14; --accent-ink:#6E5310; --accent-soft:#F3EAD2;
+    --navy:#24374E;
+    --good:#2E7D46; --good-soft:#E3F0E7;
+    --warn:#A85B10; --warn-soft:#F7EAD9;
+    --crit:#B03A2E; --crit-soft:#F8E5E2;
+    --hold:#5A5F6A; --hold-soft:#ECEBE6;
+    --shadow:0 1px 2px rgba(32,36,43,.05),0 4px 14px rgba(32,36,43,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#15181D; --surface:#1D2127; --surface2:#232830;
+      --ink:#E8E6E0; --ink2:#A9ADB6; --ink3:#7C818B;
+      --line:#2E333C; --line2:#3A4049;
+      --accent:#D3A736; --accent-ink:#E0BA55; --accent-soft:#33301F;
+      --navy:#9FB4CC;
+      --good:#5FAE78; --good-soft:#1F2E24;
+      --warn:#D08A45; --warn-soft:#33281B;
+      --crit:#D4685C; --crit-soft:#362020;
+      --hold:#A9ADB6; --hold-soft:#262A31;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 14px rgba(0,0,0,.25);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#15181D; --surface:#1D2127; --surface2:#232830;
+    --ink:#E8E6E0; --ink2:#A9ADB6; --ink3:#7C818B;
+    --line:#2E333C; --line2:#3A4049;
+    --accent:#D3A736; --accent-ink:#E0BA55; --accent-soft:#33301F;
+    --navy:#9FB4CC;
+    --good:#5FAE78; --good-soft:#1F2E24;
+    --warn:#D08A45; --warn-soft:#33281B;
+    --crit:#D4685C; --crit-soft:#362020;
+    --hold:#A9ADB6; --hold-soft:#262A31;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 14px rgba(0,0,0,.25);
+  }
+  *{box-sizing:border-box}
+  body{background:var(--ground);color:var(--ink);font:15px/1.55 "Public Sans",system-ui,-apple-system,sans-serif;margin:0;padding:0 0 48px}
+  a{color:var(--accent-ink);text-decoration:none}
+  a:hover{text-decoration:underline}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  header{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+  .hwrap{max-width:1120px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .mark{display:flex;flex-direction:column}
+  .mark b{font-family:Archivo,system-ui,sans-serif;font-weight:800;font-size:17px;letter-spacing:.01em}
+  .mark span{font-size:11.5px;color:var(--ink2);letter-spacing:.08em;text-transform:uppercase}
+  .hstatus{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink2)}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--good);box-shadow:0 0 0 3px var(--good-soft)}
+
+  main{max-width:1120px;margin:0 auto;padding:28px 24px}
+  h1{font-family:Archivo,system-ui,sans-serif;font-weight:700;font-size:24px;margin:0 0 4px;text-wrap:balance}
+  .sub{color:var(--ink2);margin:0 0 24px;max-width:70ch}
+  h2{font-family:Archivo,system-ui,sans-serif;font-weight:700;font-size:16px;margin:34px 0 12px;display:flex;align-items:baseline;gap:10px}
+  h2 small{font-weight:500;font-size:12.5px;color:var(--ink3)}
+
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+  .tile{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;box-shadow:var(--shadow)}
+  .tile .k{font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink2);font-weight:600}
+  .tile .v{font-family:Archivo,system-ui,sans-serif;font-weight:800;font-size:30px;line-height:1.15;font-variant-numeric:tabular-nums;margin-top:2px}
+  .tile .d{font-size:12.5px;color:var(--ink2);margin-top:2px}
+  .tile.alert{border-color:var(--crit);background:var(--crit-soft)}
+  .tile.alert .v{color:var(--crit)}
+
+  .cols{display:grid;grid-template-columns:1.6fr 1fr;gap:16px;align-items:start}
+  @media (max-width:840px){.cols{grid-template-columns:1fr}}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);overflow:hidden}
+  .card .chead{padding:12px 16px;border-bottom:1px solid var(--line);font-weight:700;font-family:Archivo,system-ui,sans-serif;font-size:14px}
+
+  .dl{list-style:none;margin:0;padding:0}
+  .dl li{display:flex;gap:14px;padding:12px 16px;border-bottom:1px solid var(--line);align-items:flex-start}
+  .dl li:last-child{border-bottom:none}
+  .when{min-width:96px;font-variant-numeric:tabular-nums;font-weight:700;font-size:13px;padding-top:2px}
+  .when em{display:block;font-style:normal;font-weight:500;font-size:11.5px;color:var(--ink3)}
+  .dl .what{flex:1}
+  .dl .what b{font-weight:600}
+  .dl .what p{margin:2px 0 0;font-size:13px;color:var(--ink2)}
+  .stripe{border-left:3px solid transparent}
+  .stripe.crit{border-left-color:var(--crit)}
+  .stripe.warn{border-left-color:var(--warn)}
+  .stripe.good{border-left-color:var(--good)}
+
+  .pill{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.03em;padding:2px 9px;border-radius:99px;white-space:nowrap}
+  .p-open{background:var(--good-soft);color:var(--good)}
+  .p-closed{background:var(--hold-soft);color:var(--hold)}
+  .p-watch{background:var(--warn-soft);color:var(--warn)}
+  .p-urgent{background:var(--crit-soft);color:var(--crit)}
+  .p-live{background:var(--good-soft);color:var(--good)}
+  .p-plan{background:var(--hold-soft);color:var(--hold)}
+
+  .layers{list-style:none;margin:0;padding:6px 0}
+  .layers li{display:flex;gap:10px;padding:9px 16px;align-items:baseline}
+  .layers b{font-weight:600;min-width:64px}
+  .layers p{margin:0;flex:1;font-size:13px;color:var(--ink2)}
+
+  .rules{padding:12px 16px;font-size:13px;color:var(--ink2)}
+  .rules b{color:var(--ink)}
+
+  .twrap{overflow-x:auto}
+  table{border-collapse:collapse;width:100%;font-size:13.5px}
+  th{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);text-align:left;padding:10px 14px;border-bottom:1px solid var(--line2);background:var(--surface2);white-space:nowrap}
+  td{padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  td.num{font-variant-numeric:tabular-nums;text-align:right}
+  .org b{font-weight:600}
+  .org span{display:block;font-size:12px;color:var(--ink3)}
+  .muted{color:var(--ink3)}
+
+  .empty{padding:22px 16px;color:var(--ink2);font-size:13.5px}
+  footer{max-width:1120px;margin:36px auto 0;padding:16px 24px 0;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink3);display:flex;gap:8px;flex-wrap:wrap}
+  footer .sep{color:var(--line2)}
+</style>
+<header>
+  <div class="hwrap">
+    <div class="mark"><b>Dr. James Smith Jr.</b><span>Association Lead Gen Engine</span></div>
+    <div class="hstatus"><span class="dot" aria-hidden="true"></span> Daily scan live · 5:00 AM ET · digest to Bill</div>
+  </div>
+</header>
+
+<main>
+  <h1>Pipeline Overview</h1>
+  <p class="sub">Every association worth a stage, watched daily for open calls for speakers. Data as of <b>Aug 31, 2026, 6:00 PM ET</b> — refreshed by each morning's scan.</p>
+
+  <div class="tiles">
+    <div class="tile alert"><div class="k">Next deadline</div><div class="v">Sep 4</div><div class="d">PCMA Convening Leaders 2027 — 4 days</div></div>
+    <div class="tile"><div class="k">Open calls now</div><div class="v">3</div><div class="d">ESSAE · IAEE · ASAE digital</div></div>
+    <div class="tile"><div class="k">Targets tracked</div><div class="v">173</div><div class="d">across 6 priority groups</div></div>
+    <div class="tile"><div class="k">Researched</div><div class="v">14</div><div class="d">Group 01 complete, Aug 31</div></div>
+    <div class="tile"><div class="k">Expansion queue</div><div class="v">31</div><div class="d">state SAEs from the ALC roster</div></div>
+  </div>
+
+  <div class="cols" style="margin-top:26px">
+    <section class="card" aria-label="Deadlines and windows">
+      <div class="chead">Deadlines &amp; Windows</div>
+      <ul class="dl">
+        <li class="stripe crit">
+          <div class="when">Sep 4, 2026<em>Friday</em></div>
+          <div class="what"><b>PCMA Convening Leaders 2027 — CFP closes</b> <span class="pill p-urgent">URGENT</span>
+            <p>Miami Beach, Jan 10–13. The biggest room of speaker-buyers in the plan. Portal-only — <a href="https://www.pcma.org/submit-your-session-idea/" target="_blank" rel="noopener">submit here</a>. Email to Jim is drafted, awaiting Bill's send.</p></div>
+        </li>
+        <li class="stripe warn">
+          <div class="when">Sep–Oct<em>expected</em></div>
+          <div class="what"><b>MPI WEC 2027 call for speakers opens</b> <span class="pill p-watch">WATCHING</span>
+            <p>Historically opens Sept, closes ~Oct 1. Engine checks <a href="https://www.mpi.org/events/events" target="_blank" rel="noopener">mpi.org/events</a> daily.</p></div>
+        </li>
+        <li class="stripe warn">
+          <div class="when">Nov 2026<em>expected</em></div>
+          <div class="what"><b>ASAE Annual 2027 CFP opens</b> <span class="pill p-watch">WATCHING</span>
+            <p>Charlotte, Aug 7–10, 2027. The association industry's own stage.</p></div>
+        </li>
+        <li class="stripe good">
+          <div class="when">Open now<em>rolling</em></div>
+          <div class="what"><b>ESSAE speaker intake</b> <span class="pill p-open">OPEN</span>
+            <p>Always-open form, Program Committee review. <a href="https://www.essae.org/become-a-speaker" target="_blank" rel="noopener">essae.org/become-a-speaker</a></p></div>
+        </li>
+        <li class="stripe good">
+          <div class="when">Open now<em>rolling</em></div>
+          <div class="what"><b>IAEE year-round speaking proposals</b> <span class="pill p-open">OPEN</span>
+            <p>Keynotes kept on file two years; form takes fee ranges to $20K+. <a href="https://www.iaee.com/speaking-proposals/" target="_blank" rel="noopener">iaee.com/speaking-proposals</a></p></div>
+        </li>
+        <li class="stripe warn">
+          <div class="when">Spring 2027<em>expected</em></div>
+          <div class="what"><b>IAEE Expo! Expo! 2027 CFS</b> <span class="pill p-watch">WATCHING</span>
+            <p>2026 call closed May 15; next cycle expected ~March.</p></div>
+        </li>
+        <li class="stripe good">
+          <div class="when">Anytime<em>email OK</em></div>
+          <div class="what"><b>SGMP — pitch the Education Director</b> <span class="pill p-open">OPEN</span>
+            <p>2027 NEC: May 4–6, Pittsburgh. One of the few email-reachable doors in Group 01.</p></div>
+        </li>
+      </ul>
+    </section>
+
+    <div style="display:grid;gap:16px">
+      <section class="card" aria-label="Engine status">
+        <div class="chead">Engine Status</div>
+        <ul class="layers">
+          <li><span class="pill p-live">LIVE</span><b>Layer 1</b><p>Watch known CFS pages — 14 URLs, diffed daily at 5:00 AM ET</p></li>
+          <li><span class="pill p-live">LIVE</span><b>Layer 2</b><p>Discovery searches — daily, rotating Jim's verticals by weekday</p></li>
+          <li><span class="pill p-plan">PLANNED</span><b>Layer 3</b><p>Dedicated newsletter inbox as a sensor</p></li>
+          <li><span class="pill p-plan">PLANNED</span><b>Layer 4</b><p>Sessionize / SpeakerHub profile feeds</p></li>
+        </ul>
+      </section>
+      <section class="card" aria-label="Standing rules">
+        <div class="chead">Standing Rules</div>
+        <div class="rules">
+          <b>Nothing auto-sends — ever.</b> The engine observes, scores, and drafts; Jim sends. Existing clients are suppressed. Portal-only submission processes are respected. Contacts come from public sources only — every record carries its source URL.
+        </div>
+      </section>
+      <section class="card" aria-label="Discovery log">
+        <div class="chead">Discovery Log</div>
+        <div class="empty">No discoveries yet — first scheduled scan runs Sept 1, 5:05 AM ET. New opportunities found by the daily searches will appear here as candidate targets.</div>
+      </section>
+    </div>
+  </div>
+  <h2>Watch List <small>Group 01 · Association Executives · researched Aug 31 from public sources</small></h2>
+  <section class="card">
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Organization</th><th>Call status</th><th>Deadline</th><th>Next event</th><th>Route</th><th>Contact</th></tr></thead>
+        <tbody>
+          <tr><td class="org"><b>PCMA</b><span>Convening Leaders</span></td><td><span class="pill p-urgent">OPEN — CLOSES SEP 4</span></td><td>Sep 4, 2026</td><td>Miami Beach · Jan 10–13, 2027</td><td>Portal</td><td>speakers@pcma.org</td></tr>
+          <tr><td class="org"><b>PCMA Greater Philadelphia</b><span>warm door — Jim's testimonial</span></td><td><span class="pill p-open">RELATIONSHIP</span></td><td class="muted">—</td><td>Chapter events year-round</td><td>Email</td><td>Erica Keagy · gppcma@comcast.net</td></tr>
+          <tr><td class="org"><b>ESSAE</b><span>Empire State SAE</span></td><td><span class="pill p-open">OPEN — EVERGREEN</span></td><td class="muted">rolling</td><td>Annual Conference 2027 TBA</td><td>Portal</td><td>Carrie Laney · executive@essae.org</td></tr>
+          <tr><td class="org"><b>IAEE</b><span>Exhibitions &amp; Events</span></td><td><span class="pill p-open">OPEN — YEAR-ROUND</span></td><td class="muted">rolling</td><td>Expo! Expo! · Milwaukee · Nov 16–18</td><td>Portal</td><td>Stacy Powers · info@iaee.com</td></tr>
+          <tr><td class="org"><b>ASAE</b><span>Amer. Society of Assoc. Executives</span></td><td><span class="pill p-watch">CFP ~NOV 2026</span></td><td class="muted">—</td><td>Annual · Charlotte · Aug 7–10, 2027</td><td>Portal</td><td>Vivienne Oxford · voxford@asaecenter.org</td></tr>
+          <tr><td class="org"><b>MPI</b><span>Meeting Professionals Intl</span></td><td><span class="pill p-watch">CFS ~SEP–OCT</span></td><td class="muted">—</td><td>WEC 2027 TBA</td><td>Portal</td><td>Jessie States · mpiacademy@mpi.org</td></tr>
+          <tr><td class="org"><b>SGMP</b><span>Gov't Meeting Professionals</span></td><td><span class="pill p-open">PITCH ANYTIME</span></td><td class="muted">—</td><td>NEC · Pittsburgh · May 4–6, 2027</td><td>Email</td><td>Alan Kleinfeld · education@sgmp.org</td></tr>
+          <tr><td class="org"><b>ACCE</b><span>Chamber of Commerce Executives</span></td><td><span class="pill p-watch">2027 TBA</span></td><td class="muted">—</td><td>Annual Convention 2027 TBA</td><td>Email</td><td>Amy Shields · ashields@acce.org</td></tr>
+          <tr><td class="org"><b>NSA</b><span>National Speakers Association</span></td><td><span class="pill p-closed">ACTIVATE CLOSED</span></td><td class="muted">—</td><td>Influence · Scottsdale · Jul 17–19, 2027</td><td>Portal</td><td>Candice York · learn@nsaspeaker.org</td></tr>
+          <tr><td class="org"><b>Assoc. Leadership Coalition</b><span>31 state SAEs — roster source</span></td><td><span class="pill p-closed">NO PUBLIC CFS</span></td><td class="muted">—</td><td>Winter Mtg · Wilmington DE · Jan 25–26</td><td>Form</td><td>Mary Ann Passi (interim ED)</td></tr>
+          <tr><td class="org"><b>NESAE</b><span>New England SAE</span></td><td><span class="pill p-watch">MANUAL CHECK</span></td><td class="muted">—</td><td>Annual Mgmt Conference</td><td>Phone</td><td>978-250-9847 · site blocks bots</td></tr>
+          <tr><td class="org"><b>Sessionize</b><span>CFS platform</span></td><td><span class="pill p-closed">MONITOR</span></td><td class="muted">—</td><td class="muted">needs speaker profile (Layer 4)</td><td>Platform</td><td class="muted">—</td></tr>
+          <tr><td class="org"><b>Sessionboard</b><span>CFS platform</span></td><td><span class="pill p-closed">MONITOR</span></td><td class="muted">—</td><td class="muted">no public directory</td><td>Platform</td><td class="muted">—</td></tr>
+          <tr><td class="org"><b>Toastmasters districts</b><span>127 districts</span></td><td><span class="pill p-closed">REFERRAL ONLY</span></td><td class="muted">—</td><td class="muted">district conferences</td><td>Directory</td><td class="muted">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <h2>Target Universe <small>six groups, ranked by value · nationals &amp; states before chapters</small></h2>
+  <section class="card">
+    <div class="twrap">
+      <table>
+        <thead><tr><th>Group</th><th>Focus</th><th class="num">Targets</th><th class="num">Researched</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><b>01 · Association Executives</b></td><td>ASAE, state SAEs, MPI, PCMA, ACCE — the people who book speakers for a living</td><td class="num">14</td><td class="num">14</td><td><span class="pill p-open">RESEARCHED</span></td></tr>
+          <tr><td><b>02 · Résumé-Unlocked</b></td><td>Financial services, healthcare/pharma, journalism, civic, higher-ed</td><td class="num">38</td><td class="num">0</td><td><span class="pill p-closed">QUEUED NEXT</span></td></tr>
+          <tr><td><b>03 · Identity &amp; Affinity</b></td><td>Divine Nine, Black professional associations, parallel affinity families</td><td class="num">36</td><td class="num">0</td><td><span class="pill p-closed">QUEUED</span></td></tr>
+          <tr><td><b>04 · Function &amp; Trade</b></td><td>HR, project management, real estate, construction, education, athletics</td><td class="num">65</td><td class="num">0</td><td><span class="pill p-closed">QUEUED</span></td></tr>
+          <tr><td><b>05 · Mission &amp; Cause</b></td><td>Autism, cancer survivorship + the corporate door (Disability:IN)</td><td class="num">15</td><td class="num">0</td><td><span class="pill p-closed">POLICY TBD</span></td></tr>
+          <tr><td><b>06 · Park or Reframe</b></td><td>Authors, travelers, international — not now, or not as revenue</td><td class="num">5</td><td class="num">0</td><td><span class="pill p-closed">PARKED</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span>Build by Bill Brill · InflectionPoint Consulting</span><span class="sep">|</span>
+  <span>v1.0 · preview — moving to jimsmithjr.inflectionpointnow.com</span><span class="sep">|</span>
+  <span>Sources: association public pages, verified Aug 31, 2026</span>
+</footer>
+
+</body>
+</html>
