@@ -102,7 +102,7 @@
   .p-plan{background:var(--hold-soft);color:var(--hold)}
 
   .layers{list-style:none;margin:0;padding:6px 0}
-  .layers li{display:flex;gap:10px;padding:9pt 16px;align-items:baseline}
+  .layers li{display:flex;gap:10px;padding:9px 16px;align-items:baseline}
   .layers b{font-weight:600;min-width:64px}
   .layers p{margin:0;flex:1;font-size:13px;color:var(--ink2)}
 
@@ -133,11 +133,11 @@
 
 <main>
   <h1>Pipeline Overview</h1>
-  <p class="sub">Every association worth a stage, watched daily for open calls for speakers. Data as of <b>Sept 1, 2026, 10:45 AM ET</b> — refreshed after each morning's scan.</p>
+  <p class="sub">Every association worth a stage, watched daily for open calls for speakers. Data as of <b id="data-as-of">Sept 2, 2026, 5:10 AM ET</b> — refreshed by each morning's scan.</p>
 
   <div class="tiles">
     <div class="tile alert"><div class="k">Next deadline</div><div class="v">Sep 4</div><div class="d">PCMA Convening Leaders 2027 — 3 days</div></div>
-    <div class="tile"><div class="k">Live opportunities</div><div class="v">9</div><div class="d">4 with hard deadlines</div></div>
+    <div class="tile"><div class="k">Live opportunities</div><div class="v" id="opps-count">11</div><div class="d">deadline-bearing calls first</div></div>
     <div class="tile"><div class="k">New this week</div><div class="v">7</div><div class="d">found by the daily scan</div></div>
     <div class="tile"><div class="k">Targets tracked</div><div class="v">173</div><div class="d">across 6 priority groups</div></div>
     <div class="tile"><div class="k">Researched</div><div class="v">14</div><div class="d">Group 01 complete, Aug 31</div></div>
@@ -148,7 +148,7 @@
     <div class="twrap">
       <table>
         <thead><tr><th>Deadline</th><th>Opportunity</th><th>Event</th><th>Why it fits</th><th>Status</th></tr></thead>
-        <tbody>
+        <tbody id="opps-body">
           <tr><td><b>Sep 4, 2026</b></td><td class="org"><b>PCMA Convening Leaders 2027</b><span><a href="https://reg.conveningleaders.org/flow/pcma/cl27/cl27cfp/cfpHome" target="_blank" rel="noopener">Submit via the CL27 portal</a></span></td><td>Miami Beach · Jan 10–13, 2027</td><td>4,400+ senior event leaders — the people who book speakers professionally. Proposal package ready.</td><td><span class="pill p-urgent">URGENT — 3 DAYS</span></td></tr>
           <tr><td><b>Sep 15, 2026</b></td><td class="org"><b>NREMT — EMS Association Summit 2027</b><span><a href="https://www.nremt.org/News/National-Registry-Opens-Call-for-Speakers-for-2027" target="_blank" rel="noopener">View the call for speakers</a></span></td><td>Lexington, KY · Feb 9–11, 2027</td><td>Audience is association leaders; topics are governance, engagement, workforce — Jim's leadership lane.</td><td><span class="pill p-open">NEW FIND</span></td></tr>
           <tr><td><b>Sep 18, 2026</b></td><td class="org"><b>MGMA 2027 Conferences</b><span><a href="https://www.mgma.com/call-for-speakers-2027" target="_blank" rel="noopener">View the call for speakers</a></span></td><td>Atlanta · Mar 2027 &amp; Seattle · May 2027</td><td>Healthcare practice leaders; tracks include Workforce &amp; Team Leadership — pharma client wall applies.</td><td><span class="pill p-open">NEW FIND</span></td></tr>
@@ -199,7 +199,7 @@
       <section class="card" aria-label="Engine status">
         <div class="chead">Engine Status</div>
         <ul class="layers">
-          <li><span class="pill p-live">LIVE</span><b>Layer 1</b><p>Watch known CFS pages — 15 URLs, diffed daily at 5:00 AM ET</p></li>
+          <li><span class="pill p-live">LIVE</span><b>Layer 1</b><p>Watch known CFS pages — 14 URLs, diffed daily at 5:00 AM ET</p></li>
           <li><span class="pill p-live">LIVE</span><b>Layer 2</b><p>Discovery searches — daily, rotating Jim's verticals by weekday</p></li>
           <li><span class="pill p-plan">PLANNED</span><b>Layer 3</b><p>Dedicated newsletter inbox as a sensor</p></li>
           <li><span class="pill p-plan">PLANNED</span><b>Layer 4</b><p>Sessionize / SpeakerHub profile feeds</p></li>
@@ -229,9 +229,9 @@
           <tr><td class="org"><b>ESSAE</b><span>Empire State SAE</span></td><td><span class="pill p-open">OPEN — EVERGREEN</span></td><td class="muted">rolling</td><td>Annual Conference 2027 TBA</td><td>Portal</td><td>Carrie Laney · executive@essae.org</td></tr>
           <tr><td class="org"><b>IAEE</b><span>Exhibitions &amp; Events</span></td><td><span class="pill p-open">OPEN — YEAR-ROUND</span></td><td class="muted">rolling</td><td>Expo! Expo! · Milwaukee · Nov 16–18</td><td>Portal</td><td>Stacy Powers · info@iaee.com</td></tr>
           <tr><td class="org"><b>ASAE</b><span>Amer. Society of Assoc. Executives</span></td><td><span class="pill p-watch">CFP ~NOV 2026</span></td><td class="muted">—</td><td>Annual · Charlotte · Aug 7–10, 2027</td><td>Portal</td><td>Vivienne Oxford · voxford@asaecenter.org</td></tr>
-          <tr><td class="org"><b>MPI</b><span>Meeting Professionals Intl</span></td><td><span class="pill p-watch">CFS ~SEP–OCT</span></td><td class="muted">—</td><td>WEC 2027 · Las Vegas</td><td>Portal</td><td>Jessie States · mpiacademy@mpi.org</td></tr>
+          <tr><td class="org"><b>MPI</b><span>Meeting Professionals Intl</span></td><td><span class="pill p-watch">CFS ~SEP–OCT</span></td><td class="muted">—</td><td>WEC 2027 TBA</td><td>Portal</td><td>Jessie States · mpiacademy@mpi.org</td></tr>
           <tr><td class="org"><b>SGMP</b><span>Gov't Meeting Professionals</span></td><td><span class="pill p-open">PITCH ANYTIME</span></td><td class="muted">—</td><td>NEC · Pittsburgh · May 4–6, 2027</td><td>Email</td><td>Alan Kleinfeld · education@sgmp.org</td></tr>
-          <tr><td class="org"><b>ACCE</b><span>Chamber of Commerce Executives</span></td><td><span class="pill p-watch">2027 ORLANDO</span></td><td class="muted">—</td><td>Annual Convention · Orlando · Jul 13–15, 2027</td><td>Email</td><td>Amy Shields · ashields@acce.org</td></tr>
+          <tr><td class="org"><b>ACCE</b><span>Chamber of Commerce Executives</span></td><td><span class="pill p-watch">2027 TBA</span></td><td class="muted">—</td><td>Annual Convention 2027 TBA</td><td>Email</td><td>Amy Shields · ashields@acce.org</td></tr>
           <tr><td class="org"><b>NSA</b><span>National Speakers Association</span></td><td><span class="pill p-closed">ACTIVATE CLOSED</span></td><td class="muted">—</td><td>Influence · Scottsdale · Jul 17–19, 2027</td><td>Portal</td><td>Candice York · learn@nsaspeaker.org</td></tr>
           <tr><td class="org"><b>Assoc. Leadership Coalition</b><span>31 state SAEs — roster source</span></td><td><span class="pill p-closed">NO PUBLIC CFS</span></td><td class="muted">—</td><td>Winter Mtg · Wilmington DE · Jan 25–26</td><td>Form</td><td>Mary Ann Passi (interim ED)</td></tr>
           <tr><td class="org"><b>NESAE</b><span>New England SAE</span></td><td><span class="pill p-watch">MANUAL CHECK</span></td><td class="muted">—</td><td>Annual Mgmt Conference</td><td>Phone</td><td>978-250-9847 · site blocks bots</td></tr>
@@ -263,9 +263,62 @@
 
 <footer>
   <span>Build by Bill Brill · InflectionPoint Consulting</span><span class="sep">|</span>
-  <span>v1.1 · live at jimsmithjr.inflectionpointnow.com</span><span class="sep">|</span>
-  <span>Sources: association public pages + daily engine scans, updated Sept 1, 2026</span>
+  <span>v1.2 · live at jimsmithjr.inflectionpointnow.com</span><span class="sep">|</span>
+  <span>Sources: association public pages + daily engine scans</span>
 </footer>
+
+<script>
+(function(){
+  var GVIZ = "https://docs.google.com/spreadsheets/d/1ExqJR6K-ez41VTr6iwwOCSgX_iYqYatkST79RY39PYk/gviz/tq?tqx=out:csv&sheet=jsj_opportunities";
+  function parseCSV(text){
+    var rows=[],row=[],cur="",inQ=false;
+    for(var i=0;i<text.length;i++){
+      var c=text[i];
+      if(inQ){
+        if(c==='"'){ if(text[i+1]==='"'){cur+='"';i++;} else inQ=false; }
+        else cur+=c;
+      } else {
+        if(c==='"') inQ=true;
+        else if(c===','){ row.push(cur); cur=""; }
+        else if(c==='\n'){ row.push(cur); rows.push(row); row=[]; cur=""; }
+        else if(c!=='\r') cur+=c;
+      }
+    }
+    if(cur.length||row.length){ row.push(cur); rows.push(row); }
+    return rows;
+  }
+  function esc(s){ var d=document.createElement('div'); d.textContent=s||""; return d.innerHTML; }
+  function pill(status){
+    var cls="p-open";
+    var s=(status||"").toUpperCase();
+    if(s.indexOf("URGENT")>=0) cls="p-urgent";
+    else if(s.indexOf("WATCH")>=0||s.indexOf("CALENDAR")>=0||s.indexOf("VERIFY")>=0) cls="p-watch";
+    return '<span class="pill '+cls+'">'+esc(status)+'</span>';
+  }
+  fetch(GVIZ,{cache:"no-store"}).then(function(r){ if(!r.ok) throw 0; return r.text(); }).then(function(text){
+    var rows=parseCSV(text);
+    if(rows.length<2) return;
+    var hdr=rows[0], idx={};
+    for(var i=0;i<hdr.length;i++) idx[hdr[i].trim().toLowerCase()]=i;
+    var body=rows.slice(1).filter(function(r){ return r.length>=5 && r[idx.opportunity]; });
+    if(!body.length) return;
+    var html="";
+    body.forEach(function(r){
+      var link=r[idx.link]||"";
+      var safeHref=/^https:\/\//.test(link)?link:"";
+      html+='<tr><td><b>'+esc(r[idx.deadline])+'</b></td>'
+        +'<td class="org"><b>'+esc(r[idx.opportunity])+'</b>'
+        +(safeHref?'<span><a href="'+esc(safeHref)+'" target="_blank" rel="noopener">View the call →</a></span>':'')
+        +'</td><td>'+esc(r[idx.event])+'</td><td>'+esc(r[idx.why])+'</td>'
+        +'<td>'+pill(r[idx.status])+'</td></tr>';
+    });
+    document.getElementById("opps-body").innerHTML=html;
+    document.getElementById("opps-count").textContent=String(body.length);
+    var upd=body[0][idx.updated];
+    if(upd) document.getElementById("data-as-of").textContent=upd.replace(" ", ", ")+" · live";
+  }).catch(function(){ /* keep baked-in rows */ });
+})();
+</script>
 
 </body>
 </html>
