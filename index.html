@@ -496,6 +496,18 @@
 <script>
   const AUTOMATIONS = [
     {
+      id: "jobscout",
+      title: "Job & Gig Scout",
+      subtitle: "Upwork + LinkedIn Opportunity Scout",
+      status: "progress",
+      description: "Scans Upwork gigs and LinkedIn roles at or above your rate floor, scores each to fit, and drafts tailored proposals in your voice for one-click review and send. Draft-and-approve — nothing is submitted automatically.",
+      pipeline: ["Upwork", "LinkedIn", "Claude", "Google Sheets", "Gmail"],
+      schedule: "Weekday mornings · CT (pending first run)",
+      platform: "Claude + Google Sheets",
+      runnable: false,
+      dashboardUrl: "/jobscout.html"
+    },
+    {
       id: "ai-personal-assistant",
       title: "AI Personal Assistant",
       subtitle: "Daily Ops Command Center",
