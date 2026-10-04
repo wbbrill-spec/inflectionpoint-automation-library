@@ -149,16 +149,18 @@
     </div>
 
     <footer>
-      Data source: Google Sheet <code>Job &amp; Gig Scout — Matches</code> (read-only CSV). Status edits you make in the sheet reflect here on reload.<br>
+      Data source: the <code>jobscout</code> tab of the ops data sheet (read-only CSV). Status edits you make in the sheet reflect here on reload.<br>
       Compliance: no automated submission, no bot-detection/CAPTCHA bypass, no mass actions — per Upwork/LinkedIn terms. The scout prepares; you send.
     </footer>
   </div>
 
   <script>
     // --- Config ---
-    var SHEET_ID = "1NIwbveF1jHflL5jxQ1WAjVMM7y-xWumwyMFAn4HTuO0";
-    var GID = "410549301";
-    var CSV_URL = "https://docs.google.com/spreadsheets/d/" + SHEET_ID + "/gviz/tq?tqx=out:csv&gid=" + GID;
+    // Reuses the existing "Bill Assistant — Ops Data" sheet + its proven writeTab endpoint.
+    // JobScout rows live in the `jobscout` tab; the scheduled run creates it on first write.
+    var SHEET_ID = "1ExqJR6K-ez41VTr6iwwOCSgX_iYqYatkST79RY39PYk";
+    var TAB = "jobscout";
+    var CSV_URL = "https://docs.google.com/spreadsheets/d/" + SHEET_ID + "/gviz/tq?tqx=out:csv&sheet=" + TAB;
 
     // --- Seed fallback (used if the sheet can't be read yet) ---
     var SEED = [
@@ -262,8 +264,14 @@
         if(!r.ok) throw new Error("HTTP "+r.status);
         return r.text();
       }).then(function(txt){
-        var objs=rowsToObjects(parseCSV(txt));
-        if(!objs.length){ useSeed("Sheet is empty — showing sample rows."); return; }
+        var rows=parseCSV(txt);
+        var header=(rows[0]||[]).map(function(h){return h.trim();});
+        // Guard: if the jobscout tab doesn't exist yet, gviz silently returns the FIRST sheet.
+        // Only accept a response whose header actually looks like ours.
+        var ok=["id","source","score","comp_ok"].every(function(k){return header.indexOf(k)>-1;});
+        if(!ok){ useSeed("The jobscout tab isn't populated yet — showing sample rows. The first scout run creates it."); return; }
+        var objs=rowsToObjects(rows);
+        if(!objs.length){ useSeed("No matches logged yet — showing sample rows."); return; }
         DATA=objs;
         var note=document.getElementById("status-note");
         note.className="note"; note.textContent="Live · "+objs.length+" rows · updated "+new Date().toLocaleString();
