@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Job &amp; Gig Scout — InflectionPoint</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #B8963E;
+      --gold-light: #D4AF60;
+      --dark: #1a1a1a;
+      --mid: #2e2e2e;
+      --surface: #242424;
+      --border: rgba(184,150,62,0.22);
+      --text: #ece7dc;
+      --muted: #9a948a;
+      --good: #4f8a5b;
+      --warn: #b5793a;
+    }
+
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--dark);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+      padding: 0 16px 64px;
+    }
+
+    .wrap { max-width: 1120px; margin: 0 auto; }
+
+    header.site {
+      padding: 30px 0 18px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 26px;
+    }
+    .eyebrow {
+      font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 10px;
+    }
+    .eyebrow a { color: var(--muted); text-decoration: none; }
+    .eyebrow a:hover { color: var(--gold-light); }
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 500; font-size: 46px; line-height: 1.05; color: #fff;
+    }
+    .sub { color: var(--muted); font-size: 15px; margin-top: 8px; max-width: 70ch; }
+
+    .stats { display: flex; flex-wrap: wrap; gap: 14px; margin: 24px 0; }
+    .stat {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+      padding: 14px 20px; min-width: 128px;
+    }
+    .stat .n { font-family: 'Cormorant Garamond', serif; font-size: 34px; color: var(--gold-light); line-height: 1; }
+    .stat .l { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+
+    .controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 18px; }
+    .controls label { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-right: 6px; }
+    select {
+      background: var(--mid); color: var(--text); border: 1px solid var(--border);
+      border-radius: 8px; padding: 8px 12px; font-family: inherit; font-size: 14px;
+    }
+    .note { font-size: 12.5px; color: var(--muted); margin-left: auto; }
+    .note.err { color: var(--warn); }
+
+    .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    thead th {
+      text-align: left; font-weight: 500; font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--gold); padding: 14px 14px; border-bottom: 1px solid var(--border); white-space: nowrap;
+    }
+    tbody td { padding: 13px 14px; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: top; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr.floor { background: rgba(184,150,62,0.06); }
+    tbody tr:hover { background: rgba(255,255,255,0.03); }
+
+    .score { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--gold-light); font-weight: 600; }
+    .title { color: #fff; font-weight: 500; }
+    .company { color: var(--muted); font-size: 13px; }
+    .comp { white-space: nowrap; }
+    .comp.ok { color: var(--gold-light); }
+
+    .chip {
+      display: inline-block; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 3px 9px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted);
+    }
+    .chip.src-upwork { color: #6fb07a; border-color: rgba(111,176,122,0.4); }
+    .chip.src-linkedin { color: #5b9bd5; border-color: rgba(91,155,213,0.4); }
+    .chip.st-new { color: var(--gold-light); border-color: var(--border); }
+    .chip.st-drafted { color: #d4af60; border-color: rgba(212,175,96,0.5); }
+    .chip.st-applied { color: #6fb07a; border-color: rgba(111,176,122,0.5); }
+    .chip.st-skipped { color: #8a8378; }
+
+    a.apply { color: var(--gold-light); text-decoration: none; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    a.apply:hover { color: #fff; border-color: var(--gold-light); }
+    .notes { color: var(--muted); font-size: 12.5px; max-width: 34ch; }
+
+    .empty { padding: 40px; text-align: center; color: var(--muted); }
+    footer { margin-top: 26px; color: var(--muted); font-size: 12px; line-height: 1.7; }
+    footer code { color: var(--gold-light); font-size: 11.5px; }
+
+    @media (max-width: 760px) {
+      h1 { font-size: 34px; }
+      .hide-sm { display: none; }
+      body { padding: 0 12px 48px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="site">
+      <div class="eyebrow"><a href="/">&larr; Automation Library</a> &nbsp;·&nbsp; AUTO-JOBSCOUT</div>
+      <h1>Job &amp; Gig Scout</h1>
+      <p class="sub">Scheduled scout for Upwork gigs and LinkedIn full-time roles at or above the $150K/yr floor — filtered to fit, scored, and drafted for one-click apply. Draft-and-approve only: nothing is submitted automatically.</p>
+    </header>
+
+    <div class="stats" id="stats"></div>
+
+    <div class="controls">
+      <div><label>Source</label>
+        <select id="f-source"><option value="">All</option><option value="upwork">Upwork</option><option value="linkedin">LinkedIn</option></select>
+      </div>
+      <div><label>Status</label>
+        <select id="f-status"><option value="">All</option><option value="new">New</option><option value="drafted">Drafted</option><option value="applied">Applied</option><option value="skipped">Skipped</option></select>
+      </div>
+      <div><label>Sort</label>
+        <select id="f-sort"><option value="score">Score (high&rarr;low)</option><option value="posted">Most recent</option><option value="comp">Comp</option></select>
+      </div>
+      <span class="note" id="status-note">Loading…</span>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Score</th><th>Role</th><th>Source</th><th>Comp</th>
+            <th class="hide-sm">Location</th><th class="hide-sm">Type</th>
+            <th class="hide-sm">Posted</th><th>Status</th><th>Link</th><th class="hide-sm">Notes</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="empty" id="empty" style="display:none">No matches for this filter yet.</div>
+    </div>
+
+    <footer>
+      Data source: Google Sheet <code>Job &amp; Gig Scout — Matches</code> (read-only CSV). Status edits you make in the sheet reflect here on reload.<br>
+      Compliance: no automated submission, no bot-detection/CAPTCHA bypass, no mass actions — per Upwork/LinkedIn terms. The scout prepares; you send.
+    </footer>
+  </div>
+
+  <script>
+    // --- Config ---
+    var SHEET_ID = "1NIwbveF1jHflL5jxQ1WAjVMM7y-xWumwyMFAn4HTuO0";
+    var GID = "410549301";
+    var CSV_URL = "https://docs.google.com/spreadsheets/d/" + SHEET_ID + "/gviz/tq?tqx=out:csv&gid=" + GID;
+
+    // --- Seed fallback (used if the sheet can't be read yet) ---
+    var SEED = [
+      {id:"JS-SEED-1",source:"upwork",title:"AI Automation Engineer for Logistics Operations",company:"Confidential client",comp:"$85/hr",comp_ok:"TRUE",location:"Remote",type:"gig",score:"94",posted:"2026-10-03",url:"https://www.upwork.com",status:"new",draft_ref:"",notes:"Strong fit: MoveWare/Make/Python, exec dashboards",found:"2026-10-04"},
+      {id:"JS-SEED-2",source:"linkedin",title:"VP International / Global Mobility",company:"Relocation company",comp:"$180,000/yr",comp_ok:"TRUE",location:"Remote (US)",type:"full-time",score:"88",posted:"2026-10-02",url:"https://www.linkedin.com/jobs",status:"new",draft_ref:"",notes:"Comp above floor; SVP-track; agent/RMC channels",found:"2026-10-04"}
+    ];
+
+    var COLS = ["id","source","title","company","comp","comp_ok","location","type","score","posted","url","status","draft_ref","notes","found"];
+
+    // --- Minimal CSV parser (handles quoted fields, commas, newlines) ---
+    function parseCSV(text){
+      var rows=[], row=[], field="", i=0, inQ=false, c;
+      while(i<text.length){
+        c=text[i];
+        if(inQ){
+          if(c==='"'){ if(text[i+1]==='"'){field+='"';i++;} else {inQ=false;} }
+          else field+=c;
+        } else {
+          if(c==='"') inQ=true;
+          else if(c===',') { row.push(field); field=""; }
+          else if(c==='\n'){ row.push(field); rows.push(row); row=[]; field=""; }
+          else if(c==='\r'){ /* skip */ }
+          else field+=c;
+        }
+        i++;
+      }
+      if(field.length||row.length){ row.push(field); rows.push(row); }
+      return rows;
+    }
+
+    function rowsToObjects(rows){
+      if(!rows.length) return [];
+      var header=rows[0].map(function(h){return h.trim();});
+      return rows.slice(1).filter(function(r){return r.some(function(v){return v&&v.trim();});}).map(function(r){
+        var o={}; header.forEach(function(h,idx){ o[h]=(r[idx]||"").trim(); }); return o;
+      });
+    }
+
+    var DATA = [];
+
+    function esc(s){ return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+    function render(){
+      var src=document.getElementById("f-source").value;
+      var st=document.getElementById("f-status").value;
+      var sort=document.getElementById("f-sort").value;
+      var list=DATA.filter(function(d){
+        if(src && (d.source||"").toLowerCase()!==src) return false;
+        if(st && (d.status||"").toLowerCase()!==st) return false;
+        return true;
+      });
+      list.sort(function(a,b){
+        if(sort==="score") return (parseFloat(b.score)||0)-(parseFloat(a.score)||0);
+        if(sort==="posted") return (b.posted||"").localeCompare(a.posted||"");
+        if(sort==="comp") return (parseFloat((b.comp||"").replace(/[^0-9.]/g,""))||0)-(parseFloat((a.comp||"").replace(/[^0-9.]/g,""))||0);
+        return 0;
+      });
+
+      var tbody=document.getElementById("rows");
+      tbody.innerHTML="";
+      document.getElementById("empty").style.display = list.length? "none":"block";
+
+      list.forEach(function(d){
+        var tr=document.createElement("tr");
+        var ok=(d.comp_ok||"").toUpperCase()==="TRUE";
+        if(ok) tr.className="floor";
+        var srcKey=(d.source||"").toLowerCase();
+        var stKey=(d.status||"new").toLowerCase();
+        tr.innerHTML =
+          '<td><span class="score">'+esc(d.score)+'</span></td>'+
+          '<td><div class="title">'+esc(d.title)+'</div><div class="company">'+esc(d.company)+'</div></td>'+
+          '<td><span class="chip src-'+srcKey+'">'+esc(d.source)+'</span></td>'+
+          '<td><span class="comp'+(ok?' ok':'')+'">'+esc(d.comp)+'</span></td>'+
+          '<td class="hide-sm">'+esc(d.location)+'</td>'+
+          '<td class="hide-sm">'+esc(d.type)+'</td>'+
+          '<td class="hide-sm">'+esc(d.posted)+'</td>'+
+          '<td><span class="chip st-'+stKey+'">'+esc(d.status||"new")+'</span></td>'+
+          '<td>'+(d.url? '<a class="apply" href="'+esc(d.url)+'" target="_blank" rel="noopener">Open &rarr;</a>':'')+'</td>'+
+          '<td class="hide-sm"><div class="notes">'+esc(d.notes)+'</div></td>';
+        tbody.appendChild(tr);
+      });
+
+      // stats
+      var total=DATA.length;
+      var newN=DATA.filter(function(d){return (d.status||"new").toLowerCase()==="new";}).length;
+      var okN=DATA.filter(function(d){return (d.comp_ok||"").toUpperCase()==="TRUE";}).length;
+      document.getElementById("stats").innerHTML =
+        stat(total,"Matches tracked")+stat(newN,"New / unreviewed")+stat(okN,"At/above floor");
+    }
+    function stat(n,l){ return '<div class="stat"><div class="n">'+n+'</div><div class="l">'+l+'</div></div>'; }
+
+    function useSeed(msg){
+      DATA=SEED.slice();
+      var note=document.getElementById("status-note");
+      note.className="note err"; note.textContent=msg||"Showing sample data — connect the sheet to go live.";
+      render();
+    }
+
+    function load(){
+      fetch(CSV_URL, {cache:"no-store"}).then(function(r){
+        if(!r.ok) throw new Error("HTTP "+r.status);
+        return r.text();
+      }).then(function(txt){
+        var objs=rowsToObjects(parseCSV(txt));
+        if(!objs.length){ useSeed("Sheet is empty — showing sample rows."); return; }
+        DATA=objs;
+        var note=document.getElementById("status-note");
+        note.className="note"; note.textContent="Live · "+objs.length+" rows · updated "+new Date().toLocaleString();
+        render();
+      }).catch(function(e){
+        useSeed("Sheet not public yet ("+e.message+") — showing sample rows.");
+      });
+    }
+
+    ["f-source","f-status","f-sort"].forEach(function(id){
+      document.getElementById(id).addEventListener("change", render);
+    });
+    load();
+  </script>
+</body>
+</html>
