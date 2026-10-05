@@ -81,6 +81,8 @@
 
     .score { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--gold-light); font-weight: 600; }
     .title { color: #fff; font-weight: 500; }
+    a.title-link { color: #fff; font-weight: 500; text-decoration: none; border-bottom: 1px solid transparent; }
+    a.title-link:hover { color: var(--gold-light); border-bottom-color: var(--gold-light); }
     .company { color: var(--muted); font-size: 13px; }
     .comp { white-space: nowrap; }
     .comp.ok { color: var(--gold-light); }
@@ -98,6 +100,10 @@
 
     a.apply { color: var(--gold-light); text-decoration: none; border-bottom: 1px solid var(--border); white-space: nowrap; }
     a.apply:hover { color: #fff; border-color: var(--gold-light); }
+    a.apply.draft { color: var(--gold); margin-top: 7px; display: inline-block; }
+    a.apply.draft:hover { color: #fff; }
+    .link-cell { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
+    .nodraft { color: #6f6a61; font-size: 12px; margin-top: 7px; white-space: nowrap; }
     .notes { color: var(--muted); font-size: 12.5px; max-width: 34ch; }
 
     .empty { padding: 40px; text-align: center; color: var(--muted); }
@@ -116,7 +122,7 @@
     <header class="site">
       <div class="eyebrow"><a href="/">&larr; Automation Library</a> &nbsp;·&nbsp; AUTO-JOBSCOUT</div>
       <h1>Job &amp; Gig Scout</h1>
-      <p class="sub">Scheduled scout for Upwork gigs and LinkedIn full-time roles at or above the $150K/yr floor — filtered to fit, scored, and drafted for one-click apply. Draft-and-approve only: nothing is submitted automatically.</p>
+      <p class="sub">Scheduled scout for Upwork gigs and full-time roles — scored to fit, with a tailored proposal drafted for each strong match. Click <strong>Draft &rarr;</strong> to open the ready-to-review proposal, <strong>Posting &rarr;</strong> for the listing. Draft-and-approve only: nothing is submitted automatically.</p>
     </header>
 
     <div class="stats" id="stats"></div>
@@ -140,7 +146,7 @@
           <tr>
             <th>Score</th><th>Role</th><th>Source</th><th>Comp</th>
             <th class="hide-sm">Location</th><th class="hide-sm">Type</th>
-            <th class="hide-sm">Posted</th><th>Status</th><th>Link</th><th class="hide-sm">Notes</th>
+            <th class="hide-sm">Posted</th><th>Status</th><th>Links</th><th class="hide-sm">Notes</th>
           </tr>
         </thead>
         <tbody id="rows"></tbody>
@@ -231,14 +237,17 @@
         var stKey=(d.status||"new").toLowerCase();
         tr.innerHTML =
           '<td><span class="score">'+esc(d.score)+'</span></td>'+
-          '<td><div class="title">'+esc(d.title)+'</div><div class="company">'+esc(d.company)+'</div></td>'+
+          '<td>'+(d.url? '<a class="title-link" href="'+esc(d.url)+'" target="_blank" rel="noopener">'+esc(d.title)+'</a>' : '<div class="title">'+esc(d.title)+'</div>')+'<div class="company">'+esc(d.company)+'</div></td>'+
           '<td><span class="chip src-'+srcKey+'">'+esc(d.source)+'</span></td>'+
           '<td><span class="comp'+(ok?' ok':'')+'">'+esc(d.comp)+'</span></td>'+
           '<td class="hide-sm">'+esc(d.location)+'</td>'+
           '<td class="hide-sm">'+esc(d.type)+'</td>'+
           '<td class="hide-sm">'+esc(d.posted)+'</td>'+
           '<td><span class="chip st-'+stKey+'">'+esc(d.status||"new")+'</span></td>'+
-          '<td>'+(d.url? '<a class="apply" href="'+esc(d.url)+'" target="_blank" rel="noopener">Open &rarr;</a>':'')+'</td>'+
+          '<td><div class="link-cell">'+
+            (d.url? '<a class="apply" href="'+esc(d.url)+'" target="_blank" rel="noopener">Posting &rarr;</a>':'')+
+            (d.draft_ref? '<a class="apply draft" href="'+esc(d.draft_ref)+'" target="_blank" rel="noopener">Draft &rarr;</a>':'<span class="nodraft">no draft</span>')+
+          '</div></td>'+
           '<td class="hide-sm"><div class="notes">'+esc(d.notes)+'</div></td>';
         tbody.appendChild(tr);
       });
