@@ -21,6 +21,7 @@
       --muted: #9a948a;
       --good: #4f8a5b;
       --warn: #b5793a;
+      --red: #c77b7b;
     }
 
     body {
@@ -32,7 +33,7 @@
       padding: 0 16px 64px;
     }
 
-    .wrap { max-width: 1120px; margin: 0 auto; }
+    .wrap { max-width: 1240px; margin: 0 auto; }
 
     header.site {
       padding: 30px 0 18px;
@@ -54,7 +55,7 @@
     .stats { display: flex; flex-wrap: wrap; gap: 14px; margin: 24px 0; }
     .stat {
       background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
-      padding: 14px 20px; min-width: 128px;
+      padding: 14px 20px; min-width: 120px;
     }
     .stat .n { font-family: 'Cormorant Garamond', serif; font-size: 34px; color: var(--gold-light); line-height: 1; }
     .stat .l { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
@@ -69,48 +70,79 @@
     .note.err { color: var(--warn); }
 
     .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; table-layout: fixed; }
     thead th {
-      text-align: left; font-weight: 500; font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--gold); padding: 14px 14px; border-bottom: 1px solid var(--border); white-space: nowrap;
+      text-align: left; font-weight: 500; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--gold); padding: 14px 12px; border-bottom: 1px solid var(--border);
     }
-    tbody td { padding: 13px 14px; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: top; }
+    tbody td {
+      padding: 13px 12px; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: top;
+      overflow-wrap: anywhere; word-break: break-word;
+    }
     tbody tr:last-child td { border-bottom: none; }
     tbody tr.floor { background: rgba(184,150,62,0.06); }
     tbody tr:hover { background: rgba(255,255,255,0.03); }
 
+    /* fixed column widths — always fit the window, no horizontal scroll */
+    .c-score  { width: 5%; }
+    .c-role   { width: 23%; }
+    .c-source { width: 9%; }
+    .c-comp   { width: 10%; }
+    .c-loc    { width: 9%; }
+    .c-type   { width: 6%; }
+    .c-posted { width: 8%; }
+    .c-action { width: 12%; }
+    .c-links  { width: 9%; }
+    .c-notes  { width: 9%; }
+
     .score { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--gold-light); font-weight: 600; }
     .title { color: #fff; font-weight: 500; }
-    .company { color: var(--muted); font-size: 13px; }
-    .comp { white-space: nowrap; }
+    a.title-link { color: #fff; font-weight: 500; text-decoration: none; border-bottom: 1px solid transparent; }
+    a.title-link:hover { color: var(--gold-light); border-bottom-color: var(--gold-light); }
+    .company { color: var(--muted); font-size: 13px; margin-top: 2px; }
     .comp.ok { color: var(--gold-light); }
 
     .chip {
       display: inline-block; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
       padding: 3px 9px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted);
+      white-space: nowrap;
     }
     .chip.src-upwork { color: #6fb07a; border-color: rgba(111,176,122,0.4); }
     .chip.src-linkedin { color: #5b9bd5; border-color: rgba(91,155,213,0.4); }
-    .chip.st-new { color: var(--gold-light); border-color: var(--border); }
-    .chip.st-drafted { color: #d4af60; border-color: rgba(212,175,96,0.5); }
     .chip.st-applied { color: #6fb07a; border-color: rgba(111,176,122,0.5); }
-    .chip.st-skipped { color: #8a8378; }
+    .chip.st-rejected { color: var(--red); border-color: rgba(199,123,123,0.5); }
 
-    a.apply { color: var(--gold-light); text-decoration: none; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    a.apply { color: var(--gold-light); text-decoration: none; border-bottom: 1px solid var(--border); }
     a.apply:hover { color: #fff; border-color: var(--gold-light); }
     a.apply.draft { color: var(--gold); margin-top: 7px; display: inline-block; }
     a.apply.draft:hover { color: #fff; }
     .link-cell { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
-    .nodraft { color: #6f6a61; font-size: 12px; margin-top: 7px; white-space: nowrap; }
-    .notes { color: var(--muted); font-size: 12.5px; max-width: 34ch; }
+    .nodraft { color: #6f6a61; font-size: 12px; margin-top: 7px; }
+    .notes { color: var(--muted); font-size: 12.5px; }
+
+    /* action buttons */
+    .act-wrap { display: flex; flex-direction: column; gap: 6px; align-items: stretch; }
+    .act-btn {
+      font-family: inherit; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase;
+      padding: 6px 8px; border-radius: 7px; border: 1px solid var(--border);
+      background: var(--mid); color: var(--text); cursor: pointer; text-align: center; transition: all .12s;
+    }
+    .act-btn.apply { color: #7cc089; border-color: rgba(111,176,122,0.45); }
+    .act-btn.apply:hover { background: rgba(111,176,122,0.16); color: #fff; }
+    .act-btn.reject { color: var(--red); border-color: rgba(199,123,123,0.4); }
+    .act-btn.reject:hover { background: rgba(199,123,123,0.16); color: #fff; }
+    .act-btn.undo { color: var(--gold-light); }
+    .act-btn.undo:hover { background: rgba(184,150,62,0.16); color: #fff; }
 
     .empty { padding: 40px; text-align: center; color: var(--muted); }
     footer { margin-top: 26px; color: var(--muted); font-size: 12px; line-height: 1.7; }
     footer code { color: var(--gold-light); font-size: 11.5px; }
 
+    @media (max-width: 900px) {
+      .hide-sm { display: none; }
+    }
     @media (max-width: 760px) {
       h1 { font-size: 34px; }
-      .hide-sm { display: none; }
       body { padding: 0 12px 48px; }
     }
   </style>
@@ -120,7 +152,7 @@
     <header class="site">
       <div class="eyebrow"><a href="/">&larr; Automation Library</a> &nbsp;·&nbsp; AUTO-JOBSCOUT</div>
       <h1>Job &amp; Gig Scout</h1>
-      <p class="sub">Scheduled scout for Upwork gigs and full-time roles — scored to fit, with a tailored proposal drafted for each strong match. Click <strong>Draft &rarr;</strong> to open the ready-to-review proposal, <strong>Posting &rarr;</strong> for the listing. Draft-and-approve only: nothing is submitted automatically.</p>
+      <p class="sub">Scheduled scout for Upwork gigs and full-time roles — scored to fit, with a tailored proposal drafted for each strong match. Click <strong>Draft &rarr;</strong> to open the ready-to-review proposal, <strong>Posting &rarr;</strong> for the listing. Mark each one <strong>Applied</strong> or <strong>Reject</strong> and it drops off your review list.</p>
     </header>
 
     <div class="stats" id="stats"></div>
@@ -129,8 +161,8 @@
       <div><label>Source</label>
         <select id="f-source"><option value="">All</option><option value="upwork">Upwork</option><option value="linkedin">LinkedIn</option></select>
       </div>
-      <div><label>Status</label>
-        <select id="f-status"><option value="">All</option><option value="new">New</option><option value="drafted">Drafted</option><option value="applied">Applied</option><option value="skipped">Skipped</option></select>
+      <div><label>View</label>
+        <select id="f-view"><option value="active">To review</option><option value="applied">Applied</option><option value="rejected">Rejected</option></select>
       </div>
       <div><label>Sort</label>
         <select id="f-sort"><option value="score">Score (high&rarr;low)</option><option value="posted">Most recent</option><option value="comp">Comp</option></select>
@@ -142,29 +174,36 @@
       <table>
         <thead>
           <tr>
-            <th>Score</th><th>Role</th><th>Source</th><th>Comp</th>
-            <th class="hide-sm">Location</th><th class="hide-sm">Type</th>
-            <th class="hide-sm">Posted</th><th>Status</th><th>Links</th><th class="hide-sm">Notes</th>
+            <th class="c-score">Score</th>
+            <th class="c-role">Role</th>
+            <th class="c-source">Source</th>
+            <th class="c-comp">Comp</th>
+            <th class="c-loc hide-sm">Location</th>
+            <th class="c-type hide-sm">Type</th>
+            <th class="c-posted hide-sm">Posted</th>
+            <th class="c-action">Action</th>
+            <th class="c-links">Links</th>
+            <th class="c-notes hide-sm">Notes</th>
           </tr>
         </thead>
         <tbody id="rows"></tbody>
       </table>
-      <div class="empty" id="empty" style="display:none">No matches for this filter yet.</div>
+      <div class="empty" id="empty" style="display:none">Nothing to review here — nice work.</div>
     </div>
 
     <footer>
-      Data source: the <code>jobscout</code> tab of the ops data sheet (read-only CSV). Status edits you make in the sheet reflect here on reload.<br>
+      Data source: the <code>jobscout</code> tab of the ops data sheet (read-only CSV).<br>
+      <strong>Applied / Reject</strong> marks are saved in this browser and hide the row from your “To review” list — switch <strong>View</strong> to Applied or Rejected to see or <strong>Undo</strong> them.<br>
       Compliance: no automated submission, no bot-detection/CAPTCHA bypass, no mass actions — per Upwork/LinkedIn terms. The scout prepares; you send.
     </footer>
   </div>
 
   <script>
     // --- Config ---
-    // Reuses the existing "Bill Assistant — Ops Data" sheet + its proven writeTab endpoint.
-    // JobScout rows live in the `jobscout` tab; the scheduled run creates it on first write.
     var SHEET_ID = "1ExqJR6K-ez41VTr6iwwOCSgX_iYqYatkST79RY39PYk";
     var TAB = "jobscout";
     var CSV_URL = "https://docs.google.com/spreadsheets/d/" + SHEET_ID + "/gviz/tq?tqx=out:csv&sheet=" + TAB;
+    var LS_KEY = "jobscout.decisions.v1";
 
     // --- Seed fallback (used if the sheet can't be read yet) ---
     var SEED = [
@@ -172,9 +211,22 @@
       {id:"JS-SEED-2",source:"linkedin",title:"VP International / Global Mobility",company:"Relocation company",comp:"$180,000/yr",comp_ok:"TRUE",location:"Remote (US)",type:"full-time",score:"88",posted:"2026-10-02",url:"https://www.linkedin.com/jobs",status:"new",draft_ref:"",notes:"Comp above floor; SVP-track; agent/RMC channels",found:"2026-10-04"}
     ];
 
-    var COLS = ["id","source","title","company","comp","comp_ok","location","type","score","posted","url","status","draft_ref","notes","found"];
+    var DATA = [];
 
-    // --- Minimal CSV parser (handles quoted fields, commas, newlines) ---
+    function esc(s){ return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+    function attr(s){ return esc(s).replace(/"/g,"&quot;"); }
+    function rowId(d){ return d.id || d.url || ((d.title||"")+"|"+(d.posted||"")); }
+
+    // --- decisions in localStorage ---
+    function loadDecisions(){ try { return JSON.parse(localStorage.getItem(LS_KEY)) || {}; } catch(e){ return {}; } }
+    function saveDecisions(o){ try { localStorage.setItem(LS_KEY, JSON.stringify(o)); } catch(e){} }
+    function decide(id, val){
+      var d = loadDecisions();
+      if(val === "undo") delete d[id]; else d[id] = val;
+      saveDecisions(d); render();
+    }
+
+    // --- CSV parser ---
     function parseCSV(text){
       var rows=[], row=[], field="", i=0, inQ=false, c;
       while(i<text.length){
@@ -186,7 +238,7 @@
           if(c==='"') inQ=true;
           else if(c===',') { row.push(field); field=""; }
           else if(c==='\n'){ row.push(field); rows.push(row); row=[]; field=""; }
-          else if(c==='\r'){ /* skip */ }
+          else if(c==='\r'){ }
           else field+=c;
         }
         i++;
@@ -194,7 +246,6 @@
       if(field.length||row.length){ row.push(field); rows.push(row); }
       return rows;
     }
-
     function rowsToObjects(rows){
       if(!rows.length) return [];
       var header=rows[0].map(function(h){return h.trim();});
@@ -203,17 +254,18 @@
       });
     }
 
-    var DATA = [];
-
-    function esc(s){ return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
-
     function render(){
       var src=document.getElementById("f-source").value;
-      var st=document.getElementById("f-status").value;
+      var view=document.getElementById("f-view").value;
       var sort=document.getElementById("f-sort").value;
+      var dec=loadDecisions();
+
       var list=DATA.filter(function(d){
         if(src && (d.source||"").toLowerCase()!==src) return false;
-        if(st && (d.status||"").toLowerCase()!==st) return false;
+        var decision=dec[rowId(d)]||"";
+        if(view==="active")   return !decision;
+        if(view==="applied")  return decision==="applied";
+        if(view==="rejected") return decision==="rejected";
         return true;
       });
       list.sort(function(a,b){
@@ -232,19 +284,33 @@
         var ok=(d.comp_ok||"").toUpperCase()==="TRUE";
         if(ok) tr.className="floor";
         var srcKey=(d.source||"").toLowerCase();
-        var stKey=(d.status||"new").toLowerCase();
+        var id=rowId(d);
+
+        var actionCell;
+        if(view==="active"){
+          actionCell = '<div class="act-wrap">'+
+            '<button class="act-btn apply"  data-act="applied"  data-id="'+attr(id)+'">&#10003; Applied</button>'+
+            '<button class="act-btn reject" data-act="rejected" data-id="'+attr(id)+'">&#10005; Reject</button>'+
+          '</div>';
+        } else {
+          var lab = view==="applied" ? '<span class="chip st-applied">Applied</span>' : '<span class="chip st-rejected">Rejected</span>';
+          actionCell = '<div class="act-wrap">'+lab+
+            '<button class="act-btn undo" data-act="undo" data-id="'+attr(id)+'">&#8630; Undo</button>'+
+          '</div>';
+        }
+
         tr.innerHTML =
           '<td><span class="score">'+esc(d.score)+'</span></td>'+
-          '<td><div class="title">'+esc(d.title)+'</div><div class="company">'+esc(d.company)+'</div></td>'+
+          '<td>'+(d.url? '<a class="title-link" href="'+attr(d.url)+'" target="_blank" rel="noopener">'+esc(d.title)+'</a>' : '<div class="title">'+esc(d.title)+'</div>')+'<div class="company">'+esc(d.company)+'</div></td>'+
           '<td><span class="chip src-'+srcKey+'">'+esc(d.source)+'</span></td>'+
           '<td><span class="comp'+(ok?' ok':'')+'">'+esc(d.comp)+'</span></td>'+
           '<td class="hide-sm">'+esc(d.location)+'</td>'+
           '<td class="hide-sm">'+esc(d.type)+'</td>'+
           '<td class="hide-sm">'+esc(d.posted)+'</td>'+
-          '<td><span class="chip st-'+stKey+'">'+esc(d.status||"new")+'</span></td>'+
+          '<td>'+actionCell+'</td>'+
           '<td><div class="link-cell">'+
-            (d.url? '<a class="apply" href="'+esc(d.url)+'" target="_blank" rel="noopener">Posting &rarr;</a>':'')+
-            (d.draft_ref? '<a class="apply draft" href="'+esc(d.draft_ref)+'" target="_blank" rel="noopener">Draft &rarr;</a>':'<span class="nodraft">no draft</span>')+
+            (d.url? '<a class="apply" href="'+attr(d.url)+'" target="_blank" rel="noopener">Posting &rarr;</a>':'')+
+            (d.draft_ref? '<a class="apply draft" href="'+attr(d.draft_ref)+'" target="_blank" rel="noopener">Draft &rarr;</a>':'<span class="nodraft">no draft</span>')+
           '</div></td>'+
           '<td class="hide-sm"><div class="notes">'+esc(d.notes)+'</div></td>';
         tbody.appendChild(tr);
@@ -252,10 +318,11 @@
 
       // stats
       var total=DATA.length;
-      var newN=DATA.filter(function(d){return (d.status||"new").toLowerCase()==="new";}).length;
-      var okN=DATA.filter(function(d){return (d.comp_ok||"").toUpperCase()==="TRUE";}).length;
+      var appliedN=DATA.filter(function(d){return dec[rowId(d)]==="applied";}).length;
+      var rejectedN=DATA.filter(function(d){return dec[rowId(d)]==="rejected";}).length;
+      var toReview=total-appliedN-rejectedN;
       document.getElementById("stats").innerHTML =
-        stat(total,"Matches tracked")+stat(newN,"New / unreviewed")+stat(okN,"At/above floor");
+        stat(total,"Matches tracked")+stat(toReview,"To review")+stat(appliedN,"Applied")+stat(rejectedN,"Rejected");
     }
     function stat(n,l){ return '<div class="stat"><div class="n">'+n+'</div><div class="l">'+l+'</div></div>'; }
 
@@ -273,8 +340,6 @@
       }).then(function(txt){
         var rows=parseCSV(txt);
         var header=(rows[0]||[]).map(function(h){return h.trim();});
-        // Guard: if the jobscout tab doesn't exist yet, gviz silently returns the FIRST sheet.
-        // Only accept a response whose header actually looks like ours.
         var ok=["id","source","score","comp_ok"].every(function(k){return header.indexOf(k)>-1;});
         if(!ok){ useSeed("The jobscout tab isn't populated yet — showing sample rows. The first scout run creates it."); return; }
         var objs=rowsToObjects(rows);
@@ -288,7 +353,14 @@
       });
     }
 
-    ["f-source","f-status","f-sort"].forEach(function(id){
+    // event delegation for action buttons
+    document.getElementById("rows").addEventListener("click", function(e){
+      var btn=e.target.closest(".act-btn");
+      if(!btn) return;
+      decide(btn.getAttribute("data-id"), btn.getAttribute("data-act"));
+    });
+
+    ["f-source","f-view","f-sort"].forEach(function(id){
       document.getElementById(id).addEventListener("change", render);
     });
     load();
