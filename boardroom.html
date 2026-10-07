@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI Executive Team — Boardroom — InflectionPoint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root{
+--gold:#B8963E; --gold-light:#D4AF60; --dark:#1a1a1a; --mid:#2e2e2e; --surface:#242424;
+--border:rgba(184,150,62,0.22); --text:#ece7dc; --muted:#9a948a;
+--good:#4f8a5b; --warn:#b5793a; --bad:#c9605a; --blue:#5b9bd5;
+}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--dark);color:var(--text);line-height:1.5;min-height:100vh;padding:0 16px 64px;}
+.wrap{max-width:1180px;margin:0 auto;}
+header.site{padding:28px 0 16px;border-bottom:1px solid var(--border);margin-bottom:24px;}
+.eyebrow{font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.eyebrow a{color:var(--muted);text-decoration:none;} .eyebrow a:hover{color:var(--gold-light);}
+h1{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:44px;line-height:1.05;color:#fff;}
+.sub{color:var(--muted);font-size:15px;margin-top:8px;max-width:72ch;}
+.stats{display:flex;flex-wrap:wrap;gap:14px;margin:22px 0;}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 20px;min-width:120px;}
+.stat .n{font-family:'Cormorant Garamond',serif;font-size:30px;color:var(--gold-light);line-height:1;}
+.stat .l{font-size:11.5px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-top:6px;}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:14px;}
+.tab{font-family:inherit;font-size:12.5px;letter-spacing:0.06em;text-transform:uppercase;padding:8px 14px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;}
+.tab:hover{color:var(--text);} .tab.active{background:var(--gold);color:#1a1a1a;border-color:var(--gold);font-weight:500;}
+.view-title{font-family:'Cormorant Garamond',serif;font-size:26px;color:#fff;margin-bottom:4px;}
+.view-desc{color:var(--muted);font-size:13.5px;margin-bottom:18px;}
+.note{font-size:12.5px;color:var(--muted);} .note.err{color:var(--warn);}
+
+/* charter cards */
+.charter-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px;}
+.charter{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px 22px 20px;position:relative;overflow:hidden;}
+.charter::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent);}
+.role-badge{display:inline-block;font-size:12px;letter-spacing:0.18em;font-weight:500;color:#1a1a1a;background:var(--gold-light);padding:3px 10px;border-radius:5px;}
+.charter h3{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:22px;color:#fff;margin:12px 0 10px;}
+.charter .field{margin-top:12px;}
+.charter .lab{font-size:10.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);opacity:.85;margin-bottom:3px;}
+.charter .val{font-size:13.5px;color:var(--text);}
+.charter .truth{margin-top:14px;padding:11px 13px;border-left:3px solid var(--bad);background:rgba(201,96,90,0.08);border-radius:6px;font-size:13px;color:#e8c9c6;}
+.charter .truth .lab{color:var(--bad);opacity:1;}
+
+/* generic table */
+.table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:640px;}
+thead th{text-align:left;font-weight:500;font-size:11px;letter-spacing:0.09em;text-transform:uppercase;color:var(--gold);padding:13px 14px;border-bottom:1px solid var(--border);white-space:nowrap;position:sticky;top:0;background:var(--surface);}
+tbody td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,0.05);vertical-align:top;}
+tbody tr:last-child td{border-bottom:none;} tbody tr:hover{background:rgba(255,255,255,0.03);}
+.pill{display:inline-block;font-size:11px;padding:2px 9px;border-radius:999px;border:1px solid var(--border);color:var(--muted);white-space:nowrap;}
+.rag-green{color:var(--good);border-color:rgba(79,138,91,.5);background:rgba(79,138,91,.1);}
+.rag-amber{color:var(--warn);border-color:rgba(181,121,58,.5);background:rgba(181,121,58,.1);}
+.rag-red{color:var(--bad);border-color:rgba(201,96,90,.5);background:rgba(201,96,90,.1);}
+.rag-none{color:var(--muted);}
+.pri-high{color:var(--bad);} .pri-med{color:var(--warn);} .pri-low{color:var(--muted);}
+.truthcell{color:#e8c9c6;font-size:12.5px;}
+.meter{display:inline-flex;gap:3px;}
+.dot{width:9px;height:9px;border-radius:2px;background:rgba(255,255,255,.12);}
+.dot.on{background:var(--gold-light);}
+.okr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;}
+.okr{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 18px;}
+.okr .m{font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);}
+.okr .v{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold-light);margin:6px 0;}
+.okr .nn{font-size:12.5px;color:var(--muted);}
+footer{margin-top:28px;color:var(--muted);font-size:12px;line-height:1.7;}
+footer code{color:var(--gold-light);font-size:11.5px;}
+@media(max-width:760px){h1{font-size:34px;}body{padding:0 12px 48px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="site">
+<div class="eyebrow"><a href="/">&larr; Automation Library</a> &nbsp;·&nbsp; AI EXECUTIVE TEAM</div>
+<h1>The Boardroom</h1>
+<p class="sub">Your AI executive team — COO, CFO, CTO, CRO, CMO — guiding InflectionPoint toward growth and scalability. Goal: <strong>$125,000 in 2027</strong> from non-Thelsa consulting &amp; AI automation. They meet you every Monday 9am to review plan vs. actual, hold you accountable, and tell you the truth.</p>
+</header>
+
+<div class="stats" id="stats"></div>
+
+<div class="tabs" id="tabs"></div>
+
+<div id="view"></div>
+<div class="note" id="note">Loading boardroom…</div>
+
+<footer>
+Data source: the boardroom tabs of the ops data sheet (<code>exec_charters, okrs_2027, weekly_plan, scorecard, recommendations, pipeline_nonthelsa, product_ideas, cto_improvements, skills_artifacts</code>), read-only. The Sunday "Board Prep" run updates these; the Monday 9am meeting reviews them. Edits you make in the sheet reflect here on reload.
+</footer>
+</div>
+
+<script>
+var SHEET="1ExqJR6K-ez41VTr6iwwOCSgX_iYqYatkST79RY39PYk";
+function csvUrl(tab){return "https://docs.google.com/spreadsheets/d/"+SHEET+"/gviz/tq?tqx=out:csv&sheet="+encodeURIComponent(tab);}
+
+function parseCSV(text){var rows=[],row=[],f="",i=0,q=false,c;while(i<text.length){c=text[i];if(q){if(c==='"'){if(text[i+1]==='"'){f+='"';i++;}else q=false;}else f+=c;}else{if(c==='"')q=true;else if(c===',' ){row.push(f);f="";}else if(c==='\n'){row.push(f);rows.push(row);row=[];f="";}else if(c==='\r'){}else f+=c;}i++;}if(f.length||row.length){row.push(f);rows.push(row);}return rows;}
+function toObjs(rows){if(!rows.length)return[];var h=rows[0].map(function(x){return x.trim();});return rows.slice(1).filter(function(r){return r.some(function(v){return v&&v.trim();});}).map(function(r){var o={};h.forEach(function(k,i){o[k]=(r[i]||"").trim();});return o;});}
+function esc(s){return(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+var TABS=[
+["charters","Charters","exec_charters","The five roles — mandate, what they own, KPIs, and their standing instruction to tell you the truth."],
+["scorecard","Scorecard","scorecard","Weekly accountability rating across every key area."],
+["weekly_plan","Weekly Plan","weekly_plan","This week's plan vs. actual, by area and owner."],
+["recommendations","Recommendations","recommendations","Open calls from the exec team — including the blunt ones."],
+["pipeline","Pipeline","pipeline_nonthelsa","Non-Thelsa opportunities driving toward the $125k goal."],
+["products","Products","product_ideas","Your builds scored for market appeal and multi-tenant productization."],
+["improvements","Improvements","cto_improvements","CTO's continuous-improvement backlog for existing automations (UI/UX/features)."],
+["skills","Skills & Artifacts","skills_artifacts","Reusable Claude skills/artifacts the CTO recommends adding across all projects."],
+["okrs","OKRs / $125k Model","okrs_2027","The 2027 revenue target and how it breaks down."]
+];
+var DATA={}; var active="charters";
+
+function meter(n){n=parseInt(n)||0;var h='<span class="meter">';for(var i=1;i<=5;i++){h+='<span class="dot'+(i<=n?' on':'')+'"></span>';}return h+'</span>';}
+function rag(v){var t=(v||"").toLowerCase();if(/green|strong|on track/.test(t))return'<span class="pill rag-green">'+esc(v)+'</span>';if(/amber|watch|at risk|degraded/.test(t))return'<span class="pill rag-amber">'+esc(v)+'</span>';if(/red|off|behind|fail/.test(t))return'<span class="pill rag-red">'+esc(v)+'</span>';return'<span class="pill rag-none">'+esc(v||"—")+'</span>';}
+function pri(v){var t=(v||"").toLowerCase();var c=t==="high"?"pri-high":t==="med"||t==="medium"?"pri-med":"pri-low";return'<span class="'+c+'">'+esc(v||"")+'</span>';}
+
+function renderTable(objs,cols){ // cols: [[key,label,fmt?]]
+  var h='<div class="table-wrap"><table><thead><tr>';
+  cols.forEach(function(c){h+='<th>'+esc(c[1])+'</th>';});
+  h+='</tr></thead><tbody>';
+  objs.forEach(function(o){h+='<tr>';cols.forEach(function(c){var v=o[c[0]]||"";h+='<td>'+(c[2]?c[2](v,o):esc(v))+'</td>';});h+='</tr>';});
+  h+='</tbody></table></div>';
+  return h;
+}
+
+function renderView(){
+  var meta=TABS.filter(function(t){return t[0]===active;})[0];
+  var objs=DATA[meta[2]]||[];
+  var html='<div class="view-title">'+esc(meta[1])+'</div><div class="view-desc">'+esc(meta[3])+'</div>';
+  if(active==="charters"){
+    html+='<div class="charter-grid">';
+    objs.forEach(function(o){
+      html+='<div class="charter"><span class="role-badge">'+esc(o.role)+'</span>'+
+      '<h3>'+esc(o.title)+'</h3>'+
+      '<div class="field"><div class="lab">Mandate</div><div class="val">'+esc(o.mandate)+'</div></div>'+
+      '<div class="field"><div class="lab">Owns</div><div class="val">'+esc(o.owns)+'</div></div>'+
+      '<div class="field"><div class="lab">KPIs</div><div class="val">'+esc(o.kpis)+'</div></div>'+
+      '<div class="truth"><div class="lab">Truth mandate</div>'+esc(o.truth_mandate)+'</div>'+
+      '</div>';
+    });
+    html+='</div>';
+  } else if(active==="scorecard"){
+    html+=renderTable(objs,[["area","Area"],["rating","Rating",function(v){return rag(v);}],["trend","Trend"],["comment","Comment"],["owner_exec","Owner"]]);
+  } else if(active==="weekly_plan"){
+    html+=renderTable(objs,[["area","Area"],["planned","Planned"],["actual","Actual"],["status","Status",function(v){return rag(v);}],["owner_exec","Owner"],["notes","Notes"]]);
+  } else if(active==="recommendations"){
+    html+=renderTable(objs,[["exec","Exec"],["recommendation","Recommendation"],["rationale","Rationale"],["area","Area"],["priority","Priority",function(v){return pri(v);}],["status","Status",function(v){return rag(v);}],["truth_tell","Truth-tell",function(v){return'<span class="truthcell">'+esc(v)+'</span>';}]]);
+  } else if(active==="pipeline"){
+    html+=renderTable(objs,[["prospect","Prospect"],["source","Source"],["stage","Stage",function(v){return rag(v);}],["service","Service"],["est_value","Est. value"],["probability","Prob."],["next_step","Next step"],["owner","Owner"]]);
+  } else if(active==="products"){
+    html+=renderTable(objs,[["build","Build"],["description","Description"],["market_appeal","Market appeal",function(v){return meter(v);}],["multitenant_readiness","Multi-tenant",function(v){return meter(v);}],["effort","Effort"],["target_market","Target market"],["recommendation","Recommendation"],["status","Status"]]);
+  } else if(active==="improvements"){
+    html+=renderTable(objs,[["automation","Automation"],["area","Area"],["suggestion","Suggestion"],["impact","Impact"],["effort","Effort"],["status","Status",function(v){return rag(v);}]]);
+  } else if(active==="skills"){
+    html+=renderTable(objs,[["candidate","Candidate"],["type","Type"],["what_it_does","What it does"],["projects_benefiting","Projects"],["status","Status"]]);
+  } else if(active==="okrs"){
+    html+='<div class="okr-grid">';
+    objs.forEach(function(o){html+='<div class="okr"><div class="m">'+esc(o.metric)+'</div><div class="v">'+esc(o.value)+'</div><div class="nn">'+esc(o.notes)+'</div></div>';});
+    html+='</div>';
+  }
+  document.getElementById("view").innerHTML=html;
+}
+
+function renderTabs(){
+  var h="";TABS.forEach(function(t){h+='<button class="tab'+(t[0]===active?' active':'')+'" data-k="'+t[0]+'">'+esc(t[1])+'</button>';});
+  document.getElementById("tabs").innerHTML=h;
+  [].forEach.call(document.querySelectorAll(".tab"),function(b){b.addEventListener("click",function(){active=b.getAttribute("data-k");renderTabs();renderView();});});
+}
+
+function renderStats(){
+  var recs=DATA.recommendations||[],prods=DATA.product_ideas||[],imp=DATA.cto_improvements||[],pipe=DATA.pipeline_nonthelsa||[];
+  var openRecs=recs.filter(function(r){return(r.status||"").toLowerCase()==="open";}).length;
+  var openImp=imp.filter(function(r){return(r.status||"").toLowerCase()==="open";}).length;
+  function s(n,l){return'<div class="stat"><div class="n">'+n+'</div><div class="l">'+l+'</div></div>';}
+  document.getElementById("stats").innerHTML=
+    s("$125k","2027 goal (non-Thelsa)")+s(pipe.length,"Pipeline items")+s(openRecs,"Open recommendations")+s(prods.length,"Products scored")+s(openImp,"Improvements open");
+}
+
+function load(){
+  var jobs=TABS.map(function(t){return t[2];});
+  var uniq=jobs.filter(function(v,i){return jobs.indexOf(v)===i;});
+  Promise.all(uniq.map(function(tab){
+    return fetch(csvUrl(tab),{cache:"no-store"}).then(function(r){return r.text();}).then(function(txt){
+      var rows=parseCSV(txt);var header=(rows[0]||[]).map(function(h){return h.trim();});
+      // guard: gviz returns first sheet if tab missing — require a known header
+      DATA[tab]=toObjs(rows);
+    }).catch(function(){DATA[tab]=[];});
+  })).then(function(){
+    document.getElementById("note").textContent="Live · updated "+new Date().toLocaleString();
+    renderStats();renderTabs();renderView();
+  });
+}
+load();
+</script>
+</body>
+</html>

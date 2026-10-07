@@ -544,18 +544,16 @@ header, .hero, .stats-bar, .library, footer { padding-left: 20px; padding-right:
 <script>
 const AUTOMATIONS = [
 {
-id: "client-onboarding",
-title: "Client Onboarding Wizard",
-subtitle: "QuotePrism · New Company Setup",
-status: "live",
-description: "Set up a new moving company on the quote automation: company details, connected platforms (MATT mailbox, Moveware, Microsoft 365), salespeople and rules. Their IT person sends keys through a one-time secure link; keys are stored encrypted. Connection tests must pass before the company can be switched live. Sign-in required — operator only.",
-pipeline: ["Company", "Platforms", "People", "Rules", "Secure keys", "Go live"],
-schedule: "On demand",
-platform: "Render.com",
+id: "boardroom",
+title: "AI Executive Team",
+subtitle: "Boardroom · COO · CFO · CTO · CRO · CMO",
+status: "progress",
+description: "Your AI executive team guiding InflectionPoint toward $125k in 2027 (non-Thelsa consulting + AI automation). View each role's charter, the weekly accountability scorecard, plan vs. actual, the pipeline, product-productization scoring, and the execs' recommendations. Meets you every Monday 9:00 AM.",
+pipeline: ["Claude", "Google Sheets", "Gmail"],
+schedule: "Mondays · 9:00 AM CT (board meeting)",
+platform: "Claude + Google Sheets",
 runnable: false,
-dashboardUrl: "https://mattapp.inflectionpointnow.com/admin/onboard",
-buttonLabel: "Launch Wizard",
-newTab: true
+dashboardUrl: "/boardroom.html"
 },
 {
 id: "jobscout",
@@ -643,11 +641,11 @@ const liveStatsHTML = auto.liveStats
 : '';
 
 const runBtn = auto.dashboardUrl
-? `<a class="btn-run" href="${auto.dashboardUrl}"${auto.newTab ? ' target="_blank" rel="noopener"' : ''}>
+? `<a class="btn-run" href="${auto.dashboardUrl}">
 <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5">
 <polygon points="2,1 11,6 2,11" fill="currentColor" stroke="none"/>
 </svg>
-${auto.buttonLabel || "Open Dashboard"}
+Open Dashboard
 </a>`
 : auto.runnable
 ? `<button class="btn-run" onclick="triggerRun('${auto.id}')">
