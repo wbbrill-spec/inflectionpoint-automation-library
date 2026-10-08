@@ -151,7 +151,7 @@ body { padding: 0 12px 48px; }
 <header class="site">
 <div class="eyebrow"><a href="/">&larr; Automation Library</a> &nbsp;·&nbsp; AUTO-JOBSCOUT</div>
 <h1>Job &amp; Gig Scout</h1>
-<p class="sub">Scheduled scout for Upwork gigs and full-time roles — scored to fit, with a tailored proposal drafted for each strong match. Click <strong>Draft &rarr;</strong> to open the ready-to-review proposal, <strong>Posting &rarr;</strong> for the listing. Mark each row <strong>Applied</strong> or <strong>Declined</strong> — your marks are remembered on this device and counted on the library home. Draft-and-approve only: nothing is submitted automatically.</p>
+<p class="sub">Scheduled scout for Upwork gigs and full-time roles — scored to fit, with a tailored proposal drafted for each strong match. Click <strong>Draft &rarr;</strong> to open the ready-to-review proposal, <strong>Posting &rarr;</strong> for the listing. Mark a row <strong>Applied</strong> to track it, or <strong>Declined</strong> to remove it from the board. Declined items drop out of the active list and the counts below; to review or restore them, set the <strong>Status</strong> filter to <em>Declined</em>. Draft-and-approve only: nothing is submitted automatically.</p>
 </header>
 
 <div class="stats" id="stats"></div>
@@ -161,7 +161,7 @@ body { padding: 0 12px 48px; }
 <select id="f-source"><option value="">All</option><option value="upwork">Upwork</option><option value="linkedin">LinkedIn</option></select>
 </div>
 <div><label>Status</label>
-<select id="f-status"><option value="">All</option><option value="new">New</option><option value="drafted">Drafted</option><option value="applied">Applied</option><option value="declined">Declined</option><option value="skipped">Skipped</option></select>
+<select id="f-status"><option value="">Active (hides declined)</option><option value="new">New</option><option value="drafted">Drafted</option><option value="applied">Applied</option><option value="declined">Declined</option><option value="skipped">Skipped</option></select>
 </div>
 <div><label>Sort</label>
 <select id="f-sort"><option value="score">Score (high&rarr;low)</option><option value="posted">Most recent</option><option value="comp">Comp</option></select>
@@ -186,7 +186,7 @@ body { padding: 0 12px 48px; }
 </div>
 
 <footer>
-Data source: the <code>jobscout</code> tab of the ops data sheet (read-only here). Marking a row <strong>Applied</strong>/<strong>Declined</strong> is saved in this browser and reflected on the library home; the <code>jobscout</code> tab stays the scheduled scout's source of truth. (Ask to enable sheet-wide sync.)<br>
+Data source: the <code>jobscout</code> tab of the ops data sheet (read-only here). Marking a row <strong>Applied</strong>/<strong>Declined</strong> is remembered in this browser and reflected on the library home. When a status is also written to the <code>jobscout</code> tab it carries across every device and is preserved by the scheduled scout; the tab stays the scout's source of truth.<br>
 Compliance: no automated submission, no bot-detection/CAPTCHA bypass, no mass actions — per Upwork/LinkedIn terms. The scout prepares; you send.
 </footer>
 </div>
@@ -197,13 +197,26 @@ var SHEET_ID = "1ExqJR6K-ez41VTr6iwwOCSgX_iYqYatkST79RY39PYk";
 var TAB = "jobscout";
 var CSV_URL = "https://docs.google.com/spreadsheets/d/" + SHEET_ID + "/gviz/tq?tqx=out:csv&sheet=" + TAB;
 
+// Statuses that remove an item from the active board.
+var REMOVED = { declined: true, skipped: true };
+
 // Applied/Declined marks are saved in THIS browser (localStorage), shared across the ops
 // site pages so the library home counts them too. The jobscout tab remains the source of
-// truth for the scheduled scout. (No public write endpoint is exposed.)
+// truth for the scheduled scout; a status written there carries across all devices.
+// (No public write endpoint is exposed.)
 var LS_KEY = "jobscout_status_overrides_v1";
 function loadOverrides(){ try { return JSON.parse(localStorage.getItem(LS_KEY)||"{}")||{}; } catch(e){ return {}; } }
 function saveOverrides(o){ try { localStorage.setItem(LS_KEY, JSON.stringify(o)); } catch(e){} }
-function applyOverrides(list){ var o=loadOverrides(); list.forEach(function(d){ if(o[d.id]) d.status=o[d.id]; }); }
+// Sheet status is the base; a local mark overrides it only when the sheet hasn't already
+// recorded a removal (so a decline written to the sheet stays removed on every device).
+function applyOverrides(list){
+var o=loadOverrides();
+list.forEach(function(d){
+var sheetStatus=(d.status||"").toLowerCase();
+if(REMOVED[sheetStatus]) return;      // sheet already removed it — keep that, ignore stale local marks
+if(o[d.id]) d.status=o[d.id];
+});
+}
 
 // --- Seed fallback (used if the sheet can't be read yet) ---
 var SEED = [
@@ -243,8 +256,8 @@ var o={}; header.forEach(function(h,idx){ o[h]=(r[idx]||"").trim(); }); return o
 }
 
 var DATA = [];
-var LIVE = false;   // true only when the real sheet loaded (guards write-back)
-var BUSY = false;   // true while a status write is in flight
+var LIVE = false; // true only when the real sheet loaded (guards write-back)
+var BUSY = false; // true while a status write is in flight
 
 function esc(s){ return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
 function escAttr(s){ return (s||"").replace(/\\/g,"\\\\").replace(/'/g,"\\'").replace(/"/g,"&quot;"); }
@@ -260,8 +273,15 @@ var src=document.getElementById("f-source").value;
 var st=document.getElementById("f-status").value;
 var sort=document.getElementById("f-sort").value;
 var list=DATA.filter(function(d){
+var status=(d.status||"new").toLowerCase();
 if(src && (d.source||"").toLowerCase()!==src) return false;
-if(st && (d.status||"new").toLowerCase()!==st) return false;
+if(st){
+// Explicit status filter: show exactly that status (lets you review/restore Declined).
+if(status!==st) return false;
+} else {
+// Default "Active" view: hide anything removed (declined / skipped).
+if(REMOVED[status]) return false;
+}
 return true;
 });
 list.sort(function(a,b){
@@ -312,19 +332,21 @@ renderStats();
 }
 
 function renderStats(){
-var total=DATA.length;
-function cnt(s){ return DATA.filter(function(d){return (d.status||"new").toLowerCase()===s;}).length; }
-var newN=cnt("new");
-var appliedN=cnt("applied");
-var declinedN=cnt("declined");
-var okN=DATA.filter(function(d){return (d.comp_ok||"").toUpperCase()==="TRUE";}).length;
-var scores=DATA.map(function(d){return parseFloat(d.score)||0;}).filter(function(n){return n>0;});
+// Active = everything not removed (declined/skipped). Counts reflect the active board.
+var active=DATA.filter(function(d){ return !REMOVED[(d.status||"new").toLowerCase()]; });
+function cntActive(s){ return active.filter(function(d){return (d.status||"new").toLowerCase()===s;}).length; }
+var activeN=active.length;
+var newN=cntActive("new");
+var appliedN=cntActive("applied");
+var declinedN=DATA.filter(function(d){return (d.status||"").toLowerCase()==="declined";}).length;
+var okN=active.filter(function(d){return (d.comp_ok||"").toUpperCase()==="TRUE";}).length;
+var scores=active.map(function(d){return parseFloat(d.score)||0;}).filter(function(n){return n>0;});
 var avg=scores.length? Math.round(scores.reduce(function(a,b){return a+b;},0)/scores.length):0;
 document.getElementById("stats").innerHTML =
-stat(total,"Matches tracked")+
+stat(activeN,"Active matches")+
 stat(newN,"New / unreviewed")+
 stat(appliedN,"Applied")+
-stat(declinedN,"Declined")+
+stat(declinedN,"Declined (removed)")+
 stat(okN,"At/above floor")+
 stat(avg,"Avg score");
 }
@@ -339,7 +361,10 @@ if(status==="new"){ delete o[id]; } else { o[id]=status; }
 saveOverrides(o);
 row.status=status;
 render();
-setNote("Saved on this device \u2014 "+(status==="new"?"reset to new":status)+".","ok");
+var msg = status==="declined" ? "Removed from the board (declined), saved on this device."
+: status==="new" ? "Reset to new."
+: "Marked "+status+", saved on this device.";
+setNote(msg,"ok");
 }
 
 function useSeed(msg){
@@ -362,7 +387,8 @@ var objs=rowsToObjects(rows);
 if(!objs.length){ useSeed("No matches logged yet — showing sample rows."); return; }
 DATA=objs; LIVE=true;
 applyOverrides(DATA);
-setNote("Live · "+objs.length+" rows · updated "+new Date().toLocaleString());
+var removed=DATA.filter(function(d){return REMOVED[(d.status||"new").toLowerCase()];}).length;
+setNote("Live · "+objs.length+" rows ("+removed+" removed) · updated "+new Date().toLocaleString());
 render();
 }).catch(function(e){
 useSeed("Sheet not public yet ("+e.message+") — showing sample rows.");
