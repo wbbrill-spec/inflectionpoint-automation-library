@@ -186,7 +186,7 @@ body { padding: 0 12px 48px; }
 </div>
 
 <footer>
-Data source: the <code>jobscout</code> tab of the ops data sheet (read-only here). Marking a row <strong>Applied</strong>/<strong>Declined</strong> is remembered in this browser and reflected on the library home. When a status is also written to the <code>jobscout</code> tab it carries across every device and is preserved by the scheduled scout; the tab stays the scout's source of truth.<br>
+Data source: the <code>jobscout</code> tab of the ops data sheet. Marking a row <strong>Applied</strong> or <strong>Declined</strong> is saved to that tab's status column, so it carries across every device and is preserved by the scheduled scout. The button can only change a job's status; it cannot edit anything else in the sheet.<br>
 Compliance: no automated submission, no bot-detection/CAPTCHA bypass, no mass actions — per Upwork/LinkedIn terms. The scout prepares; you send.
 </footer>
 </div>
@@ -200,18 +200,25 @@ var CSV_URL = "https://docs.google.com/spreadsheets/d/" + SHEET_ID + "/gviz/tq?t
 // Statuses that remove an item from the active board.
 var REMOVED = { declined: true, skipped: true };
 
-// Applied/Declined marks are saved in THIS browser (localStorage), shared across the ops
-// site pages so the library home counts them too. The jobscout tab remains the source of
-// truth for the scheduled scout; a status written there carries across all devices.
-// (No public write endpoint is exposed.)
+// Applied/Declined/Reset clicks are written to the jobscout tab's status column through a
+// locked-down, status-only endpoint: it can only set the status of an existing job id to
+// new / applied / declined. It cannot touch any other tab, column or value.
+// The click is also kept in this browser (localStorage) so the board updates instantly and
+// so a failed save is retried the next time the page opens.
+var STATUS_HOOK = "https://hook.us2.make.com/h25pydmicy3gtgb9xajeurkuqeeeolqx";
+var ALLOWED = { "new": true, applied: true, declined: true };
 var LS_KEY = "jobscout_status_overrides_v1";
+var LS_PENDING = "jobscout_pending_sync_v1";
+function loadPending(){ try { return JSON.parse(localStorage.getItem(LS_PENDING)||"{}")||{}; } catch(e){ return {}; } }
+function savePending(o){ try { localStorage.setItem(LS_PENDING, JSON.stringify(o)); } catch(e){} }
 function loadOverrides(){ try { return JSON.parse(localStorage.getItem(LS_KEY)||"{}")||{}; } catch(e){ return {}; } }
 function saveOverrides(o){ try { localStorage.setItem(LS_KEY, JSON.stringify(o)); } catch(e){} }
 // Sheet status is the base; a local mark overrides it only when the sheet hasn't already
 // recorded a removal (so a decline written to the sheet stays removed on every device).
 function applyOverrides(list){
-var o=loadOverrides();
+var o=loadOverrides(), pend=loadPending();
 list.forEach(function(d){
+if(pend[d.id]){ d.status=pend[d.id]; return; }   // a click not yet confirmed in the sheet wins
 var sheetStatus=(d.status||"").toLowerCase();
 if(REMOVED[sheetStatus]) return;      // sheet already removed it — keep that, ignore stale local marks
 if(o[d.id]) d.status=o[d.id];
@@ -352,7 +359,63 @@ stat(avg,"Avg score");
 }
 function stat(n,l){ return '<div class="stat"><div class="n">'+n+'</div><div class="l">'+l+'</div></div>'; }
 
-// --- Mark a row Applied/Declined (saved in this browser; shared with the library home) ---
+// --- Sheet sync: send the status, then confirm by re-reading the sheet ---
+function norm(v){ v=(v||"").toLowerCase().trim(); return v||"new"; }
+function sendStatus(id, status){
+return fetch(STATUS_HOOK, { method:"POST", mode:"no-cors", body:new URLSearchParams({ id:id, status:status }) });
+}
+function readSheetStatus(id){
+return fetch(CSV_URL+"&_="+Date.now(), {cache:"no-store"}).then(function(r){
+if(!r.ok) throw new Error("HTTP "+r.status);
+return r.text();
+}).then(function(txt){
+var objs=rowsToObjects(parseCSV(txt));
+for(var i=0;i<objs.length;i++){ if(objs[i].id===id) return norm(objs[i].status); }
+return null;
+});
+}
+function confirmInSheet(id, status, triesLeft){
+return new Promise(function(resolve){
+setTimeout(function(){
+readSheetStatus(id).then(function(v){
+if(v===status) resolve(true);
+else if(triesLeft>1) resolve(confirmInSheet(id,status,triesLeft-1));
+else resolve(false);
+}).catch(function(){
+if(triesLeft>1) resolve(confirmInSheet(id,status,triesLeft-1)); else resolve(false);
+});
+}, 2500);
+});
+}
+function syncStatus(id, status, quiet){
+if(!LIVE || !ALLOWED[status]) return Promise.resolve(false);
+var pend=loadPending(); pend[id]=status; savePending(pend);
+return sendStatus(id,status).then(function(){ return confirmInSheet(id,status,4); }, function(){ return false; }).then(function(ok){
+var p=loadPending();
+if(p[id]!==status) return ok;            // a newer click replaced this one
+if(ok){
+delete p[id]; savePending(p);
+if(!quiet) setNote(status==="declined" ? "Declined and saved to the sheet. Removed on every device."
+: status==="new" ? "Reset to new and saved to the sheet."
+: "Marked "+status+" and saved to the sheet.","ok");
+} else if(!quiet){
+setNote("Saved on this device, but the sheet did not confirm. It will retry when this page is next opened.","err");
+}
+return ok;
+});
+}
+// Retry any clicks that were never confirmed in the sheet (e.g. the connection dropped).
+function flushPending(){
+var p=loadPending(), ids=Object.keys(p);
+if(!LIVE || !ids.length) return;
+ids.forEach(function(id){
+var row=null; for(var i=0;i<DATA.length;i++){ if(DATA[i].id===id){ row=DATA[i]; break; } }
+if(!row){ var q=loadPending(); delete q[id]; savePending(q); return; }   // job no longer in the sheet
+syncStatus(id, p[id], true);
+});
+}
+
+// --- Mark a row Applied/Declined/Reset: instant on screen, then saved to the sheet ---
 function setStatus(id, status){
 var row=null; for(var i=0;i<DATA.length;i++){ if(DATA[i].id===id){ row=DATA[i]; break; } }
 if(!row) return;
@@ -361,10 +424,9 @@ if(status==="new"){ delete o[id]; } else { o[id]=status; }
 saveOverrides(o);
 row.status=status;
 render();
-var msg = status==="declined" ? "Removed from the board (declined), saved on this device."
-: status==="new" ? "Reset to new."
-: "Marked "+status+", saved on this device.";
-setNote(msg,"ok");
+if(!LIVE){ setNote("Sample data only. Nothing was saved.","err"); return; }
+setNote(status==="declined" ? "Removed from the board. Saving to the sheet…" : "Saving to the sheet…");
+syncStatus(id, status, false);
 }
 
 function useSeed(msg){
@@ -390,6 +452,7 @@ applyOverrides(DATA);
 var removed=DATA.filter(function(d){return REMOVED[(d.status||"new").toLowerCase()];}).length;
 setNote("Live · "+objs.length+" rows ("+removed+" removed) · updated "+new Date().toLocaleString());
 render();
+flushPending();
 }).catch(function(e){
 useSeed("Sheet not public yet ("+e.message+") — showing sample rows.");
 });
