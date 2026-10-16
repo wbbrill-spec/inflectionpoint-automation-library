@@ -65,6 +65,20 @@ tbody tr:last-child td{border-bottom:none;} tbody tr:hover{background:rgba(255,2
 .okr .m{font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);}
 .okr .v{font-family:'Public Sans',sans-serif;font-size:22px;color:var(--gold-light);margin:6px 0;}
 .okr .nn{font-size:12.5px;color:var(--muted);}
+/* CRO pipeline totals */
+.pipe-sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:18px;}
+.pipe-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;}
+.pipe-card.hero{border-color:var(--gold);box-shadow:inset 0 2px 0 var(--gold);}
+.pipe-card .k{font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);}
+.pipe-card .big{font-family:'Public Sans',sans-serif;font-weight:700;font-size:34px;color:#fff;line-height:1.1;margin-top:6px;}
+.pipe-card .hint{font-size:12px;color:var(--muted);margin-top:6px;}
+.goalbar{height:8px;border-radius:4px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:10px;}
+.goalbar span{display:block;height:100%;background:var(--gold-light);}
+.counted{font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--gold-light);}
+.counted.zero{color:var(--muted);}
+tr.subtotal td{color:var(--muted);font-style:italic;}
+tfoot td{padding:13px 14px;border-top:1px solid var(--border);font-weight:600;color:#fff;white-space:nowrap;}
+.cro-link{display:inline-block;margin-top:12px;font-size:13px;color:var(--gold-light);cursor:pointer;text-decoration:underline;}
 footer{margin-top:28px;color:var(--muted);font-size:12px;line-height:1.7;}
 footer code{color:var(--gold-light);font-size:11.5px;}
 @media(max-width:760px){h1{font-size:34px;}body{padding:0 12px 48px;}}
@@ -106,7 +120,7 @@ var TABS=[
 ["scorecard","Scorecard","scorecard","Weekly accountability rating across every key area."],
 ["weekly_plan","Weekly Plan","weekly_plan","This week's plan vs. actual, by area and owner."],
 ["recommendations","Recommendations","recommendations","Open calls from the exec team — including the blunt ones."],
-["pipeline","Pipeline","pipeline_nonthelsa","Non-Thelsa opportunities driving toward the $125k goal."],
+["pipeline","CRO · Pipeline","pipeline_nonthelsa","CRO report: every non-Thelsa opportunity, added up, against the $125k 2027 goal."],
 ["products","Products","product_ideas","Your builds scored for market appeal and multi-tenant productization."],
 ["improvements","Improvements","cto_improvements","CTO's continuous-improvement backlog for existing automations (UI/UX/features)."],
 ["skills","Skills & Artifacts","skills_artifacts","Reusable Claude skills/artifacts the CTO recommends adding across all projects."],
@@ -117,6 +131,58 @@ var DATA={}; var active="charters";
 function meter(n){n=parseInt(n)||0;var h='<span class="meter">';for(var i=1;i<=5;i++){h+='<span class="dot'+(i<=n?' on':'')+'"></span>';}return h+'</span>';}
 function rag(v){var t=(v||"").toLowerCase();if(/green|strong|on track/.test(t))return'<span class="pill rag-green">'+esc(v)+'</span>';if(/amber|watch|at risk|degraded/.test(t))return'<span class="pill rag-amber">'+esc(v)+'</span>';if(/red|off|behind|fail/.test(t))return'<span class="pill rag-red">'+esc(v)+'</span>';return'<span class="pill rag-none">'+esc(v||"—")+'</span>';}
 function pri(v){var t=(v||"").toLowerCase();var c=t==="high"?"pri-high":t==="med"||t==="medium"?"pri-med":"pri-low";return'<span class="'+c+'">'+esc(v||"")+'</span>';}
+
+// ---- CRO pipeline math ----
+// est_value is free text, so each row is converted to a 12-month dollar value by fixed rules:
+//  1) "= $X in 2027"            -> X (already a 12-month figure)
+//  2) "$A -> $B" (staged deal)  -> A + B
+//  3) "$X/mo"                   -> X x 12
+//  4) otherwise the first $ amount ("$0 counted", "$22", "$78,000 (...)")
+// Skipped: summary rows (ids ind-*, *-total, prospect starting "-"), closed-not-won / 0% rows,
+// and rows whose value is tracked in another row (avoids double counting).
+var GOAL=125000;
+function amt(s){var m=String(s).match(/\$\s*([\d,]+(?:\.\d+)?)\s*([km])?/i);if(!m)return null;var v=parseFloat(m[1].replace(/,/g,""));var u=(m[2]||"").toLowerCase();if(u==="k")v*=1e3;if(u==="m")v*=1e6;return v;}
+function allAmts(s){var re=/\$\s*([\d,]+(?:\.\d+)?)\s*([km])?/gi,m,out=[];while((m=re.exec(s))){var v=parseFloat(m[1].replace(/,/g,""));var u=(m[2]||"").toLowerCase();if(u==="k")v*=1e3;if(u==="m")v*=1e6;out.push(v);}return out;}
+function pipeRow(o){
+  var id=(o.id||"").toLowerCase(),pr=(o.prospect||"").trim(),ev=o.est_value||"",st=(o.stage||"").toLowerCase();
+  var p=parseFloat(String(o.probability||"").replace(/[^\d.]/g,""));p=isNaN(p)?0:p/100;
+  if(/^ind-|-total$/.test(id)||/^-/.test(pr))return{summary:true};
+  if(/not won|lost/.test(st)||(String(o.probability||"").trim()!==""&&p===0))return{value:0,prob:0,skip:"closed, not won"};
+  if(/tracked .*in row/i.test(ev))return{value:0,prob:p,skip:"counted in its MRR row"};
+  var v=0,how="";
+  var y=ev.match(/=\s*\$\s*([\d,]+(?:\.\d+)?)\s*in\s*2027/i);
+  if(y){v=parseFloat(y[1].replace(/,/g,""));how="2027 value";}
+  else if(/->|→/.test(ev)&&allAmts(ev).length>1){v=allAmts(ev).reduce(function(a,b){return a+b;},0);how="staged total";}
+  else{var a=amt(ev);if(a!==null){if(/\$\s*[\d,.]+\s*[km]?\s*\/\s*mo/i.test(ev)){v=a*12;how="monthly × 12";}else{v=a;how="";}}else how="no $ value yet";}
+  var guaranteed=/closed/.test(st)&&p>=1;
+  var group=guaranteed?"guaranteed":/upwork/.test(st)||/^up-/.test(id)?"upwork":"active";
+  return{value:v,prob:p,weighted:v*p,how:how,group:group};
+}
+function money(n){return "$"+Math.round(n).toLocaleString("en-US");}
+function pipeTotals(objs){
+  var t={gross:0,weighted:0,guaranteed:0,active:0,upwork:0,count:0};
+  objs.forEach(function(o){var r=pipeRow(o);if(r.summary||r.skip)return;t.count++;t.gross+=r.value;t.weighted+=r.weighted;t[r.group]+=r.value;});
+  return t;
+}
+function renderPipeline(objs){
+  var t=pipeTotals(objs),pct=Math.min(100,t.weighted/GOAL*100);
+  var h='<div class="pipe-sum">'+
+   '<div class="pipe-card hero"><div class="k">Total pipeline value</div><div class="big">'+money(t.gross)+'</div><div class="hint">'+t.count+' live opportunities, 12-month value</div></div>'+
+   '<div class="pipe-card"><div class="k">Weighted (× probability)</div><div class="big">'+money(t.weighted)+'</div><div class="goalbar"><span style="width:'+pct.toFixed(1)+'%"></span></div><div class="hint">'+pct.toFixed(1)+'% of the $125k 2027 goal</div></div>'+
+   '<div class="pipe-card"><div class="k">Guaranteed (closed MRR)</div><div class="big">'+money(t.guaranteed)+'</div><div class="hint">in 2027</div></div>'+
+   '<div class="pipe-card"><div class="k">Active deals</div><div class="big">'+money(t.active)+'</div><div class="hint">direct prospects</div></div>'+
+   '<div class="pipe-card"><div class="k">Upwork</div><div class="big">'+money(t.upwork)+'</div><div class="hint">proposals + invites</div></div>'+
+   '</div>';
+  var rows=objs.filter(function(o){return !pipeRow(o).summary;});
+  h+='<div class="table-wrap"><table><thead><tr><th>Prospect</th><th>Stage</th><th>Service</th><th>Est. value (as written)</th><th>Counted</th><th>Prob.</th><th>Weighted</th><th>Next step</th><th>Owner</th></tr></thead><tbody>';
+  rows.forEach(function(o){var r=pipeRow(o);
+    var c=r.skip?'<span class="counted zero">— '+esc(r.skip)+'</span>':'<span class="counted'+(r.value?'':' zero')+'">'+money(r.value)+'</span>'+(r.how?'<div class="note">'+esc(r.how)+'</div>':'');
+    var w=r.skip?'<span class="counted zero">—</span>':'<span class="counted'+(r.weighted?'':' zero')+'">'+money(r.weighted)+'</span>';
+    h+='<tr><td>'+esc(o.prospect)+'</td><td>'+rag(o.stage)+'</td><td>'+esc(o.service)+'</td><td class="note">'+esc(o.est_value)+'</td><td>'+c+'</td><td>'+esc(o.probability)+'</td><td>'+w+'</td><td>'+esc(o.next_step)+'</td><td>'+esc(o.owner)+'</td></tr>';});
+  h+='</tbody><tfoot><tr><td colspan="4">TOTAL</td><td class="counted">'+money(t.gross)+'</td><td></td><td class="counted">'+money(t.weighted)+'</td><td colspan="2"></td></tr></tfoot></table></div>';
+  h+='<p class="note" style="margin-top:10px">How it adds up: retainers/MRR are counted at 12 months; staged deals (POC → build) count both stages; rows already counted in an MRR row, summary rows, and closed-not-won rows are excluded. Weighted = counted value × probability.</p>';
+  return h;
+}
 
 function renderTable(objs,cols){ // cols: [[key,label,fmt?]]
   var h='<div class="table-wrap"><table><thead><tr>';
@@ -140,6 +206,7 @@ function renderView(){
       '<div class="field"><div class="lab">Owns</div><div class="val">'+esc(o.owns)+'</div></div>'+
       '<div class="field"><div class="lab">KPIs</div><div class="val">'+esc(o.kpis)+'</div></div>'+
       '<div class="truth"><div class="lab">Truth mandate</div>'+esc(o.truth_mandate)+'</div>'+
+      (/^cro$/i.test((o.role||"").trim())?(function(){var t=pipeTotals(DATA.pipeline_nonthelsa||[]);return '<div class="field"><div class="lab">Pipeline (live)</div><div class="val"><strong>'+money(t.gross)+'</strong> total · '+money(t.weighted)+' weighted</div><span class="cro-link" data-go="pipeline">Open CRO pipeline report →</span></div>';})():'')+
       '</div>';
     });
     html+='</div>';
@@ -150,7 +217,7 @@ function renderView(){
   } else if(active==="recommendations"){
     html+=renderTable(objs,[["exec","Exec"],["recommendation","Recommendation"],["rationale","Rationale"],["area","Area"],["priority","Priority",function(v){return pri(v);}],["status","Status",function(v){return rag(v);}],["truth_tell","Truth-tell",function(v){return'<span class="truthcell">'+esc(v)+'</span>';}]]);
   } else if(active==="pipeline"){
-    html+=renderTable(objs,[["prospect","Prospect"],["source","Source"],["stage","Stage",function(v){return rag(v);}],["service","Service"],["est_value","Est. value"],["probability","Prob."],["next_step","Next step"],["owner","Owner"]]);
+    html+=renderPipeline(objs);
   } else if(active==="products"){
     html+=renderTable(objs,[["build","Build"],["description","Description"],["market_appeal","Market appeal",function(v){return meter(v);}],["multitenant_readiness","Multi-tenant",function(v){return meter(v);}],["effort","Effort"],["target_market","Target market"],["recommendation","Recommendation"],["status","Status"]]);
   } else if(active==="improvements"){
@@ -163,6 +230,7 @@ function renderView(){
     html+='</div>';
   }
   document.getElementById("view").innerHTML=html;
+  [].forEach.call(document.querySelectorAll("[data-go]"),function(el){el.addEventListener("click",function(){active=el.getAttribute("data-go");renderTabs();renderView();window.scrollTo(0,0);});});
 }
 
 function renderTabs(){
@@ -175,9 +243,10 @@ function renderStats(){
   var recs=DATA.recommendations||[],prods=DATA.product_ideas||[],imp=DATA.cto_improvements||[],pipe=DATA.pipeline_nonthelsa||[];
   var openRecs=recs.filter(function(r){return(r.status||"").toLowerCase()==="open";}).length;
   var openImp=imp.filter(function(r){return(r.status||"").toLowerCase()==="open";}).length;
-  function s(n,l){return'<div class="stat"><div class="n">'+n+'</div><div class="l">'+l+'</div></div>';}
+  function s(n,l,go){return'<div class="stat"'+(go?' data-go="'+go+'" style="cursor:pointer"':'')+'><div class="n">'+n+'</div><div class="l">'+l+'</div></div>';}
+  var pt=pipeTotals(pipe);
   document.getElementById("stats").innerHTML=
-    s("$125k","2027 goal (non-Thelsa)")+s(pipe.length,"Pipeline items")+s(openRecs,"Open recommendations")+s(prods.length,"Products scored")+s(openImp,"Improvements open");
+    s("$125k","2027 goal (non-Thelsa)")+s(money(pt.gross),"Total pipeline","pipeline")+s(money(pt.weighted),"Weighted pipeline","pipeline")+s(openRecs,"Open recommendations")+s(prods.length,"Products scored")+s(openImp,"Improvements open");
 }
 
 function load(){
