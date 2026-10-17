@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Approval Queue</title>
+<link rel="icon" href="/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f6f9;--card:#fff;--ink:#07182A;--mute:#5b6b7c;--line:#dde3ea;--blue:#0073CF;--green:#1e8e4e;--red:#c0392b;--amber:#b7791f;--chip:#eef3f8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1522;--card:#13202f;--ink:#e8eef5;--mute:#93a3b5;--line:#22344a;--chip:#1b2b3e}}
+:root[data-theme="dark"]{--bg:#0b1522;--card:#13202f;--ink:#e8eef5;--mute:#93a3b5;--line:#22344a;--chip:#1b2b3e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 'Public Sans',system-ui,sans-serif}
+header{position:sticky;top:0;z-index:5;background:#07182A;color:#fff;padding:12px 16px;display:flex;align-items:center;gap:10px}
+header img{height:26px}
+header h1{font-size:16px;margin:0;flex:1}
+header button{background:transparent;border:1px solid #39516b;color:#fff;border-radius:8px;padding:6px 10px;font:inherit;font-size:13px}
+main{max-width:760px;margin:0 auto;padding:14px 16px 80px}
+.status{color:var(--mute);font-size:13px;margin:4px 0 12px}
+.tabs{display:flex;gap:8px;margin-bottom:12px}
+.tabs button{flex:1;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:9px;font:inherit;font-weight:600}
+.tabs button.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+.chip{background:var(--chip);border-radius:999px;padding:2px 9px;font-size:12px;color:var(--mute);font-weight:600}
+.chip.due{color:var(--amber)}
+h2{font-size:16px;margin:4px 0 8px}
+.k{font-size:12px;color:var(--mute);text-transform:uppercase;letter-spacing:.04em;margin-top:10px}
+.v{white-space:pre-wrap;word-wrap:break-word;overflow-wrap:anywhere}
+.body{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px;margin-top:4px;white-space:pre-wrap;overflow-wrap:anywhere;max-height:none}
+a{color:var(--blue)}
+.acts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px}
+.acts button{border:0;border-radius:10px;padding:12px 6px;font:inherit;font-weight:700;color:#fff}
+.ap{background:var(--green)}.ch{background:var(--amber)}.rj{background:var(--red)}
+textarea{width:100%;min-height:90px;margin-top:8px;border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit;background:var(--bg);color:var(--ink)}
+.done{font-weight:700;margin-top:10px}
+.done.approve{color:var(--green)}.done.reject{color:var(--red)}.done.change{color:var(--amber)}
+.empty{text-align:center;color:var(--mute);padding:40px 10px}
+.gate{max-width:420px;margin:60px auto;text-align:center}
+.gate input{width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);font:inherit;background:var(--card);color:var(--ink)}
+.gate button{margin-top:10px;width:100%;padding:12px;border:0;border-radius:10px;background:var(--blue);color:#fff;font:inherit;font-weight:700}
+</style>
+</head>
+<body>
+<header><img src="/logo.png" alt=""><h1>Approval Queue</h1><button id="refresh">Refresh</button></header>
+<main id="main"><div class="status">Loading…</div></main>
+<script>
+(function(){
+var API='https://mail-reach.onrender.com/approve';
+var tok='';
+try{var h=new URLSearchParams(location.hash.slice(1)).get('t');if(h){localStorage.setItem('ipn_approve_t',h);history.replaceState(null,'',location.pathname);}tok=localStorage.getItem('ipn_approve_t')||'';}catch(e){var m=location.hash.match(/t=([^&]+)/);tok=m?m[1]:'';}
+var main=document.getElementById('main'), view='open', items=[];
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function linkify(s){return esc(s).replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');}
+function gate(msg){main.innerHTML='<div class="gate"><p>'+(msg||'Open this page from the private link in your engine email, or paste the access key.')+'</p><input id="key" placeholder="Access key" autocomplete="off"><button id="go">Open queue</button></div>';
+  document.getElementById('go').onclick=function(){tok=document.getElementById('key').value.trim();try{localStorage.setItem('ipn_approve_t',tok);}catch(e){}load();};}
+function api(path,opt){opt=opt||{};opt.headers=Object.assign({'X-Approve-Token':tok},opt.headers||{});return fetch(API+path,opt).then(function(r){if(r.status===401)throw new Error('unauthorized');return r.json();});}
+function isOpen(x){var c=x.my_choice&&x.my_choice.action;return !c&&String(x.status||'pending').toLowerCase()==='pending';}
+function render(){
+  var open=items.filter(isOpen), past=items.filter(function(x){return !isOpen(x);}).reverse().slice(0,40);
+  var list=view==='open'?open:past;
+  var h='<div class="tabs"><button data-v="open" class="'+(view==='open'?'on':'')+'">Waiting on you ('+open.length+')</button><button data-v="past" class="'+(view==='past'?'on':'')+'">Done</button></div>';
+  h+='<div class="status">Updated '+new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})+'. Approved items go out on the engine\'s next run (every 2 hours).</div>';
+  if(!list.length) h+='<div class="empty">'+(view==='open'?'Nothing needs you right now.':'No history yet.')+'</div>';
+  list.forEach(function(x){
+    var c=x.my_choice;
+    h+='<div class="card" data-id="'+esc(x.decision_id)+'"><div class="meta">'
+      +(x.exec?'<span class="chip">'+esc(x.exec)+'</span>':'')+(x.kind?'<span class="chip">'+esc(x.kind.replace(/_/g,' '))+'</span>':'')
+      +(x.due?'<span class="chip due">due '+esc(x.due)+'</span>':'')+'<span class="chip">'+esc(x.decision_id)+'</span></div>'
+      +'<h2>'+esc(x.title)+'</h2>'
+      +(x.recommendation?'<div class="k">Recommendation</div><div class="v">'+linkify(x.recommendation)+'</div>':'')
+      +(x.implication?'<div class="k">What it means</div><div class="v">'+linkify(x.implication)+'</div>':'')
+      +(x.to?'<div class="k">To</div><div class="v">'+esc(x.to)+'</div>':'')
+      +(x.subject?'<div class="k">Subject</div><div class="v">'+esc(x.subject)+'</div>':'')
+      +(x.body?'<div class="k">Exactly what goes out</div><div class="body">'+linkify(x.body)+'</div>':'')
+      +(x.link?'<div class="k">Link</div><div class="v">'+linkify(x.link)+'</div>':'');
+    if(view==='open'){
+      h+='<div class="acts"><button class="ap" data-a="approve">Approve</button><button class="ch" data-a="change">Change</button><button class="rj" data-a="reject">Reject</button></div><div class="note"></div>';
+    }else{
+      var a=c?c.action:String(x.status||'');
+      h+='<div class="done '+esc(a)+'">'+esc(c?({approve:'You approved',reject:'You rejected',change:'You asked for changes'}[c.action]||c.action):'Status: '+a)
+        +(c&&c.note?': '+esc(c.note):'')+'</div>'+(x.status&&x.status!=='pending'?'<div class="status">Engine: '+esc(x.status)+(x.executed_at?' · '+esc(x.executed_at):'')+(x.evidence?' · '+linkify(x.evidence):'')+'</div>':'');
+    }
+    h+='</div>';
+  });
+  main.innerHTML=h;
+  main.querySelectorAll('.tabs button').forEach(function(b){b.onclick=function(){view=b.dataset.v;render();};});
+  main.querySelectorAll('.acts button').forEach(function(b){b.onclick=function(){
+    var card=b.closest('.card'), id=card.dataset.id, a=b.dataset.a, note=card.querySelector('.note');
+    if(a!=='approve'&&!card.querySelector('textarea')){note.innerHTML='<textarea placeholder="'+(a==='change'?'What should change?':'Why? (optional)')+'"></textarea><div class="acts"><button class="'+(a==='change'?'ch':'rj')+'" data-send="1" style="grid-column:1/-1">Send '+(a==='change'?'change request':'rejection')+'</button></div>';
+      note.querySelector('[data-send]').onclick=function(){send(card,id,a,note.querySelector('textarea').value);};return;}
+    if(a==='approve')send(card,id,a,'');
+  };});
+}
+function send(card,id,a,note){
+  card.querySelectorAll('button').forEach(function(b){b.disabled=true;});
+  var st=document.createElement('div');st.className='status';st.textContent='Saving…';card.appendChild(st);
+  api('/act',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:id,action:a,note:note})}).then(function(r){
+    if(!r.ok)throw new Error(r.error||'failed');
+    items.forEach(function(x){if(x.decision_id===id)x.my_choice={action:a,note:note,at:r.at};});render();
+  }).catch(function(e){st.textContent='Not saved: '+e.message+'. Tap again.';card.querySelectorAll('button').forEach(function(b){b.disabled=false;});});
+}
+function load(){
+  if(!tok)return gate();
+  main.innerHTML='<div class="status">Loading… (the server can take up to a minute to wake up)</div>';
+  api('/data').then(function(r){if(!r.ok)throw new Error(r.error||'failed');items=r.items||[];render();})
+    .catch(function(e){if(e.message==='unauthorized')gate('That access key did not work.');else main.innerHTML='<div class="status">Could not load: '+esc(e.message)+'. Tap Refresh.</div>';});
+}
+document.getElementById('refresh').onclick=load;
+load();
+})();
+</script>
+</body>
+</html>
