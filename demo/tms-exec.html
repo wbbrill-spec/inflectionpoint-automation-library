@@ -1,0 +1,2223 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8">
+<script>
+(function() {
+    var D = {
+        "/api/finance": {
+            unit: "MXN",
+            months: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
+            budget2026: [ 4459e3, 4804800, 5205200, 5387200, 5824e3, 6588400, 7207200, 6788600, 6042400, 5678400, 5660200, 4841200 ],
+            actual2026: [ 4529980, 4908540, 5199740, 5510960, 6042400, 6839560, 7165340, 6804980, 6222580, 0, 0, 0 ],
+            actual2025: [ 4300660, 4471740, 4739280, 4972240, 5607420, 6513780, 6533800, 6157060, 5718440, 5856760, 5054140, 4506320 ],
+            lastClosedMonthIndex: 8,
+            fxRateMxnPerUsd: 18.2,
+            fx: {
+                planRate: 18.2,
+                packRates: [ 18.05, 18.05, 18.05, 18.05, 18.05, 18.05, 18.62, 18.71, 18.48, null, null, null ],
+                spot: {
+                    rate: 18.53,
+                    asOf: "2026-09-30",
+                    source: "central bank FIX",
+                    month: "2026-09",
+                    stale: false
+                }
+            }
+        },
+        "/api/claims": {
+            asOf: "2026-09-30",
+            meta: {
+                dataThrough: "2026-09-30",
+                uploadedAt: "2026-10-05T14:10:00Z",
+                uploadedBy: "Karen Ortiz"
+            },
+            ytd2026: {
+                claims: 23,
+                claimed: 40922,
+                settled: 23548,
+                settlementRatio: .5754361956893602
+            },
+            byMonth2026: [ {
+                claimed: 3479,
+                settled: 2409
+            }, {
+                claimed: 4042,
+                settled: 2436
+            }, {
+                claimed: 2380,
+                settled: 1335
+            }, {
+                claimed: 5528,
+                settled: 3154
+            }, {
+                claimed: 4110,
+                settled: 2759
+            }, {
+                claimed: 6009,
+                settled: 3467
+            }, {
+                claimed: 4812,
+                settled: 2588
+            }, {
+                claimed: 5641,
+                settled: 3128
+            }, {
+                claimed: 3484,
+                settled: 1841
+            }, {
+                claimed: 1437,
+                settled: 431
+            }, {
+                claimed: 0,
+                settled: 0
+            }, {
+                claimed: 0,
+                settled: 0
+            } ],
+            byYear: [ {
+                year: 2022,
+                lossRatio: .034
+            }, {
+                year: 2023,
+                lossRatio: .029
+            }, {
+                year: 2024,
+                lossRatio: .023
+            }, {
+                year: 2025,
+                lossRatio: .019
+            }, {
+                year: 2026,
+                lossRatio: .014
+            } ]
+        },
+        "/api/moves": {
+            updated: "2026-10-16T13:05:00Z",
+            filesOpened2026: 1384,
+            filesByMonth: {
+                2025: [ 104, 112, 126, 131, 140, 151, 147, 133, 128, 125, 109, 98 ],
+                2026: [ 118, 124, 141, 139, 152, 160, 149, 137, 146, 78, 0, 0 ]
+            },
+            bySegment: {
+                agent: {
+                    W: 248
+                },
+                dtd: {
+                    W: 211
+                },
+                other: {
+                    W: 69
+                }
+            },
+            dataQuality: {
+                files: 1384,
+                withAnyMilestone: 498
+            },
+            statusMix2026: {
+                W: 528,
+                L: 402,
+                P: 310,
+                I: 64,
+                C: 80
+            },
+            byMode: {},
+            byLane: {},
+            bookings: {
+                groups: [ "agent", "tms", "private", "embassy" ],
+                byMonth: {
+                    year: 2026,
+                    prevYear: 2025,
+                    current: [ 41, 44, 52, 55, 60, 66, 63, 58, 61, 28, 0, 0 ],
+                    prior: [ 38, 42, 47, 51, 57, 62, 60, 55, 53, 49, 44, 40 ]
+                },
+                ytd: {
+                    from: "2026-01-01",
+                    to: "2026-10-16",
+                    priorFrom: "2025-01-01",
+                    priorTo: "2025-10-16",
+                    current: {
+                        agent: 205,
+                        tms: 178,
+                        private: 103,
+                        embassy: 42,
+                        total: 528,
+                        unclassified: 0
+                    },
+                    prior: {
+                        agent: 206,
+                        tms: 162,
+                        private: 88,
+                        embassy: 34,
+                        total: 490,
+                        unclassified: 0
+                    }
+                },
+                month: {
+                    from: "2026-10-01",
+                    to: "2026-10-16",
+                    priorFrom: "2025-10-01",
+                    priorTo: "2025-10-16",
+                    current: {
+                        agent: 12,
+                        tms: 9,
+                        private: 5,
+                        embassy: 2,
+                        total: 28,
+                        unclassified: 0
+                    },
+                    prior: {
+                        agent: 11,
+                        tms: 8,
+                        private: 4,
+                        embassy: 2,
+                        total: 25,
+                        unclassified: 0
+                    }
+                },
+                week: {
+                    from: "2026-10-12",
+                    to: "2026-10-16",
+                    priorFrom: "2025-10-13",
+                    priorTo: "2025-10-17",
+                    current: {
+                        agent: 6,
+                        tms: 4,
+                        private: 2,
+                        embassy: 1,
+                        total: 13,
+                        unclassified: 0
+                    },
+                    prior: {
+                        agent: 5,
+                        tms: 3,
+                        private: 2,
+                        embassy: 1,
+                        total: 11,
+                        unclassified: 0
+                    }
+                },
+                bySegment: {
+                    agent: {
+                        current: 248,
+                        prior: 220,
+                        currentUsd: 1363032,
+                        currentMxn: 0,
+                        priorUsd: 1131776,
+                        priorMxn: 0,
+                        currentPriced: 247,
+                        priorPriced: 220
+                    },
+                    dtd: {
+                        current: 211,
+                        prior: 201,
+                        currentUsd: 1608901,
+                        currentMxn: 1869064,
+                        priorUsd: 1387776,
+                        priorMxn: 1612182,
+                        currentPriced: 209,
+                        priorPriced: 200
+                    },
+                    other: {
+                        current: 69,
+                        prior: 69,
+                        currentUsd: 30703,
+                        currentMxn: 3166508,
+                        priorUsd: 27340,
+                        priorMxn: 2819681,
+                        currentPriced: 69,
+                        priorPriced: 67
+                    }
+                },
+                byMode: [ {
+                    key: "fcl",
+                    current: 143,
+                    prior: 127,
+                    currentUsd: 1315771,
+                    currentMxn: 488715,
+                    priorUsd: 1171155,
+                    priorMxn: 435e3,
+                    currentPriced: 143,
+                    priorPriced: 125
+                }, {
+                    key: "lcl",
+                    current: 100,
+                    prior: 98,
+                    currentUsd: 525659,
+                    currentMxn: 295887,
+                    priorUsd: 498610,
+                    priorMxn: 280661,
+                    currentPriced: 99,
+                    priorPriced: 96
+                }, {
+                    key: "air",
+                    current: 90,
+                    prior: 88,
+                    currentUsd: 391167,
+                    currentMxn: 145291,
+                    priorUsd: 347857,
+                    priorMxn: 129204,
+                    currentPriced: 88,
+                    priorPriced: 86
+                }, {
+                    key: "groupage",
+                    current: 63,
+                    prior: 54,
+                    currentUsd: 241812,
+                    currentMxn: 231630,
+                    priorUsd: 180573,
+                    priorMxn: 172970,
+                    currentPriced: 62,
+                    priorPriced: 53
+                }, {
+                    key: "ftl",
+                    current: 58,
+                    prior: 54,
+                    currentUsd: 183123,
+                    currentMxn: 4073469,
+                    priorUsd: 157519,
+                    priorMxn: 3503932,
+                    currentPriced: 56,
+                    priorPriced: 53
+                }, {
+                    key: "ltl",
+                    current: 48,
+                    prior: 44,
+                    currentUsd: 56951,
+                    currentMxn: 1554771,
+                    priorUsd: 50939,
+                    priorMxn: 1390633,
+                    currentPriced: 47,
+                    priorPriced: 44
+                }, {
+                    key: "baggage",
+                    current: 26,
+                    prior: 25,
+                    currentUsd: 34822,
+                    currentMxn: 70419,
+                    priorUsd: 32077,
+                    priorMxn: 64867,
+                    currentPriced: 25,
+                    priorPriced: 23
+                } ],
+                byGroup: {
+                    agent: {
+                        current: 205,
+                        prior: 206,
+                        currentUsd: 1136089,
+                        currentMxn: 0,
+                        priorUsd: 985871,
+                        priorMxn: 0,
+                        currentPriced: 204,
+                        priorPriced: 205
+                    },
+                    tms: {
+                        current: 178,
+                        prior: 162,
+                        currentUsd: 1382192,
+                        currentMxn: 3430350,
+                        priorUsd: 1236237,
+                        priorMxn: 3068116,
+                        currentPriced: 178,
+                        priorPriced: 162
+                    },
+                    private: {
+                        current: 103,
+                        prior: 88,
+                        currentUsd: 591960,
+                        currentMxn: 2364954,
+                        priorUsd: 470017,
+                        priorMxn: 1877776,
+                        currentPriced: 101,
+                        priorPriced: 86
+                    },
+                    embassy: {
+                        current: 42,
+                        prior: 34,
+                        currentUsd: 378694,
+                        currentMxn: 362749,
+                        priorUsd: 299038,
+                        priorMxn: 286447,
+                        currentPriced: 40,
+                        priorPriced: 33
+                    }
+                },
+                byCoordinator: [ {
+                    name: "Ana Torres",
+                    current: 153,
+                    prior: 147
+                }, {
+                    name: "Luis Medina",
+                    current: 127,
+                    prior: 108
+                }, {
+                    name: "Karen Ortiz",
+                    current: 100,
+                    prior: 98
+                }, {
+                    name: "Diego Ramos",
+                    current: 85,
+                    prior: 73
+                }, {
+                    name: "Sofia Vega",
+                    current: 63,
+                    prior: 64
+                } ],
+                byLane: {
+                    inbound: {
+                        current: 201,
+                        prior: 181
+                    },
+                    outbound: {
+                        current: 190,
+                        prior: 177
+                    },
+                    domestic: {
+                        current: 100,
+                        prior: 98
+                    },
+                    other: {
+                        current: 37,
+                        prior: 34
+                    }
+                },
+                valueCoverage: {
+                    files: 528,
+                    priced: 523,
+                    usdFiles: 434,
+                    mxnFiles: 89,
+                    multiOptionFiles: 14
+                },
+                quality: {
+                    windowShort: false
+                }
+            }
+        },
+        "/api/shipmode": {},
+        "/api/agents": {
+            asOf: "2026-10-16",
+            lapseDays: 90,
+            minQuotesNoBook: 8,
+            windows: {
+                ytd: {
+                    from: "2026-01-01"
+                }
+            },
+            totals: {
+                quotesYtd: 557,
+                quotesLy: 514,
+                bookedYtd: 205,
+                bookedLy: 206,
+                conv12: .36804308797127466,
+                agentsQuotingYtd: 12,
+                neverBooked: 2,
+                quotesLostToNoBook: 23,
+                lapsed: 1,
+                agentsActive12: 12
+            },
+            top: [ {
+                agent: "Harborline Relocations",
+                agentNo: "4100",
+                state: "Texas",
+                quotesYtd: 96,
+                quotesLy: 89,
+                bookedYtd: 41,
+                conv12: .41,
+                lastQuote: "2026-10-11"
+            }, {
+                agent: "Summit Worldwide",
+                agentNo: "4137",
+                state: "California",
+                quotesYtd: 84,
+                quotesLy: 74,
+                bookedYtd: 37,
+                conv12: .46,
+                lastQuote: "2026-10-11"
+            }, {
+                agent: "Meridian Movers",
+                agentNo: "4174",
+                state: "Florida",
+                quotesYtd: 71,
+                quotesLy: 65,
+                bookedYtd: 32,
+                conv12: .44,
+                lastQuote: "2026-10-10"
+            }, {
+                agent: "Keystone International",
+                agentNo: "4211",
+                state: "Illinois",
+                quotesYtd: 62,
+                quotesLy: 48,
+                bookedYtd: 19,
+                conv12: .28,
+                lastQuote: "2026-10-08"
+            }, {
+                agent: "Bluewater Relocation",
+                agentNo: "4248",
+                state: "New York",
+                quotesYtd: 55,
+                quotesLy: 56,
+                bookedYtd: 19,
+                conv12: .33,
+                lastQuote: "2026-10-09"
+            }, {
+                agent: "Granite Global",
+                agentNo: "4285",
+                state: "Nuevo León",
+                quotesYtd: 47,
+                quotesLy: 40,
+                bookedYtd: 16,
+                conv12: .36,
+                lastQuote: "2026-10-15"
+            }, {
+                agent: "Northpoint MX",
+                agentNo: "4322",
+                state: "Ontario",
+                quotesYtd: 41,
+                quotesLy: 40,
+                bookedYtd: 15,
+                conv12: .39,
+                lastQuote: "2026-10-07"
+            }, {
+                agent: "Lakeside Mobility",
+                agentNo: "4359",
+                state: "Jalisco",
+                quotesYtd: 33,
+                quotesLy: 28,
+                bookedYtd: 13,
+                conv12: .37,
+                lastQuote: "2026-10-08"
+            }, {
+                agent: "Pinecrest Relocations",
+                agentNo: "4396",
+                state: "Georgia",
+                quotesYtd: 26,
+                quotesLy: 22,
+                bookedYtd: 7,
+                conv12: .25,
+                lastQuote: "2026-10-11"
+            }, {
+                agent: "Maple Moving",
+                agentNo: "4433",
+                state: "Ontario",
+                quotesYtd: 19,
+                quotesLy: 31,
+                bookedYtd: 6,
+                conv12: .31,
+                lastQuote: "2026-06-18"
+            }, {
+                agent: "Rio Mobility",
+                agentNo: "4470",
+                state: "Querétaro",
+                quotesYtd: 14,
+                quotesLy: 13,
+                bookedYtd: 0,
+                conv12: 0,
+                lastQuote: "2026-10-07"
+            }, {
+                agent: "Tulip Movers",
+                agentNo: "4507",
+                state: "Netherlands",
+                quotesYtd: 9,
+                quotesLy: 8,
+                bookedYtd: 0,
+                conv12: 0,
+                lastQuote: "2026-10-06"
+            } ],
+            bottom: [ {
+                agent: "Tulip Movers",
+                agentNo: "4507",
+                state: "Netherlands",
+                quotesYtd: 9,
+                quotesLy: 8,
+                bookedYtd: 0,
+                conv12: 0,
+                lastQuote: "2026-10-06"
+            }, {
+                agent: "Rio Mobility",
+                agentNo: "4470",
+                state: "Querétaro",
+                quotesYtd: 14,
+                quotesLy: 13,
+                bookedYtd: 0,
+                conv12: 0,
+                lastQuote: "2026-10-07"
+            }, {
+                agent: "Maple Moving",
+                agentNo: "4433",
+                state: "Ontario",
+                quotesYtd: 19,
+                quotesLy: 31,
+                bookedYtd: 6,
+                conv12: .31,
+                lastQuote: "2026-06-18"
+            }, {
+                agent: "Pinecrest Relocations",
+                agentNo: "4396",
+                state: "Georgia",
+                quotesYtd: 26,
+                quotesLy: 22,
+                bookedYtd: 7,
+                conv12: .25,
+                lastQuote: "2026-10-11"
+            }, {
+                agent: "Lakeside Mobility",
+                agentNo: "4359",
+                state: "Jalisco",
+                quotesYtd: 33,
+                quotesLy: 28,
+                bookedYtd: 13,
+                conv12: .37,
+                lastQuote: "2026-10-08"
+            }, {
+                agent: "Northpoint MX",
+                agentNo: "4322",
+                state: "Ontario",
+                quotesYtd: 41,
+                quotesLy: 40,
+                bookedYtd: 15,
+                conv12: .39,
+                lastQuote: "2026-10-07"
+            } ],
+            neverBooked: [ {
+                agent: "Rio Mobility",
+                agentNo: "4470",
+                state: "Querétaro",
+                quotesYtd: 14,
+                quotesLy: 13,
+                bookedYtd: 0,
+                conv12: 0,
+                lastQuote: "2026-10-07"
+            }, {
+                agent: "Tulip Movers",
+                agentNo: "4507",
+                state: "Netherlands",
+                quotesYtd: 9,
+                quotesLy: 8,
+                bookedYtd: 0,
+                conv12: 0,
+                lastQuote: "2026-10-06"
+            } ],
+            lapsedAgents: [ {
+                agent: "Maple Moving",
+                agentNo: "4433",
+                state: "Ontario",
+                quotesYtd: 19,
+                quotesLy: 31,
+                bookedYtd: 6,
+                conv12: .31,
+                lastQuote: "2026-06-18"
+            } ],
+            byState: [ {
+                state: "Texas",
+                quotes: 113,
+                booked: 47,
+                agents: 1,
+                conv: .42
+            }, {
+                state: "California",
+                quotes: 99,
+                booked: 43,
+                agents: 1,
+                conv: .43
+            }, {
+                state: "Florida",
+                quotes: 84,
+                booked: 37,
+                agents: 1,
+                conv: .44
+            }, {
+                state: "Illinois",
+                quotes: 73,
+                booked: 22,
+                agents: 1,
+                conv: .3
+            }, {
+                state: "Ontario",
+                quotes: 70,
+                booked: 24,
+                agents: 2,
+                conv: .34
+            }, {
+                state: "New York",
+                quotes: 65,
+                booked: 22,
+                agents: 1,
+                conv: .34
+            }, {
+                state: "Nuevo León",
+                quotes: 55,
+                booked: 18,
+                agents: 1,
+                conv: .33
+            }, {
+                state: "Jalisco",
+                quotes: 39,
+                booked: 15,
+                agents: 1,
+                conv: .38
+            }, {
+                state: "Georgia",
+                quotes: 31,
+                booked: 8,
+                agents: 1,
+                conv: .26
+            }, {
+                state: "Querétaro",
+                quotes: 17,
+                booked: 0,
+                agents: 1,
+                conv: 0
+            }, {
+                state: "Netherlands",
+                quotes: 11,
+                booked: 0,
+                agents: 1,
+                conv: 0
+            } ]
+        },
+        "/api/monthflow": {
+            month: "2026-10",
+            counts: {
+                active: 58,
+                packing: 34,
+                delivering: 31,
+                both: 7,
+                invoiced: 46,
+                toInvoice: 12
+            },
+            quality: {
+                packFill: .94,
+                deliveryFill: .91,
+                packExpected: 212,
+                deliveryExpected: 205,
+                upliftFill: .96,
+                bookedFiles: 236
+            },
+            toInvoiceList: [ {
+                n: "304120",
+                type: "EXP",
+                lane: "Houston → Mexico City",
+                pack: "2026-10-11",
+                packExpected: true,
+                delivery: "2026-10-16",
+                deliveryExpected: true,
+                coordinator: "Ana Torres",
+                value: 7150
+            }, {
+                n: "304142",
+                type: "IMP",
+                lane: "Mexico City → Chicago",
+                pack: "2026-10-04",
+                packExpected: true,
+                delivery: "2026-10-15",
+                deliveryExpected: true,
+                coordinator: "Luis Medina",
+                value: 4920
+            }, {
+                n: "304165",
+                type: "EXA",
+                lane: "Monterrey → Toronto",
+                pack: "2026-10-01",
+                packExpected: true,
+                delivery: null,
+                deliveryExpected: false,
+                coordinator: "Karen Ortiz",
+                value: 5170
+            }, {
+                n: "304189",
+                type: "IMA",
+                lane: "Guadalajara → Madrid",
+                pack: null,
+                packExpected: false,
+                delivery: "2026-10-16",
+                deliveryExpected: true,
+                coordinator: "Diego Ramos",
+                value: 8610
+            }, {
+                n: "304216",
+                type: "EXP",
+                lane: "Miami → Querétaro",
+                pack: "2026-10-06",
+                packExpected: true,
+                delivery: "2026-10-15",
+                deliveryExpected: true,
+                coordinator: "Sofia Vega",
+                value: 7580
+            }, {
+                n: "304240",
+                type: "IMP",
+                lane: "Mexico City → Los Angeles",
+                pack: "2026-10-06",
+                packExpected: true,
+                delivery: "2026-10-08",
+                deliveryExpected: true,
+                coordinator: "Ana Torres",
+                value: 4310
+            }, {
+                n: "304256",
+                type: "IMA",
+                lane: "Dallas → Monterrey",
+                pack: null,
+                packExpected: false,
+                delivery: "2026-10-18",
+                deliveryExpected: true,
+                coordinator: "Luis Medina",
+                value: 8530
+            }, {
+                n: "304283",
+                type: "EXA",
+                lane: "Mexico City → Amsterdam",
+                pack: "2026-10-11",
+                packExpected: true,
+                delivery: null,
+                deliveryExpected: false,
+                coordinator: "Karen Ortiz",
+                value: 9240
+            }, {
+                n: "304311",
+                type: "EXP",
+                lane: "Puebla → Atlanta",
+                pack: "2026-10-12",
+                packExpected: true,
+                delivery: "2026-10-20",
+                deliveryExpected: true,
+                coordinator: "Diego Ramos",
+                value: 4810
+            }, {
+                n: "304327",
+                type: "DIN",
+                lane: "Mexico City → Cancún",
+                pack: "2026-10-10",
+                packExpected: true,
+                delivery: "2026-10-20",
+                deliveryExpected: true,
+                coordinator: "Sofia Vega",
+                value: 5180
+            }, {
+                n: "304352",
+                type: "IMP",
+                lane: "São Paulo → Mexico City",
+                pack: "2026-10-14",
+                packExpected: true,
+                delivery: "2026-10-27",
+                deliveryExpected: true,
+                coordinator: "Ana Torres",
+                value: 7950
+            }, {
+                n: "304371",
+                type: "EXA",
+                lane: "Mexico City → Denver",
+                pack: "2026-10-10",
+                packExpected: true,
+                delivery: null,
+                deliveryExpected: false,
+                coordinator: "Luis Medina",
+                value: 7360
+            } ],
+            estimate: {
+                quotedValueToInvoice: 80810
+            }
+        },
+        "/api/insurance": {
+            costRate: 1.1,
+            current: {
+                premium: {
+                    USD: 41800,
+                    MXN: 104e3
+                },
+                insured: {
+                    USD: 152e4,
+                    MXN: 39e5
+                },
+                profit: {
+                    USD: 25080,
+                    MXN: 61100
+                },
+                filesInsured: 201,
+                files: 528,
+                coverage: .3806818181818182,
+                linesUnrated: 0
+            },
+            prior: {
+                premium: {
+                    USD: 36900,
+                    MXN: 91e3
+                }
+            }
+        },
+        "/api/backfill": {
+            from: "2026-07-01",
+            pending: false,
+            cohort: 236,
+            toUpdate: 9,
+            missing: {
+                uplift: 3,
+                pack: 4,
+                delivery: 5
+            },
+            coordinators: [ {
+                coordinator: "Luis Medina",
+                files: 3,
+                jobs: [ {
+                    n: "303902",
+                    type: "EXP",
+                    missing: [ "delivery" ]
+                }, {
+                    n: "304011",
+                    type: "IMP",
+                    missing: [ "pack", "delivery" ]
+                }, {
+                    n: "304166",
+                    type: "EXA",
+                    missing: [ "uplift" ]
+                } ]
+            }, {
+                coordinator: "Karen Ortiz",
+                files: 2,
+                jobs: [ {
+                    n: "303877",
+                    type: "IMA",
+                    missing: [ "delivery" ]
+                }, {
+                    n: "304129",
+                    type: "EXP",
+                    missing: [ "pack" ]
+                } ]
+            }, {
+                coordinator: "Diego Ramos",
+                files: 2,
+                jobs: [ {
+                    n: "303954",
+                    type: "DIN",
+                    missing: [ "uplift", "delivery" ]
+                }, {
+                    n: "304203",
+                    type: "IMP",
+                    missing: [ "pack" ]
+                } ]
+            }, {
+                coordinator: "Sofia Vega",
+                files: 2,
+                jobs: [ {
+                    n: "304057",
+                    type: "EXP",
+                    missing: [ "uplift" ]
+                }, {
+                    n: "304188",
+                    type: "IMP",
+                    missing: [ "pack", "delivery" ]
+                } ]
+            } ]
+        },
+        "/api/conversion": {
+            ok: true
+        },
+        "/api/health": {
+            ok: true,
+            feeds: {
+                moveware: {
+                    ok: true,
+                    updated: "2026-10-16T13:05:00Z"
+                },
+                finance: {
+                    ok: true
+                },
+                claims: {
+                    ok: true
+                }
+            }
+        },
+        "/auth/me": {
+            signedIn: true,
+            user: {
+                name: "Demo User",
+                email: "demo@demo-movers.com"
+            }
+        }
+    };
+    window.fetch = function(u) {
+        var p;
+        try {
+            p = new URL(typeof u === "string" ? u : u && u.url || String(u), location.href).pathname;
+        } catch (e) {
+            p = String(u);
+        }
+        var b = Object.prototype.hasOwnProperty.call(D, p) ? D[p] : {};
+        return Promise.resolve(new Response(JSON.stringify(b), {
+            status: 200,
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }));
+    };
+})();
+</script>
+<meta name="robots" content="noindex"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TMS Executive Dashboard — Demo</title>
+<style>
+:root{--navy:#002e5c;--gold:#c9a227;--ink:#1b2430;--mut:#6b7683;--line:#e6e9ee;--good:#1a7f4b;--bad:#c0392b;--bg:#f4f6f9}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--bg)}
+header{background:var(--navy);color:#fff;padding:14px 22px;display:flex;justify-content:space-between;align-items:center}
+.brand{font-weight:700;letter-spacing:.5px}.asof{font-size:12px;opacity:.8}
+main{max-width:1200px;margin:0 auto;padding:20px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:18px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px}
+.kpi .label{font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.4px}
+.kpi .val{font-size:26px;font-weight:700;margin-top:6px}
+.kpi .sub{font-size:12px;margin-top:4px;color:var(--mut)}
+.pos{color:var(--good)}.neg{color:var(--bad)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px}
+.card h3{margin:0 0 10px;font-size:14px;color:var(--navy)}
+.card canvas{max-height:240px}
+.note{font-size:11px;color:var(--mut);margin:8px 0 0}
+.foot{font-size:11px;color:var(--mut);margin-top:20px}
+</style>
+<style>
+.fxbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 4px}
+#fxToggle,#langToggle{display:inline-flex;border:1px solid #c7d0da;border-radius:5px;overflow:hidden}
+.fxbtn{font:600 11px Arial;padding:5px 11px;border:0;border-right:1px solid #c7d0da;background:#fff;color:#5c6675;cursor:pointer;white-space:nowrap}
+.fxbtn:last-child{border-right:0}
+.fxbtn:hover{background:#f2f5f9}
+.fxbtn.on{background:#002e5c;color:#fff}
+#fxNote{font-size:11px;color:#5c6675;margin:0}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+window.I18N = {
+    en: {
+        _locale: "en-US",
+        months: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
+        langName: "EN",
+        appTitle: "TMS Executive Dashboard",
+        brand: "Demo Movers Co. · TMS Executive Dashboard",
+        subtitle: "Management view — international moving unit",
+        badgeLive: "LIVE",
+        badgeFile: "FILE",
+        badgeUsd: "USD",
+        badgeLiveTitle: "Live from Moveware",
+        badgeFileTitle: "From a committed data file",
+        badgeUsdTitle: "Always USD — not re-based by the currency control",
+        badgeEst: "EST",
+        badgeEstTitle: "Estimate — live files opened × 12-month average revenue per file",
+        basis: "Accounting P&L (International unit), line 'Mudanza Internacional' of the monthly Resumen Ventas Netas. Actuals = closed months.",
+        fxPesos: "Pesos",
+        fxPlan: "USD · plan",
+        fxPack: "USD · books",
+        fxSpot: "USD · spot",
+        fxNotePesos: "Pesos as booked — the unit the budget was set in. No FX applied.",
+        fxNotePlan: r => `USD at the plan rate <b>${r}</b> — the rate the 2026 budget was struck at, applied to every month.`,
+        fxNoteSpot: (r, d, s, m, stale) => stale ? `USD at <b>${r}</b> as of ${d} (${s}). <b>Could not fetch the latest month-end rate</b> — this is the last good value.` : `USD at the month-end rate <b>${r}</b> for <b>${m}</b>, the latest completed month (${d} · ${s}). Updates itself when each month closes.`,
+        fxNotePack: (jul, cur, curName, h1) => `USD at each month's own rate, matching the accounting pack: <b>${curName} ${cur}</b> (latest closed month) · Jul ${jul} · Jan–Jun at the H1 blended ${h1}. These rates arrive with each month's accounting report.`,
+        kpiRevenue: m => `Revenue — ${m}`,
+        kpiBudget: "Budget",
+        kpiVsPrev: "vs 2025",
+        kpiYtd: "YTD Revenue vs Budget",
+        kpiAttainment: "attainment",
+        kpiFilesOpened: "Files Opened — YTD 2026",
+        kpiPerMonth: (n, v) => `${n} per month · ${v} method variants collapsed`,
+        kpiAgentFiles: "Agent-Service Moves Booked — YTD",
+        kpiSegSub: (p, t) => `${p} of ${t} booked · counted by service type`,
+        kpiSegRest: n => `${n} domestic / third-country / storage make up the rest`,
+        kpiSegValue: v => `${v} booked value`,
+        kpiDtdFiles: "Door-to-Door Moves Booked — YTD",
+        kpiOfBook: "of bookings",
+        kpiFromQuotes: n => `from ${n} quotes opened`,
+        kpiRevPerFile: "Revenue / Booked Move",
+        kpiRevPerFileSub: (rev, n, m) => `${rev} ÷ ${n} moves booked Jan–${m}`,
+        kpiClaims: "YTD Claims — 2026 bookings",
+        kpiClaimsSub: (s, c, p, t) => `${s} settled / ${c} claimed · ${p}` + (t ? ` · data to ${t}` : ""),
+        kpiBooked: m => `Est. Booked Revenue — ${m} to date`,
+        bvTitle: c => `Booked Value and Revenue per Shipment — ${c}`,
+        bvSoldUsd: "Sold in USD",
+        bvSoldMxn: "Sold in MXN",
+        bvByService: "By service type",
+        bvByMode: "By shipment mode",
+        bvMoves: "Moves",
+        bvValue: "Booked value",
+        bvPerMove: "Per move",
+        bvShare: "Share",
+        bvLast: "Last year",
+        kpiIns: "Insurance Sold — YTD",
+        kpiInsSub: (profit, margin, insured, rate, nIns, nFiles, cov, lastYear, unrated) => `Est. profit <b>${profit}</b> (${margin}) · declared value ${insured} · cost at ${rate}% of declared value · sold on ${nIns} of ${nFiles} booked moves (${cov}) · ${lastYear} same period last year${unrated ? ` · ${unrated} lines state no rate` : ""}`,
+        bvByGroup: "By customer type — average revenue per shipment",
+        bvLastPerMove: "Per move last year",
+        bvChange: "Change",
+        bvAll: "All moves booked",
+        bvGroupNote: (files, priced, hi, hiAvg, lo, loAvg) => `Average revenue per shipment is the booked value of each group divided by the <b>priced</b> files in it — ${priced} of ${files} booked files this year carry a won option, and a file with no option carries no value, so counting it would drag the average down for nothing. <b>${hi} averages ${hiAvg} a move and ${lo} averages ${loAvg}</b>. The rows add up to every move booked this year, which is why "No booking agent on file" is shown rather than folded into another row. Each move appears in exactly one row, and in the same row as on the Shipments Booked tiles above.`,
+        bvReview: (n, mxn, share, list) => `<b>${n} files are under review and still counted above.</b> ${list} — together MXN ${mxn} (${share}% of peso sales).`,
+        bvNote: (tot, priced, files, usdF, mxnF, rev, m, multi) => `${tot} of business booked so far this year, from the won options on each Moveware file. <b>Domestic work is priced in pesos and international work in dollars</b>, so the two are held apart and combined only in the column you are reading, at the rate you selected above. ${usdF} files were sold in dollars, ${mxnF} in pesos; ${priced} of ${files} booked files carry priced options. <b>${multi} files carry more than one won option</b> — extras and allowances belong in the total, but an alternative quoted twice and left marked Won would overstate it. This is what was <b>sold</b>, not what has been invoiced — accounting revenue through ${m} is ${rev}.`,
+        mfMoves: m => `Moves Active — ${m}`,
+        mfMovesSub: (p, d, b) => `${p} packing · ${d} delivering${b ? ` · ${b} do both this month` : ""}`,
+        mfInvoiced: "Invoiced vs Awaiting Invoice",
+        mfAwaiting: "awaiting",
+        mfInvoicedSub: (a, b) => `${a} invoiced · ${b} still to invoice`,
+        mfEstRev: m => `Est. Revenue — ${m} Activity`,
+        mfEstRevSub: (n, rpf) => `${n} files active this month × ${rpf} average per booked move`,
+        mfCardTitle: m => `${m} — Files Not Yet Invoiced`,
+        mfWaiting: (p, d, pn, dn, u, un) => `Key-date capture: the packing date is filled on ${p}% of the booked files that need one${pn != null ? ` (of ${pn})` : ""} and the delivery date on ${d}%${dn != null ? ` (of ${dn})` : ""}${u != null ? `, and the load (uplift) date on ${u}% of all ${un} booked files` : ""}. Pack is not expected on import-agent (IMA) files and delivery is not expected on export-agent (EXA) files.`,
+        bfTitle: from => `Files to update — booked since ${from}`,
+        bfSub: (n, c) => `${n} of ${c} booked files are missing a key date`,
+        bfIntro: from => `Every booked file from ${from} to today should carry its key dates: <b>Load</b> on every file, <b>Pack</b> on every file except import-agent (IMA), and <b>Delivery</b> on every file except export-agent (EXA). Files created before 16 Oct 2026 did not get the Delivery action automatically; add it from <b>Add</b> in the file's diary.`,
+        bfColCoord: "Coordinator",
+        bfColFiles: "Files",
+        bfColJobs: "Files and missing dates",
+        bfUplift: "Load",
+        bfPack: "Pack",
+        bfDelivery: "Delivery",
+        bfMissing: (u, p, d) => `Missing: Load ${u} · Pack ${p} · Delivery ${d}`,
+        bfDone: "Every booked file in this period has its key dates.",
+        bfPending: "Waiting for the next Moveware read to list these files.",
+        bfNote: t => `Booked files only (status W); every job number counts, sequel jobs included. Job numbers only. Live Moveware, updated ${t}.`,
+        mfNotNeeded: "not needed",
+        mfColFile: "File",
+        mfColLane: "Lane",
+        mfColPack: "Packing",
+        mfColDeliver: "Delivery",
+        mfColCoord: "Coordinator",
+        mfColValue: "File value",
+        mfNoneToInvoice: "Every file with a date this month is already invoiced.",
+        mfNote: (n, v, t) => `${n} files packing or delivering this month are not yet invoiced, worth ${v} at Moveware's own file values. Booked moves only — every job number counts, sequel jobs (A, B…) on the same file included. Live Moveware, updated ${t}.`,
+        agQuotes: "Agent Quotes — YTD",
+        agQuotesSub: (b, bl, c, n) => `${b} booked vs ${bl} last year · ${c} quote-to-book over 12 months · ${n} agents quoting`,
+        agNoBook: "Agents Using Us for Rates Only",
+        agNoBookSub: (m, q) => `${m}+ quotes in the last 12 months, none booked · ${q} quotes given away`,
+        agLapsed: "Agents That Stopped Quoting",
+        agLapsedSub: (d, n) => `no quote in ${d} days, of ${n} agents active in the last 12 months`,
+        agCardTitle: "Agent Activity",
+        agViewTop: "Top 20",
+        agViewBottom: "Bottom 20",
+        agViewNoBook: "Never books",
+        agViewLapsed: "Stopped",
+        agViewState: "By state",
+        agColAgent: "Agent",
+        agColState: "State",
+        agColQytd: "Quotes YTD",
+        agColQly: "Last year",
+        agColBooked: "Booked YTD",
+        agColConv: "Quote→book",
+        agColLast: "Last quote",
+        agColQuotes12: "Quotes 12m",
+        agColBooked12: "Booked 12m",
+        agColAgents: "Agents",
+        agEmpty: "Nothing in this list right now.",
+        agNote: (from, to, d, m) => `Agent = the booking agent on the file when it is not Demo Movers Co.. A quote is one opportunity created in the period, any status, method variants counted once; booked is status Won on its booked date. Quotes YTD covers ${from} to ${to} against the same dates last year. Quote-to-book, "never books" (${m}+ quotes, none booked) and "stopped" (nothing in ${d} days) run on a rolling 12 months. State is the agent's end of the move — destination for exports, origin for imports.`,
+        bkWeek: "Shipments Booked — This Week",
+        bkMonth: m => `Shipments Booked — ${m}`,
+        bkYtd: y => `Shipments Booked — YTD ${y}`,
+        bkAgent: "Agent",
+        bkTms: "Corporate",
+        bkPrivate: "Private",
+        bkEmbassy: "Government / Diplomatic",
+        bkUnclass: "No booking agent on file",
+        bkVs: "vs",
+        bkLastYear: "last year",
+        bkThisYear: "This year",
+        bkPriorYear: "Last year",
+        bkRange: (a, b, c, d) => `${a}–${b} vs ${c}–${d}`,
+        bkNote: t => `Counted on Moveware's Booked date, status Won, one per job number — sequel jobs (304120A, 304120B…) are moves of their own, as on Moveware's Removals report. Agent = booked by an outside agent; Corporate = booked by Demo Movers Co. for a company client; Private = booked by Demo Movers Co., customer type Private; Government / Diplomatic = government or diplomatic accounts. Moveware data as of ${t}.`,
+        bkWindowShort: "Warning: the Moveware window may miss some of last year's bookings.",
+        kpiBookedSub: (n, rpf, pace, att) => `${n} moves booked × ${rpf} average per move (last 12 closed months) · straight-line pace ${pace} = ${att} of budget`,
+        cardRevBudget: "Revenue vs Budget — 2026",
+        cardMoves: "Moves Booked per Month",
+        cardSegment: "Moves Booked — Agent vs Door-to-Door",
+        cardShipmode: "Moves Booked by Shipment Mode",
+        cardCoord: "Moves Booked per Coordinator",
+        cardQuality: "Can We Trust the Outcome Fields?",
+        cardClaimsMo: "Claims by Month (2026) — USD",
+        cardLossRatio: "Claim Loss Ratio by Year",
+        cardMix: "Moves Booked by Lane — YTD",
+        dsBudget: "Budget",
+        dsActual: "Actual",
+        dsWon: "Won",
+        dsLost: "Lost",
+        dsOpen: "Open",
+        dsStatusWon: "Status Won",
+        dsStatusLost: "Status Lost",
+        dsStillOpen: "Still open",
+        dsFilesPerMonth: "Files per month",
+        dsFiles: "Files",
+        dsClaimed: "Claimed",
+        dsSettled: "Settled",
+        dsLossRatio: "Loss ratio",
+        axFilesOpened: "Files opened",
+        axBooked: "Moves booked",
+        axFilesOpenedYear: y => `Files opened ${y}`,
+        axFilesOpened2026: "Files opened YTD 2026",
+        segAgent: "Agent origin / destination",
+        segDtd: "Direct door-to-door",
+        segOther: "Domestic / other",
+        laneIn: "Inbound MX",
+        laneOut: "Outbound MX",
+        laneDom: "Domestic",
+        laneOther: "Other",
+        qlWon: "Status recorded as Won",
+        qlLost: "Status recorded as Lost",
+        qlOpen: "Still open in Moveware",
+        qlMilestone: "Has an uplift or delivery date",
+        modeLabel: {
+            air: "Air",
+            lcl: "LCL",
+            fcl: "FCL",
+            ltl: "LTL",
+            ftl: "FTL",
+            groupage: "Groupage",
+            baggage: "Baggage",
+            movingunit: "Moving unit",
+            intramexico: "Intramexico",
+            expats: "Expats",
+            other: "Other",
+            unknown: "Not recorded"
+        },
+        modeFull: {
+            air: "Air freight",
+            lcl: "Less than container load",
+            fcl: "Full container load (20', 40', 40'HC and multi-container)",
+            ltl: "Less than truck load",
+            ftl: "Full truck load",
+            groupage: "Shared container service (GRP)",
+            baggage: "Baggage shipment (GRB)",
+            movingunit: "Unidad mudancera 45' / 85'",
+            intramexico: "Domestic Mexico (INT)",
+            expats: "Expat programme (EXP)",
+            other: "Service code not in the known set",
+            unknown: "No service code on the file"
+        },
+        noteRev: (a, b, p, m) => `YTD actual ${a} vs budget ${b} = <b>${p}</b> of budget. Actuals through ${m}.<br>Attainment and year-on-year are computed on pesos, so switching currency never changes them.<br>`,
+        srcFinance: "Source: monthly accounting close.",
+        noteBookedMonth: (ytd, prevFull, prevYear, prevSame) => `${ytd} moves booked so far this year, against ${prevSame} to the same date in ${prevYear} and ${prevFull} for the whole of ${prevYear}.<br>Counted on Moveware's booked date, status Won, every job number including sequels.<br>`,
+        noteSegBooked: (a, d, o, py) => `Booked this year: ${a} agent origin/destination, ${d} direct door-to-door, ${o} domestic or other. Pale bars are the same period in ${py}.<br>`,
+        noteShipBooked: "Moves booked by shipment mode, this year against the same period last year. Mode is <code>Im Service</code> on the file — the one operational field Moveware fills reliably.<br>",
+        noteCoordBooked: (n, top, topN) => `Moves booked per coordinator this year across ${n} desks; ${top} leads with ${topN}. Pale bars are the same period last year.<br><b>Shown per coordinator on purpose</b> — the top desk carries much of the book, so a company-wide average would be arithmetically true and operationally meaningless.<br>`,
+        noteMixBooked: m => `Booked moves by lane this year. By mode: ${m}<br>`,
+        noteMoves: (n, avg) => `${n} files opened YTD 2026, averaging ${avg} a month.<br><b>This counts files opened, not moves completed.</b> Moveware has no field that reliably records fulfilment — see the data-quality panel below.<br>`,
+        awaitingCreds: "Awaiting Moveware credentials.",
+        noteSeg: (a, d) => `Agent work is ${a} files, door-to-door ${d}. Won / lost / open is <b>what Moveware's status field says</b>, not a verified outcome.<br><b>Do not read these as win rates.</b> Status discipline varies by desk — see below — so the same bar means different things for different coordinators.<br>`,
+        srcSeg: u => `Source: live Moveware jobType and status · updated ${u}.`,
+        noteCoord: (n, m) => `Files opened per coordinator per month across ${n} active coordinators over ${m} months.<br><b>Shown per coordinator on purpose.</b> The top desk carries roughly half the book, so a single company-wide average would be arithmetically true and operationally meaningless.<br>`,
+        srcCoord: u => `Source: live Moveware moveManager · updated ${u}.`,
+        noteQual: (files, ms, rev, m) => `<b>Why no booking count appears anywhere on this dashboard.</b> Of ${files} files opened this year, only <b>${ms}</b> carry an uplift or delivery date — the only fields that record a move actually happening. Sales status is filled in inconsistently: some desks mark almost everything Won and never record a loss, others record no wins at all.<br>The arithmetic settles it. Revenue ÷ all files opened Jan–${m} = <b>${rev}</b>, which is a credible blended rate. Divided by status-Won files only it would be roughly three times that, which is not.<br><b>Fix required from Moveware:</b> a field that records fulfilment. Until then this dashboard reports volume, not conversion.<br>`,
+        noteShipHead: parts => parts,
+        noteShip: (opps, files, fetched, errs) => `Across ${opps} opportunities (${files} job records collapsed). <b>Mode is the one field in this API that is actually filled in</b> — ${fetched} of ${files} records returned a service code${errs ? `, ${errs} failed` : ""}.<br>`,
+        noteShipMulti: n => `<b>${n}</b> opportunities were quoted in more than one mode (sea vs air on the same move); each is counted once, under the mode of its leading variant.<br>`,
+        noteShipStatus: `Won / lost / open is still Moveware's <b>status</b> field, which is not a verified outcome — read the counts, not the win rates.<br>`,
+        noteShipCodes: c => `Raw service codes: ${c}<br>`,
+        srcShip: (u, s) => `Source: live Moveware job.service ("Im Service") · updated ${u}${s ? ` · ${s}s to build` : ""}.`,
+        shipComputing: "Building — one request per file, about two minutes. Refresh shortly.",
+        shipAwaiting: "Awaiting first refresh.",
+        noteClaims: "<b>Claims are USD</b> and stay in USD whichever currency is selected above — the claims export carries no peso figure to convert back from.<br>",
+        srcClaims: (through, when, who) => when ? `Source: claims portal report, data to ${through} · uploaded ${when}${who ? " by " + who : ""}. Updated monthly.` : `Source: claims file (data to ${through}) — replaced as soon as the first monthly upload lands.`,
+        noteMix: m => `All files opened. By mode: ${m}<br>`,
+        srcLive: u => `Source: live Moveware · updated ${u}.`,
+        foot: "<b>LIVE</b> tiles pull from Moveware on every refresh; <b>FILE</b> tiles come from the monthly accounting close. Revenue is held in pesos as booked; the currency control re-states it, it does not restate performance. Demo build — all figures are sample data for Demo Movers Co.",
+        never: "never"
+    },
+    es: {
+        _locale: "es-MX",
+        months: [ "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic" ],
+        langName: "ES",
+        appTitle: "Tablero Ejecutivo TMS",
+        brand: "Demo Movers Co. · Tablero Ejecutivo TMS",
+        subtitle: "Vista directiva — unidad de mudanzas internacionales",
+        badgeLive: "EN VIVO",
+        badgeFile: "ARCHIVO",
+        badgeUsd: "USD",
+        badgeLiveTitle: "En vivo desde Moveware",
+        badgeFileTitle: "De un archivo de datos en el repositorio",
+        badgeUsdTitle: "Siempre en USD — el control de moneda no lo reconvierte",
+        badgeEst: "EST",
+        badgeEstTitle: "Estimado — expedientes abiertos en vivo × ingreso promedio por expediente de 12 meses",
+        basis: "Estado de resultados (unidad Internacional), línea 'Mudanza Internacional' del Resumen de Ventas Netas mensual. Los reales corresponden a meses cerrados.",
+        fxPesos: "Pesos",
+        fxPlan: "USD · plan",
+        fxPack: "USD · libros",
+        fxSpot: "USD · spot",
+        fxNotePesos: "Pesos tal como se registran — la moneda en que se fijó el presupuesto. Sin conversión.",
+        fxNotePlan: r => `USD al tipo de cambio del plan <b>${r}</b> — el tipo con que se fijó el presupuesto 2026, aplicado a todos los meses.`,
+        fxNoteSpot: (r, d, s, m, stale) => stale ? `USD a <b>${r}</b> al ${d} (${s}). <b>No se pudo obtener el tipo de cierre de mes más reciente</b> — es el último valor válido` : `USD al tipo de cierre de mes <b>${r}</b> de <b>${m}</b>, el último mes cerrado (${d} · ${s}). Se actualiza solo al cerrar cada mes`,
+        fxNotePack: (jul, cur, curName, h1) => `USD al tipo de cambio de cada mes, igual que el reporte contable: <b>${curName} ${cur}</b> (último mes cerrado) · Jul ${jul} · Ene–Jun al promedio del primer semestre ${h1}. Estos tipos llegan con el reporte contable de cada mes`,
+        kpiRevenue: m => `Ingresos — ${m}`,
+        kpiBudget: "Presupuesto",
+        kpiVsPrev: "vs 2025",
+        kpiYtd: "Ingresos acumulados vs presupuesto",
+        kpiAttainment: "de cumplimiento",
+        kpiFilesOpened: "Expedientes abiertos — acumulado 2026",
+        kpiPerMonth: (n, v) => `${n} por mes · ${v} variantes de método consolidadas`,
+        kpiAgentFiles: "Mudanzas servicio de agente — acum.",
+        kpiSegSub: (p, t) => `${p} de ${t} reservadas · contadas por tipo de servicio`,
+        kpiSegRest: n => `${n} nacionales / tercer país / almacenaje completan el total`,
+        kpiSegValue: v => `${v} de valor reservado`,
+        kpiDtdFiles: "Mudanzas puerta a puerta reservadas — acum.",
+        kpiOfBook: "de las reservas",
+        kpiFromQuotes: n => `de ${n} cotizaciones abiertas`,
+        kpiRevPerFile: "Ingreso por mudanza reservada",
+        kpiRevPerFileSub: (rev, n, m) => `${rev} ÷ ${n} mudanzas reservadas Ene–${m}`,
+        kpiClaims: "Reclamaciones — reservas 2026",
+        kpiClaimsSub: (s, c, p, t) => `${s} pagado / ${c} reclamado · ${p}` + (t ? ` · datos al ${t}` : ""),
+        kpiBooked: m => `Ingreso reservado estimado — ${m} a la fecha`,
+        bvTitle: c => `Valor reservado e ingreso por embarque — ${c}`,
+        bvSoldUsd: "Vendido en USD",
+        bvSoldMxn: "Vendido en MXN",
+        bvByService: "Por tipo de servicio",
+        bvByMode: "Por modalidad",
+        bvMoves: "Mudanzas",
+        bvValue: "Valor reservado",
+        bvPerMove: "Por mudanza",
+        bvShare: "Participación",
+        bvLast: "Año anterior",
+        kpiIns: "Seguro vendido — YTD",
+        kpiInsSub: (profit, margin, insured, rate, nIns, nFiles, cov, lastYear, unrated) => `Utilidad est. <b>${profit}</b> (${margin}) · valor declarado ${insured} · costo al ${rate}% del valor declarado · vendido en ${nIns} de ${nFiles} mudanzas reservadas (${cov}) · ${lastYear} mismo periodo del año anterior${unrated ? ` · ${unrated} líneas no indican tasa` : ""}`,
+        bvByGroup: "Por tipo de cliente — ingreso promedio por embarque",
+        bvLastPerMove: "Por mudanza año anterior",
+        bvChange: "Variación",
+        bvAll: "Todas las mudanzas reservadas",
+        bvGroupNote: (files, priced, hi, hiAvg, lo, loAvg) => `El ingreso promedio por embarque es el valor reservado de cada grupo dividido entre sus expedientes <b>valorizados</b>: ${priced} de ${files} expedientes reservados este año traen una opción ganada, y un expediente sin opción no aporta valor, así que contarlo sólo bajaría el promedio sin razón. <b>${hi} promedia ${hiAvg} por mudanza y ${lo} promedia ${loAvg}</b>. Las filas suman todas las mudanzas reservadas del año; por eso "Sin agente de reserva en el expediente" se muestra aparte en lugar de mezclarse con otra fila. Cada mudanza aparece en una sola fila, la misma que en las tarjetas de Embarques Reservados de arriba.`,
+        bvReview: (n, mxn, share, list) => `<b>${n} expedientes en revisión, aún incluidos arriba.</b> ${list} — en conjunto MXN ${mxn} (${share}% de las ventas en pesos).`,
+        bvNote: (tot, priced, files, usdF, mxnF, rev, m, multi) => `${tot} de negocio reservado en lo que va del año, según las opciones ganadas de cada expediente en Moveware. <b>El servicio nacional se cotiza en pesos y el internacional en dólares</b>, así que se mantienen separados y se combinan sólo en la columna que estás viendo, al tipo de cambio seleccionado arriba. ${usdF} expedientes se vendieron en dólares y ${mxnF} en pesos; ${priced} de ${files} expedientes reservados traen opciones valorizadas. <b>${multi} expedientes tienen más de una opción ganada</b>: los extras y suplementos sí forman parte del total, pero una alternativa cotizada dos veces y marcada como ganada lo inflaría. Esto es lo <b>vendido</b>, no lo facturado: el ingreso contable a ${m} es ${rev}.`,
+        mfMoves: m => `Mudanzas activas — ${m}`,
+        mfMovesSub: (p, d, b) => `${p} en empaque · ${d} en entrega${b ? ` · ${b} con ambas este mes` : ""}`,
+        mfInvoiced: "Facturadas vs por facturar",
+        mfAwaiting: "por facturar",
+        mfInvoicedSub: (a, b) => `${a} facturado · ${b} por facturar`,
+        mfEstRev: m => `Ingreso estimado — actividad de ${m}`,
+        mfEstRevSub: (n, rpf) => `${n} expedientes activos este mes × ${rpf} promedio por expediente`,
+        mfCardTitle: m => `${m} — expedientes aún sin facturar`,
+        mfWaiting: (p, d, pn, dn, u, un) => `Captura de fechas clave: la fecha de empaque está en ${p}% de los expedientes reservados que la requieren${pn != null ? ` (de ${pn})` : ""} y la de entrega en ${d}%${dn != null ? ` (de ${dn})` : ""}${u != null ? `, y la de carga (uplift) en ${u}% de los ${un} expedientes reservados` : ""}. El empaque no aplica a agente de importación (IMA) y la entrega no aplica a agente de exportación (EXA).`,
+        bfTitle: from => `Expedientes por actualizar — reservados desde ${from}`,
+        bfSub: (n, c) => `${n} de ${c} expedientes reservados sin alguna fecha clave`,
+        bfIntro: from => `Cada expediente reservado desde ${from} hasta hoy debe tener sus fechas clave: <b>Carga</b> en todos, <b>Empaque</b> en todos excepto agente de importación (IMA) y <b>Entrega</b> en todos excepto agente de exportación (EXA). Los expedientes creados antes del 16 oct 2026 no recibieron la acción Delivery automáticamente; agrégala con <b>Add</b> en el diario del expediente.`,
+        bfColCoord: "Coordinadora",
+        bfColFiles: "Expedientes",
+        bfColJobs: "Expedientes y fechas faltantes",
+        bfUplift: "Carga",
+        bfPack: "Empaque",
+        bfDelivery: "Entrega",
+        bfMissing: (u, p, d) => `Faltan: Carga ${u} · Empaque ${p} · Entrega ${d}`,
+        bfDone: "Todos los expedientes reservados de este periodo tienen sus fechas clave.",
+        bfPending: "Esperando la siguiente lectura de Moveware para listar estos expedientes.",
+        bfNote: t => `Sólo expedientes reservados (estatus W); cuenta cada número de trabajo, incluidas las secuelas. Sólo números de trabajo. Moveware en vivo, actualizado ${t}.`,
+        mfNotNeeded: "no aplica",
+        mfColFile: "Expediente",
+        mfColLane: "Ruta",
+        mfColPack: "Empaque",
+        mfColDeliver: "Entrega",
+        mfColCoord: "Coordinadora",
+        mfColValue: "Valor del expediente",
+        mfNoneToInvoice: "Todos los expedientes con fecha de este mes ya están facturados.",
+        mfNote: (n, v, t) => `${n} expedientes en empaque o entrega este mes siguen sin facturar, por ${v} según los valores del propio Moveware. Sólo mudanzas reservadas: cuenta cada número de trabajo, incluidos los trabajos secuela (A, B…) del mismo expediente. Moveware en vivo, actualizado ${t}.`,
+        agQuotes: "Cotizaciones de agentes — acumulado",
+        agQuotesSub: (b, bl, c, n) => `${b} reservadas vs ${bl} el año pasado · ${c} de cotización a reserva en 12 meses · ${n} agentes cotizando`,
+        agNoBook: "Agentes que sólo piden tarifas",
+        agNoBookSub: (m, q) => `${m}+ cotizaciones en 12 meses, ninguna reservada · ${q} cotizaciones regaladas`,
+        agLapsed: "Agentes que dejaron de cotizar",
+        agLapsedSub: (d, n) => `sin cotizar en ${d} días, de ${n} agentes activos en los últimos 12 meses`,
+        agCardTitle: "Actividad de agentes",
+        agViewTop: "Top 20",
+        agViewBottom: "Últimos 20",
+        agViewNoBook: "Nunca reservan",
+        agViewLapsed: "Dejaron de cotizar",
+        agViewState: "Por estado",
+        agColAgent: "Agente",
+        agColState: "Estado",
+        agColQytd: "Cot. acum.",
+        agColQly: "Año anterior",
+        agColBooked: "Reservadas acum.",
+        agColConv: "Cot.→reserva",
+        agColLast: "Última cot.",
+        agColQuotes12: "Cot. 12m",
+        agColBooked12: "Reserv. 12m",
+        agColAgents: "Agentes",
+        agEmpty: "Por ahora no hay nada en esta lista.",
+        agNote: (from, to, d, m) => `Agente = el agente de reserva del expediente cuando no es Demo Movers Co.. Una cotización es una oportunidad creada en el periodo, de cualquier estatus, contando una sola vez las variantes de método; reservada es estatus Ganado en su fecha de reserva. El acumulado va del ${from} al ${to} contra las mismas fechas del año anterior. La conversión, "nunca reservan" (${m}+ cotizaciones sin reservar) y "dejaron de cotizar" (nada en ${d} días) se calculan sobre 12 meses móviles. El estado es el extremo del agente: destino en exportaciones, origen en importaciones.`,
+        bkWeek: "Embarques reservados — esta semana",
+        bkMonth: m => `Embarques reservados — ${m}`,
+        bkYtd: y => `Embarques reservados — acumulado ${y}`,
+        bkAgent: "Agente",
+        bkTms: "Corporativo",
+        bkPrivate: "Privado",
+        bkEmbassy: "Gobierno / Diplomático",
+        bkUnclass: "Sin agente de reserva en el expediente",
+        bkVs: "vs",
+        bkLastYear: "año anterior",
+        bkThisYear: "Este año",
+        bkPriorYear: "Año anterior",
+        bkRange: (a, b, c, d) => `${a}–${b} vs ${c}–${d}`,
+        bkNote: t => `Contados por la fecha de Reserva (Booked) de Moveware, estatus Ganado, uno por número de trabajo: los trabajos secuela (304120A, 304120B…) son mudanzas propias, como en el reporte de Removals de Moveware. Agente = reservado por un agente externo; Corporativo = reservado por Demo Movers Co. para un cliente empresa; Privado = reservado por Demo Movers Co., tipo de cliente Privado; Gobierno / Diplomático = cuentas de gobierno o diplomáticas. Datos de Moveware al ${t}.`,
+        bkWindowShort: "Aviso: la ventana de Moveware podría omitir reservas del año anterior.",
+        kpiBookedSub: (n, rpf, pace, att) => `${n} mudanzas reservadas × ${rpf} promedio por mudanza (últimos 12 meses cerrados) · ritmo lineal ${pace} = ${att} del presupuesto`,
+        cardRevBudget: "Ingresos vs presupuesto — 2026",
+        cardMoves: "Mudanzas reservadas por mes",
+        cardSegment: "Mudanzas reservadas — agente vs puerta a puerta",
+        cardShipmode: "Mudanzas reservadas por modalidad",
+        cardCoord: "Mudanzas reservadas por coordinador",
+        cardQuality: "¿Podemos confiar en los campos de resultado?",
+        cardClaimsMo: "Reclamaciones por mes (2026) — USD",
+        cardLossRatio: "Índice de siniestralidad por año",
+        cardMix: "Mudanzas reservadas por ruta — acumulado",
+        dsBudget: "Presupuesto",
+        dsActual: "Real",
+        dsWon: "Ganados",
+        dsLost: "Perdidos",
+        dsOpen: "Abiertos",
+        dsStatusWon: "Estatus Ganado",
+        dsStatusLost: "Estatus Perdido",
+        dsStillOpen: "Aún abierto",
+        dsFilesPerMonth: "Expedientes por mes",
+        dsFiles: "Expedientes",
+        dsClaimed: "Reclamado",
+        dsSettled: "Pagado",
+        dsLossRatio: "Índice de siniestralidad",
+        axFilesOpened: "Expedientes abiertos",
+        axBooked: "Mudanzas reservadas",
+        axFilesOpenedYear: y => `Expedientes abiertos ${y}`,
+        axFilesOpened2026: "Expedientes abiertos acumulado 2026",
+        segAgent: "Agente origen / destino",
+        segDtd: "Puerta a puerta directo",
+        segOther: "Nacional / otros",
+        laneIn: "Importación MX",
+        laneOut: "Exportación MX",
+        laneDom: "Nacional",
+        laneOther: "Otros",
+        qlWon: "Estatus registrado como Ganado",
+        qlLost: "Estatus registrado como Perdido",
+        qlOpen: "Aún abierto en Moveware",
+        qlMilestone: "Tiene fecha de recolección o entrega",
+        modeLabel: {
+            air: "Aéreo",
+            lcl: "LCL",
+            fcl: "FCL",
+            ltl: "LTL",
+            ftl: "FTL",
+            groupage: "Grupaje",
+            baggage: "Equipaje",
+            movingunit: "Unidad mudancera",
+            intramexico: "Intramexico",
+            expats: "Expatriados",
+            other: "Otro",
+            unknown: "Sin registrar"
+        },
+        modeFull: {
+            air: "Carga aérea",
+            lcl: "Carga suelta, menos de un contenedor",
+            fcl: "Contenedor completo (20', 40', 40'HC y multicontenedor)",
+            ltl: "Carga consolidada terrestre",
+            ftl: "Camión completo",
+            groupage: "Servicio de contenedor compartido (GRP)",
+            baggage: "Envío de equipaje (GRB)",
+            movingunit: "Unidad mudancera de 45' / 85'",
+            intramexico: "Nacional México (INT)",
+            expats: "Programa de expatriados (EXP)",
+            other: "Código de servicio fuera del catálogo",
+            unknown: "Sin código de servicio en el expediente"
+        },
+        noteRev: (a, b, p, m) => `Real acumulado ${a} vs presupuesto ${b} = <b>${p}</b> del presupuesto. Reales hasta ${m}.<br>El cumplimiento y la comparación anual se calculan sobre pesos, así que cambiar de moneda nunca los modifica.<br>`,
+        srcFinance: "Fuente: cierre contable mensual.",
+        noteBookedMonth: (ytd, prevFull, prevYear, prevSame) => `${ytd} mudanzas reservadas en lo que va del año, contra ${prevSame} a la misma fecha de ${prevYear} y ${prevFull} en todo ${prevYear}.<br>Contadas por la fecha de reserva de Moveware, estatus Ganado, cada número de trabajo incluidas las secuelas.<br>`,
+        noteSegBooked: (a, d, o, py) => `Reservadas este año: ${a} de agente origen/destino, ${d} puerta a puerta directas, ${o} nacionales u otras. Las barras claras son el mismo periodo de ${py}.<br>`,
+        noteShipBooked: "Mudanzas reservadas por modalidad, este año contra el mismo periodo del año anterior. La modalidad es <code>Im Service</code> del expediente, el único campo operativo que Moveware llena de forma confiable.<br>",
+        noteCoordBooked: (n, top, topN) => `Mudanzas reservadas por coordinadora este año en ${n} escritorios; ${top} encabeza con ${topN}. Las barras claras son el mismo periodo del año anterior.<br><b>Se muestra por coordinadora a propósito</b>: el escritorio principal lleva buena parte de la cartera, así que un promedio general sería aritméticamente cierto y operativamente inútil.<br>`,
+        noteMixBooked: m => `Mudanzas reservadas por ruta este año. Por modalidad: ${m}<br>`,
+        noteMoves: (n, avg) => `${n} expedientes abiertos en 2026, un promedio de ${avg} al mes.<br><b>Esto cuenta expedientes abiertos, no mudanzas realizadas.</b> Moveware no tiene un campo que registre de forma confiable la ejecución del servicio — vea el panel de calidad de datos más abajo.<br>`,
+        awaitingCreds: "En espera de las credenciales de Moveware.",
+        noteSeg: (a, d) => `El trabajo de agente son ${a} expedientes; puerta a puerta, ${d}. Ganados / perdidos / abiertos es <b>lo que dice el campo de estatus de Moveware</b>, no un resultado verificado.<br><b>No lo lea como tasa de éxito.</b> La disciplina de captura varía por escritorio — vea abajo — así que la misma barra significa cosas distintas según el coordinador.<br>`,
+        srcSeg: u => `Fuente: Moveware en vivo, campos jobType y status · actualizado ${u}`,
+        noteCoord: (n, m) => `Expedientes abiertos por coordinador por mes, entre ${n} coordinadores activos durante ${m} meses.<br><b>Se muestra por coordinador a propósito.</b> El escritorio principal lleva cerca de la mitad de la cartera, así que un promedio único de la empresa sería aritméticamente cierto y operativamente inútil.<br>`,
+        srcCoord: u => `Fuente: Moveware en vivo, campo moveManager · actualizado ${u}`,
+        noteQual: (files, ms, rev, m) => `<b>Por qué no aparece ningún conteo de reservas en este tablero.</b> De ${files} expedientes abiertos este año, sólo <b>${ms}</b> tienen fecha de recolección o entrega — los únicos campos que registran que la mudanza realmente ocurrió. El estatus comercial se captura de forma dispareja: algunos escritorios marcan casi todo como Ganado y nunca registran una pérdida; otros no registran ninguna venta ganada.<br>La aritmética lo confirma. Ingresos ÷ todos los expedientes abiertos Ene–${m} = <b>${rev}</b>, una tarifa mezclada creíble. Dividido sólo entre los expedientes con estatus Ganado daría alrededor del triple, lo cual no es creíble.<br><b>Lo que hace falta de Moveware:</b> un campo que registre la ejecución del servicio. Mientras tanto, este tablero reporta volumen, no conversión.<br>`,
+        noteShip: (opps, files, fetched, errs) => `Con base en ${opps} oportunidades (${files} registros consolidados). <b>La modalidad es el único campo de esta API que sí se captura</b> — ${fetched} de ${files} registros devolvieron código de servicio${errs ? `, ${errs} fallaron` : ""}.<br>`,
+        noteShipMulti: n => `<b>${n}</b> oportunidades se cotizaron en más de una modalidad (marítimo vs aéreo para la misma mudanza); cada una se cuenta una sola vez, bajo la modalidad de su variante principal.<br>`,
+        noteShipStatus: `Ganados / perdidos / abiertos sigue siendo el campo <b>estatus</b> de Moveware, que no es un resultado verificado — lea los conteos, no las tasas de éxito.<br>`,
+        noteShipCodes: c => `Códigos de servicio originales: ${c}<br>`,
+        srcShip: (u, s) => `Fuente: Moveware en vivo, campo job.service ("Im Service") · actualizado ${u}${s ? ` · ${s}s de proceso` : ""}`,
+        shipComputing: "Calculando — una consulta por expediente, unos dos minutos. Actualice en breve.",
+        shipAwaiting: "En espera del primer cálculo.",
+        noteClaims: "<b>Las reclamaciones están en USD</b> y se quedan en USD sea cual sea la moneda seleccionada arriba — el reporte de reclamaciones no trae un importe en pesos del cual reconvertir.<br>",
+        srcClaims: (through, when, who) => when ? `Fuente: reporte del portal de reclamaciones, datos al ${through} · subido el ${when}${who ? " por " + who : ""}. Se actualiza cada mes` : `Fuente: archivo de reclamaciones (datos al ${through}) — se reemplaza en cuanto llegue la primera carga mensual`,
+        noteMix: m => `Todos los expedientes abiertos. Por modo: ${m}<br>`,
+        srcLive: u => `Fuente: Moveware en vivo · actualizado ${u}`,
+        foot: "Los recuadros <b>EN VIVO</b> consultan Moveware en cada actualización; los recuadros <b>ARCHIVO</b> vienen del cierre contable mensual. Los ingresos se guardan en pesos tal como se registran; el control de moneda los reexpresa, no reexpresa el desempeño. Versión demo — todas las cifras son datos de ejemplo de Demo Movers Co.",
+        never: "nunca"
+    }
+};
+</script>
+</head><body>
+<div id="ipn-demo-banner" style="position:sticky;top:0;z-index:99999;background:#07182A;color:#fff;font:600 13px/1.4 'Public Sans',system-ui,sans-serif;padding:9px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center"><span>Demo with sample data from a fictional mover &middot; InflectionPoint Now</span><a href="/demo/" style="color:#9fd0ff;text-decoration:underline">All demos</a><a href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1m9l9OYw-9r1rF79uTz5iZ__mOzfRVjqtVevGnOM7TQAIj-Ye68AXTqYNAr2GdXfROoYYafKSD" target="_blank" style="background:#0073CF;color:#fff;padding:5px 12px;border-radius:6px;text-decoration:none">Book a 30-min walkthrough</a></div>
+<header><div class="brand">Demo Movers Co. · TMS Executive Dashboard</div><div id="asof" class="asof"></div></header>
+<main>
+  <div class="fxbar"><div id="langToggle"></div><div id="fxToggle"></div><p id="fxNote"></p></div>
+  <section class="kpis" id="kpis"></section>
+  <section class="grid">
+    <div class="card"><h3 data-i18n="cardRevBudget">Revenue vs Budget — 2026</h3><canvas id="revBudget"></canvas>
+      <p class="note" id="revNote"></p></div>
+    <div class="card"><h3 data-i18n="cardMoves">Files Opened per Month</h3><canvas id="moves"></canvas>
+      <p class="note" id="movesNote"></p></div>
+    <div class="card"><h3 data-i18n="cardSegment">Agent vs Door-to-Door</h3><canvas id="segment"></canvas>
+      <p class="note" id="segNote"></p></div>
+    <div class="card"><h3 data-i18n="cardShipmode">Shipment Mode</h3><canvas id="shipmode"></canvas>
+      <p class="note" id="shipNote"></p></div>
+    <div class="card"><h3 data-i18n="cardCoord">Files per Coordinator per Month</h3><canvas id="coord"></canvas>
+      <p class="note" id="coordNote"></p></div>
+    <div class="card"><h3 data-i18n="cardQuality">Can We Trust the Outcome Fields?</h3><canvas id="quality"></canvas>
+      <p class="note" id="qualNote"></p></div>
+    <div class="card"><h3 data-i18n="cardClaimsMo">Claims by Month (2026) — USD</h3><canvas id="claimsMo"></canvas>
+      <p class="note" id="claimsNote"></p></div>
+    <div class="card"><h3 data-i18n="cardLossRatio">Claim Loss Ratio by Year</h3><canvas id="lossRatio"></canvas></div>
+    <div class="card"><h3 data-i18n="cardMix">Files by Mode / Lane — YTD 2026</h3><canvas id="mix"></canvas>
+      <p class="note" id="mixNote"></p></div>
+  </section>
+  <p class="foot" id="foot"></p>
+</main>
+<script>
+const $ = s => document.querySelector(s);
+
+const NAVY = "#002e5c", GOLD = "#c9a227", GREY = "#9aa6b2", RED = "#c0392b", GREEN = "#1a7f4b", PALE = "#c7d0da";
+
+Chart.defaults.font.family = "Arial";
+
+Chart.defaults.font.size = 11;
+
+async function j(u) {
+    const r = await fetch(u);
+    return r.json();
+}
+
+const BASES = {
+    mxn: {
+        key: "mxn",
+        tab: "fxPesos",
+        rate: () => 1
+    },
+    plan: {
+        key: "plan",
+        tab: "fxPlan",
+        rate: (i, fx) => fx.planRate
+    },
+    pack: {
+        key: "pack",
+        tab: "fxPack",
+        rate: (i, fx) => fx.packRates && fx.packRates[i] || fx.planRate
+    },
+    spot: {
+        key: "spot",
+        tab: "fxSpot",
+        rate: (i, fx) => fx.spot.rate
+    }
+};
+
+const store = {
+    get(k, d) {
+        try {
+            return localStorage.getItem(k) || d;
+        } catch (e) {
+            return d;
+        }
+    },
+    set(k, v) {
+        try {
+            localStorage.setItem(k, v);
+        } catch (e) {}
+    }
+};
+
+function defaultLang() {
+    try {
+        return String(navigator.language || "").toLowerCase().startsWith("es") ? "es" : "en";
+    } catch (e) {
+        return "en";
+    }
+}
+
+(async function() {
+    const [fin, clm, mv, sm, agt, flow, ins, bf] = await Promise.all([ j("/api/finance"), j("/api/claims"), j("/api/moves"), j("/api/shipmode").catch(() => ({})), j("/api/agents").catch(() => ({
+        error: "unavailable"
+    })), j("/api/monthflow").catch(() => ({
+        error: "unavailable"
+    })), j("/api/insurance").catch(() => ({
+        error: "unavailable"
+    })), j("/api/backfill").catch(() => ({
+        error: "unavailable"
+    })) ]);
+    const fx = fin.fx || {
+        planRate: fin.fxRateMxnPerUsd || 17.4479,
+        spot: {
+            rate: fin.fxRateMxnPerUsd || 17.4479,
+            asOf: "—"
+        }
+    };
+    const li = fin.lastClosedMonthIndex;
+    let lang = I18N[store.get("tms.lang", defaultLang())] ? store.get("tms.lang", defaultLang()) : "en";
+    let basis = BASES[store.get("tms.basis", "plan")] ? store.get("tms.basis", "plan") : "mxn";
+    let T = I18N[lang];
+    const tx = k => {
+        const v = T[k];
+        return v === undefined ? I18N.en[k] ?? k : v;
+    };
+    const BADGE = "display:inline-block;font-size:9px;letter-spacing:.06em;font-weight:700;padding:1px 5px;border-radius:3px;vertical-align:middle;margin-left:6px;";
+    const live = () => `<span style="${BADGE}background:#e8f3e8;color:#1a7f4b" title="${tx("badgeLiveTitle")}">${tx("badgeLive")}</span>`;
+    const file = () => `<span style="${BADGE}background:#eef1f6;color:#5c6675" title="${tx("badgeFileTitle")}">${tx("badgeFile")}</span>`;
+    const usdb = () => `<span style="${BADGE}background:#eef1f6;color:#5c6675" title="${tx("badgeUsdTitle")}">${tx("badgeUsd")}</span>`;
+    const estb = () => `<span style="${BADGE}background:#fff6e0;color:#7a5a00" title="${tx("badgeEstTitle")}">${tx("badgeEst")}</span>`;
+    const day = s => s ? new Date(s + (String(s).length === 10 ? "T12:00:00Z" : "")).toLocaleDateString(T._locale, {
+        day: "numeric",
+        month: "short",
+        year: "numeric"
+    }) : "—";
+    const src = t => `<span style="color:#8a93a0">${t}</span>`;
+    const stamp = d => d ? new Date(d).toLocaleString(T._locale) : tx("never");
+    const num = n => Math.round(n).toLocaleString(T._locale);
+    const pct = n => (n * 100).toFixed(1).replace(".", lang === "es" ? "." : ".") + "%";
+    const rateAt = i => BASES[basis].rate(i, fx);
+    const conv = (mxn, i) => mxn / rateAt(i);
+    const series = arr => arr.map((v, i) => conv(v, i));
+    const sumTo = (arr, n) => arr.slice(0, n).reduce((a, b) => a + b, 0);
+    const sumConvTo = (arr, n) => arr.slice(0, n).reduce((a, b, i) => a + conv(b, i), 0);
+    const money = n => basis === "mxn" ? "$" + num(n) + " MXN" : "$" + num(n);
+    const usdOnly = n => "$" + num(n);
+    const ytdActMxn = sumTo(fin.actual2026, li + 1), ytdBudMxn = sumTo(fin.budget2026, li + 1);
+    const ytdPrevMxn = sumTo(fin.actual2025, li + 1);
+    const attainYtd = ytdBudMxn ? ytdActMxn / ytdBudMxn : 0;
+    const attainMo = fin.budget2026[li] ? fin.actual2026[li] / fin.budget2026[li] : 0;
+    const yoyMo = fin.actual2025[li] ? fin.actual2026[li] / fin.actual2025[li] - 1 : null;
+    const yoyYtd = ytdPrevMxn ? ytdActMxn / ytdPrevMxn - 1 : null;
+    const opened = mv.filesOpened2026 || 0;
+    const BK = mv.bookings || null;
+    const bMonths = BK && BK.byMonth ? BK.byMonth : {
+        year: 2026,
+        prevYear: 2025,
+        current: Array(12).fill(0),
+        prior: Array(12).fill(0)
+    };
+    const b26 = bMonths.current, b25 = bMonths.prior;
+    const f26 = mv.filesByMonth?.["2026"] || Array(12).fill(0);
+    const f25 = mv.filesByMonth?.["2025"] || Array(12).fill(0);
+    const openedClosed = f26.slice(0, li + 1).reduce((a, b) => a + b, 0);
+    const seg = mv.bySegment || {};
+    const dq = mv.dataQuality || {};
+    const charts = {};
+    function fxLine() {
+        const cm = tx("months")[li];
+        if (basis === "mxn") return tx("fxNotePesos");
+        if (basis === "plan") return tx("fxNotePlan")(fx.planRate);
+        if (basis === "spot") {
+            const m = fx.spot.month ? tx("months")[+fx.spot.month.slice(5, 7) - 1] + " " + fx.spot.month.slice(0, 4) : "";
+            return tx("fxNoteSpot")(fx.spot.rate, day(fx.spot.asOf), fx.spot.source || "snapshot", m, !!fx.spot.stale || !fx.spot.month);
+        }
+        return tx("fxNotePack")(fx.packRates[6], fx.packRates[li] || fx.planRate, cm, fx.packRates[0]);
+    }
+    function renderControls() {
+        $("#langToggle").innerHTML = [ "en", "es" ].map(l => `<button data-lang="${l}" class="fxbtn${l === lang ? " on" : ""}">${I18N[l].langName}</button>`).join("");
+        $("#langToggle").querySelectorAll("button").forEach(el => el.onclick = () => {
+            lang = el.dataset.lang;
+            T = I18N[lang];
+            store.set("tms.lang", lang);
+            render();
+        });
+        $("#fxToggle").innerHTML = Object.values(BASES).map(b => `<button data-basis="${b.key}" class="fxbtn${b.key === basis ? " on" : ""}">${tx(b.tab)}</button>`).join("");
+        $("#fxToggle").querySelectorAll("button").forEach(el => el.onclick = () => {
+            basis = el.dataset.basis;
+            store.set("tms.basis", basis);
+            render();
+        });
+    }
+    function render() {
+        document.documentElement.lang = lang;
+        renderControls();
+        Object.values(charts).forEach(c => c && c.destroy());
+        const MONTHS = tx("months");
+        const cmName = MONTHS[li];
+        document.title = tx("appTitle") + " — Demo";
+        $(".brand").textContent = tx("brand");
+        $("#asof").innerHTML = tx("subtitle") + " · <b>" + (basis === "mxn" ? "MXN" : "USD") + "</b>";
+        $("#fxNote").innerHTML = fxLine();
+        document.querySelectorAll("[data-i18n]").forEach(el => {
+            el.textContent = tx(el.dataset.i18n);
+        });
+        const bookedClosed = b26.slice(0, li + 1).reduce((a, b) => a + b, 0);
+        const revPerFile = bookedClosed ? sumConvTo(fin.actual2026, li + 1) / bookedClosed : 0;
+        const now = new Date("2026-10-16T15:00:00"), cmi = now.getFullYear() === 2026 ? now.getMonth() : -1;
+        const sumR = (a, from, to) => a.slice(from, to).reduce((x, y) => x + y, 0);
+        const t12Rev = sumR(fin.actual2025, li + 1, 12) + sumR(fin.actual2026, 0, li + 1);
+        const t12Files = sumR(b25, li + 1, 12) + sumR(b26, 0, li + 1);
+        const rpf12 = t12Files ? t12Rev / t12Files : 0;
+        const booked = cmi > li && rpf12 && mv.updated ? (() => {
+            const files = b26[cmi] || 0, est = files * rpf12;
+            const dim = new Date(2026, cmi + 1, 0).getDate(), pace = est * dim / Math.max(1, now.getDate());
+            const bud = fin.budget2026[cmi] || 0;
+            return {
+                files: files,
+                est: est,
+                pace: pace,
+                bud: bud,
+                att: bud ? pace / bud : 0
+            };
+        })() : null;
+        const bookedYtdTotal = mv.bookings && mv.bookings.ytd && mv.bookings.ytd.current.total || (seg.agent?.W || 0) + (seg.dtd?.W || 0) + (seg.other?.W || 0) || 0;
+        const bSegCur = k => (mv.bookings && mv.bookings.bySegment && mv.bookings.bySegment[k] || {}).current || 0;
+        const bSegG = k => mv.bookings && mv.bookings.bySegment && mv.bookings.bySegment[k] || {};
+        const fxUsdMxn = fx.spot && fx.spot.rate || fx.planRate || 17.4479;
+        const valIn = (usd, mxn, i) => basis === "mxn" ? mxn + usd * fxUsdMxn : usd + mxn / rateAt(i);
+        const bSegVal = k => valIn(bSegG(k).currentUsd || 0, bSegG(k).currentMxn || 0, li);
+        const kpis = [ {
+            label: tx("kpiRevenue")(cmName) + file(),
+            val: money(conv(fin.actual2026[li], li)),
+            sub: tx("kpiBudget") + " " + money(conv(fin.budget2026[li], li)) + " · " + att(attainMo) + (yoyMo != null ? " · " + yoy(yoyMo) + " " + tx("kpiVsPrev") : "")
+        }, ...booked ? [ {
+            label: tx("kpiBooked")(MONTHS[cmi]) + estb(),
+            val: money(conv(booked.est, cmi)),
+            sub: tx("kpiBookedSub")(booked.files, money(conv(rpf12, cmi)), money(conv(booked.pace, cmi)), att(booked.att))
+        } ] : [], {
+            label: tx("kpiYtd") + file(),
+            val: money(sumConvTo(fin.actual2026, li + 1)),
+            sub: tx("kpiBudget") + " " + money(sumConvTo(fin.budget2026, li + 1)) + " · " + att(attainYtd) + " " + tx("kpiAttainment") + (yoyYtd != null ? " · " + yoy(yoyYtd) + " " + tx("kpiVsPrev") : "")
+        }, {
+            label: tx("kpiAgentFiles") + live(),
+            val: bSegCur("agent").toLocaleString(T._locale),
+            sub: tx("kpiSegSub")(pctOf(bSegCur("agent"), bookedYtdTotal), bookedYtdTotal) + " · " + tx("kpiSegValue")(money(bSegVal("agent")))
+        }, {
+            label: tx("kpiDtdFiles") + live(),
+            val: bSegCur("dtd").toLocaleString(T._locale),
+            sub: tx("kpiSegSub")(pctOf(bSegCur("dtd"), bookedYtdTotal), bookedYtdTotal) + " · " + tx("kpiSegValue")(money(bSegVal("dtd"))) + " · " + tx("kpiSegRest")(bSegCur("other"))
+        }, {
+            label: tx("kpiRevPerFile") + file(),
+            val: money(revPerFile),
+            sub: tx("kpiRevPerFileSub")(money(sumConvTo(fin.actual2026, li + 1)), bookedClosed, cmName)
+        }, {
+            label: tx("kpiClaims") + usdb(),
+            val: clm.ytd2026.claims,
+            sub: tx("kpiClaimsSub")(usdOnly(clm.ytd2026.settled), usdOnly(clm.ytd2026.claimed), pct(clm.ytd2026.settlementRatio), day(clm.meta && clm.meta.dataThrough || clm.asOf))
+        } ];
+        if (ins && !ins.error && ins.current) {
+            const C = ins.current, P = ins.prior || {};
+            const conv = o => valIn(o && o.USD || 0, o && o.MXN || 0, li);
+            const prem = conv(C.premium), profit = conv(C.profit), insured = conv(C.insured);
+            const premPrior = conv(P.premium);
+            const margin = prem ? profit / prem : 0;
+            kpis.push({
+                label: tx("kpiIns") + live(),
+                val: money(prem),
+                sub: tx("kpiInsSub")(money(profit), pct(margin), money(insured), ins.costRate, C.filesInsured, C.files, pct(C.coverage), money(premPrior), C.linesUnrated)
+            });
+        }
+        $("#kpis").innerHTML = kpis.map(k => `<div class="kpi"><div class="label">${k.label}</div><div class="val">${k.val}</div><div class="sub">${k.sub}</div></div>`).join("");
+        let bkSec = $("#bookedKpis");
+        if (!bkSec) {
+            bkSec = document.createElement("section");
+            bkSec.className = "kpis";
+            bkSec.id = "bookedKpis";
+            bkSec.style.gridTemplateColumns = "repeat(auto-fit,minmax(min(300px,100%),1fr))";
+            $("#kpis").after(bkSec);
+        }
+        const bk = mv.bookings;
+        if (bk && !bk.error && bk.ytd) {
+            const shortDay = s => new Date(s + "T12:00:00Z").toLocaleDateString(T._locale, {
+                day: "numeric",
+                month: "short",
+                timeZone: "UTC"
+            });
+            const delta = (c, p) => {
+                const d = c - p;
+                const col = d > 0 ? GREEN : d < 0 ? RED : "#8a93a0";
+                return `<span style="color:${col};font-weight:700">${d > 0 ? "+" : ""}${d}</span>`;
+            };
+            const GROUP_LABEL = {
+                agent: tx("bkAgent"),
+                tms: tx("bkTms"),
+                private: tx("bkPrivate"),
+                embassy: tx("bkEmbassy"),
+                unclassified: tx("bkUnclass")
+            };
+            const TD = "padding:2px 0;border-top:1px solid #eef1f6", NUM = TD + ";text-align:right;font-variant-numeric:tabular-nums;padding-left:10px";
+            const tile = (label, p) => {
+                const groups = [ ...bk.groups, ...p.current.unclassified || p.prior.unclassified ? [ "unclassified" ] : [] ];
+                const rowsHtml = groups.map(g => `<tr><td style="${TD}">${GROUP_LABEL[g]}</td><td style="${NUM}"><b>${p.current[g]}</b></td><td style="${NUM};color:#5c6675">${p.prior[g]}</td><td style="${NUM}">${delta(p.current[g], p.prior[g])}</td></tr>`).join("");
+                return `<div class="kpi"><div class="label">${label}${live()}</div>\n        <div class="val">${p.current.total} <span style="font-size:14px;color:#5c6675;font-weight:400">${tx("bkVs")} ${p.prior.total} ${tx("bkLastYear")}</span></div>\n        <table style="width:100%;border-collapse:collapse;font-size:12px;margin-top:6px">\n          <tr style="color:#8a93a0;font-size:10px;text-transform:uppercase;letter-spacing:.05em"><td></td><td style="text-align:right">${tx("bkThisYear")}</td><td style="text-align:right">${tx("bkPriorYear")}</td><td style="text-align:right">±</td></tr>\n          ${rowsHtml}</table>\n        <div class="sub">${tx("bkRange")(shortDay(p.from), shortDay(p.to), shortDay(p.priorFrom), shortDay(p.priorTo))}</div></div>`;
+            };
+            const ym = bk.month.from.slice(5, 7) - 1;
+            bkSec.innerHTML = tile(tx("bkWeek"), bk.week) + tile(tx("bkMonth")(MONTHS[ym]), bk.month) + tile(tx("bkYtd")(bk.ytd.from.slice(0, 4)), bk.ytd) + `<p class="note" style="grid-column:1/-1;margin:0">${src(tx("bkNote")(stamp(mv.updated)))}${bk.quality && bk.quality.windowShort ? " <b>" + tx("bkWindowShort") + "</b>" : ""}</p>`;
+        } else {
+            bkSec.innerHTML = "";
+        }
+        let agSec = $("#agentKpis");
+        if (!agSec) {
+            agSec = document.createElement("section");
+            agSec.className = "kpis";
+            agSec.id = "agentKpis";
+            agSec.style.gridTemplateColumns = "repeat(auto-fit,minmax(min(300px,100%),1fr))";
+            bkSec.after(agSec);
+        }
+        let agCard = $("#agentCard");
+        if (!agCard) {
+            agCard = document.createElement("section");
+            agCard.className = "grid";
+            agCard.id = "agentCard";
+            agCard.style.marginBottom = "18px";
+            agSec.after(agCard);
+        }
+        if (agt && !agt.error && agt.totals) {
+            const t = agt.totals;
+            const arrow = (cur, prev) => {
+                const d = cur - prev;
+                const col = d > 0 ? GREEN : d < 0 ? RED : "#8a93a0";
+                return `<span style="color:${col};font-weight:700">${d > 0 ? "+" : ""}${d}</span>`;
+            };
+            const cpct = v => v == null ? "—" : (v * 100).toFixed(0) + "%";
+            agSec.innerHTML = `<div class="kpi"><div class="label">${tx("agQuotes")}${live()}</div>\n        <div class="val">${num(t.quotesYtd)} <span style="font-size:14px;color:#5c6675;font-weight:400">${tx("bkVs")} ${num(t.quotesLy)} ${tx("bkLastYear")} ${arrow(t.quotesYtd, t.quotesLy)}</span></div>\n        <div class="sub">${tx("agQuotesSub")(num(t.bookedYtd), num(t.bookedLy), cpct(t.conv12), t.agentsQuotingYtd)}</div></div>` + `<div class="kpi"><div class="label">${tx("agNoBook")}${live()}</div>\n        <div class="val" style="color:${t.neverBooked ? RED : GREEN}">${t.neverBooked}</div>\n        <div class="sub">${tx("agNoBookSub")(agt.minQuotesNoBook, t.quotesLostToNoBook)}</div></div>` + `<div class="kpi"><div class="label">${tx("agLapsed")}${live()}</div>\n        <div class="val">${t.lapsed}</div>\n        <div class="sub">${tx("agLapsedSub")(agt.lapseDays, t.agentsActive12)}</div></div>`;
+            const VIEWS = {
+                top: {
+                    label: tx("agViewTop"),
+                    rows: agt.top
+                },
+                bottom: {
+                    label: tx("agViewBottom"),
+                    rows: agt.bottom
+                },
+                nobook: {
+                    label: tx("agViewNoBook"),
+                    rows: agt.neverBooked
+                },
+                lapsed: {
+                    label: tx("agViewLapsed"),
+                    rows: agt.lapsedAgents
+                },
+                state: {
+                    label: tx("agViewState"),
+                    rows: agt.byState
+                }
+            };
+            const TH = "text-align:right;padding:4px 0 4px 10px;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:#8a93a0";
+            const TD = "padding:3px 0;border-top:1px solid #eef1f6";
+            const TDN = TD + ";text-align:right;padding-left:10px;font-variant-numeric:tabular-nums";
+            const pctCell = v => v == null ? "—" : (v * 100).toFixed(0) + "%";
+            const agentTable = rows => rows.length ? `<table style="width:100%;border-collapse:collapse;font-size:12px">\n        <tr><td style="${TH};text-align:left">${tx("agColAgent")}</td><td style="${TH}">${tx("agColState")}</td>\n        <td style="${TH}">${tx("agColQytd")}</td><td style="${TH}">${tx("agColQly")}</td><td style="${TH}">${tx("agColBooked")}</td>\n        <td style="${TH}">${tx("agColConv")}</td><td style="${TH}">${tx("agColLast")}</td></tr>\n        ${rows.map(a => `<tr><td style="${TD}">${a.agent}${a.agentNo ? ` <span style="color:#8a93a0">#${a.agentNo}</span>` : ""}</td>\n          <td style="${TDN};color:#5c6675">${a.state || "—"}</td>\n          <td style="${TDN}"><b>${a.quotesYtd}</b></td><td style="${TDN};color:#5c6675">${a.quotesLy}</td>\n          <td style="${TDN}">${a.bookedYtd}</td><td style="${TDN}">${pctCell(a.conv12)}</td>\n          <td style="${TDN};color:#5c6675">${day(a.lastQuote)}</td></tr>`).join("")}</table>` : `<p class="note">${tx("agEmpty")}</p>`;
+            const stateTable = rows => `<table style="width:100%;border-collapse:collapse;font-size:12px">\n        <tr><td style="${TH};text-align:left">${tx("agColState")}</td><td style="${TH}">${tx("agColQuotes12")}</td>\n        <td style="${TH}">${tx("agColBooked12")}</td><td style="${TH}">${tx("agColConv")}</td><td style="${TH}">${tx("agColAgents")}</td></tr>\n        ${rows.map(s2 => `<tr><td style="${TD}">${s2.state}</td><td style="${TDN}"><b>${s2.quotes}</b></td>\n          <td style="${TDN}">${s2.booked}</td><td style="${TDN}">${pctCell(s2.conv)}</td>\n          <td style="${TDN};color:#5c6675">${s2.agents}</td></tr>`).join("")}</table>`;
+            let view = store.get("tms.agentView", "top");
+            if (!VIEWS[view]) view = "top";
+            const paint = () => {
+                const v = VIEWS[view];
+                agCard.innerHTML = `<div class="card" style="grid-column:1/-1">\n        <h3>${tx("agCardTitle")}</h3>\n        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">\n          ${Object.entries(VIEWS).map(([k, o]) => `<button data-v="${k}" style="border:1px solid ${k === view ? NAVY : "#c7d0da"};background:${k === view ? NAVY : "#fff"};color:${k === view ? "#fff" : "#5c6675"};border-radius:4px;padding:4px 10px;font:600 11px Arial;cursor:pointer">${o.label} (${o.rows.length})</button>`).join("")}\n        </div>\n        <div style="overflow-x:auto">${view === "state" ? stateTable(v.rows) : agentTable(v.rows)}</div>\n        <p class="note">${src(tx("agNote")(agt.windows.ytd.from, agt.asOf, agt.lapseDays, agt.minQuotesNoBook))}</p></div>`;
+                agCard.querySelectorAll("button[data-v]").forEach(b => b.onclick = () => {
+                    view = b.dataset.v;
+                    store.set("tms.agentView", view);
+                    paint();
+                });
+            };
+            paint();
+        } else {
+            agSec.innerHTML = "";
+            agCard.innerHTML = "";
+        }
+        let bvCard = $("#bookedValueCard");
+        if (!bvCard) {
+            bvCard = document.createElement("section");
+            bvCard.className = "grid";
+            bvCard.id = "bookedValueCard";
+            bvCard.style.marginBottom = "18px";
+            agCard.after(bvCard);
+        }
+        if (BK && BK.bySegment) {
+            const SEGL = {
+                agent: tx("segAgent"),
+                dtd: tx("segDtd"),
+                other: tx("segOther")
+            };
+            const ML2 = tx("modeLabel");
+            const comb = r => valIn(r.currentUsd || 0, r.currentMxn || 0, li);
+            const combPrior = r => valIn(r.priorUsd || 0, r.priorMxn || 0, li);
+            const rowsOf = (obj, labeller) => Object.entries(obj).map(([k, v]) => ({
+                k: k,
+                label: labeller(k),
+                ...v
+            })).filter(r => r.current || r.prior).sort((a, b) => comb(b) - comb(a));
+            const segRowsV = rowsOf(BK.bySegment, k => SEGL[k] || k);
+            const modeRowsV = (BK.byMode || []).filter(r => r.current || r.prior).map(r => ({
+                ...r,
+                label: ML2[r.key] || r.key
+            })).sort((a, b) => comb(b) - comb(a));
+            const TH3 = "text-align:right;padding:4px 0 4px 10px;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:#8a93a0";
+            const TD3 = "padding:3px 0;border-top:1px solid #eef1f6";
+            const TDR3 = TD3 + ";text-align:right;padding-left:10px;font-variant-numeric:tabular-nums";
+            const totV = segRowsV.reduce((t, r) => t + comb(r), 0);
+            const block = (title, rows) => `<h4 style="margin:12px 0 4px;font:700 12px Arial;color:#002e5c">${title}</h4>\n      <table style="width:100%;border-collapse:collapse;font-size:12px">\n      <tr><td style="${TH3};text-align:left"></td><td style="${TH3}">${tx("bvMoves")}</td>\n      <td style="${TH3}">${tx("bvSoldUsd")}</td><td style="${TH3}">${tx("bvSoldMxn")}</td>\n      <td style="${TH3}">${tx("bvValue")}</td><td style="${TH3}">${tx("bvPerMove")}</td>\n      <td style="${TH3}">${tx("bvShare")}</td><td style="${TH3}">${tx("bvLast")}</td></tr>\n      ${rows.map(r => `<tr><td style="${TD3}">${r.label}</td>\n        <td style="${TDR3}">${r.current}</td>\n        <td style="${TDR3};color:#5c6675">${r.currentUsd ? "$" + num(r.currentUsd) : "—"}</td>\n        <td style="${TDR3};color:#5c6675">${r.currentMxn ? "$" + num(r.currentMxn) : "—"}</td>\n        <td style="${TDR3}"><b>${money(comb(r))}</b></td>\n        <td style="${TDR3}">${r.currentPriced ? money(comb(r) / r.currentPriced) : "—"}</td>\n        <td style="${TDR3};color:#5c6675">${totV ? (comb(r) / totV * 100).toFixed(0) + "%" : "—"}</td>\n        <td style="${TDR3};color:#5c6675">${money(combPrior(r))}</td></tr>`).join("")}\n      </table>`;
+            const cov = BK.valueCoverage || {
+                files: 0,
+                priced: 0,
+                usdFiles: 0,
+                mxnFiles: 0,
+                multiOptionFiles: 0
+            };
+            const GRPL = {
+                agent: tx("bkAgent"),
+                tms: tx("bkTms"),
+                private: tx("bkPrivate"),
+                embassy: tx("bkEmbassy"),
+                unclassified: tx("bkUnclass")
+            };
+            const avgOf = r => r.currentPriced ? comb(r) / r.currentPriced : null;
+            const avgPriorOf = r => r.priorPriced ? combPrior(r) / r.priorPriced : null;
+            const grpRows = Object.entries(BK.byGroup || {}).map(([k, v]) => ({
+                k: k,
+                label: GRPL[k] || k,
+                ...v
+            })).filter(r => r.current || r.prior).sort((a, b) => (a.k === "unclassified") - (b.k === "unclassified") || (avgOf(b) || 0) - (avgOf(a) || 0));
+            const grpMoves = grpRows.reduce((t, r) => t + r.current, 0);
+            const grpValue = grpRows.reduce((t, r) => t + comb(r), 0);
+            const grpPriced = grpRows.reduce((t, r) => t + r.currentPriced, 0);
+            const delta = r => {
+                const a = avgOf(r), p = avgPriorOf(r);
+                if (a == null || p == null || !p) return "—";
+                const d = (a / p - 1) * 100;
+                return `<span style="color:${d >= 0 ? "#1a7f4b" : "#b3261e"}">${d >= 0 ? "+" : ""}${d.toFixed(0)}%</span>`;
+            };
+            const groupBlock = `<h4 style="margin:12px 0 4px;font:700 12px Arial;color:#002e5c">${tx("bvByGroup")}</h4>\n      <table style="width:100%;border-collapse:collapse;font-size:12px">\n      <tr><td style="${TH3};text-align:left"></td><td style="${TH3}">${tx("bvMoves")}</td>\n      <td style="${TH3}">${tx("bvPerMove")}</td><td style="${TH3}">${tx("bvLastPerMove")}</td>\n      <td style="${TH3}">${tx("bvChange")}</td><td style="${TH3}">${tx("bvValue")}</td>\n      <td style="${TH3}">${tx("bvSoldUsd")}</td><td style="${TH3}">${tx("bvSoldMxn")}</td></tr>\n      ${grpRows.map(r => `<tr><td style="${TD3}">${r.label}</td>\n        <td style="${TDR3}">${r.current}</td>\n        <td style="${TDR3}"><b>${avgOf(r) == null ? "—" : money(avgOf(r))}</b></td>\n        <td style="${TDR3};color:#5c6675">${avgPriorOf(r) == null ? "—" : money(avgPriorOf(r))}</td>\n        <td style="${TDR3}">${delta(r)}</td>\n        <td style="${TDR3}">${money(comb(r))}</td>\n        <td style="${TDR3};color:#5c6675">${r.currentUsd ? "$" + num(r.currentUsd) : "—"}</td>\n        <td style="${TDR3};color:#5c6675">${r.currentMxn ? "$" + num(r.currentMxn) : "—"}</td></tr>`).join("")}\n      <tr><td style="${TD3};border-top:2px solid #002e5c"><b>${tx("bvAll")}</b></td>\n        <td style="${TDR3};border-top:2px solid #002e5c"><b>${grpMoves}</b></td>\n        <td style="${TDR3};border-top:2px solid #002e5c"><b>${grpPriced ? money(grpValue / grpPriced) : "—"}</b></td>\n        <td style="${TDR3};border-top:2px solid #002e5c"></td>\n        <td style="${TDR3};border-top:2px solid #002e5c"></td>\n        <td style="${TDR3};border-top:2px solid #002e5c"><b>${money(grpValue)}</b></td>\n        <td style="${TDR3};border-top:2px solid #002e5c"></td>\n        <td style="${TDR3};border-top:2px solid #002e5c"></td></tr>\n      </table>`;
+            const ranked = grpRows.filter(r => avgOf(r) != null && r.k !== "unclassified").sort((a, b) => avgOf(b) - avgOf(a));
+            const hi = ranked[0], lo = ranked[ranked.length - 1];
+            const grpNote = !hi || !lo || hi === lo ? "" : `<p class="note">${tx("bvGroupNote")(grpMoves, grpPriced, hi.label, money(avgOf(hi)), lo.label, money(avgOf(lo)))}</p>`;
+            const urv = BK.underReview;
+            const urHtml = !urv ? "" : `<p class="note" style="border-left:3px solid #e0a800;background:#fffbe9;padding:8px 10px;margin-top:10px">\n      ${tx("bvReview")(urv.count, num(urv.mxn), urv.shareOfMxn, urv.files.map(f => `${f.n} (${num(f.mxn)})`).join(", "))}</p>`;
+            bvCard.innerHTML = `<div class="card" style="grid-column:1/-1">\n      <h3>${tx("bvTitle")(basis === "mxn" ? "MXN" : "USD")}</h3>\n      <div style="overflow-x:auto">${groupBlock}</div>\n      ${grpNote}\n      <div style="overflow-x:auto">${block(tx("bvByService"), segRowsV)}${block(tx("bvByMode"), modeRowsV)}</div>\n      <p class="note">${src(tx("bvNote")(money(totV), cov.priced, cov.files, cov.usdFiles, cov.mxnFiles, money(sumConvTo(fin.actual2026, li + 1)), cmName, cov.multiOptionFiles))}</p>\n      ${urHtml}</div>`;
+        } else if (bvCard) {
+            bvCard.innerHTML = "";
+        }
+        let mfSec = $("#flowKpis");
+        if (!mfSec) {
+            mfSec = document.createElement("section");
+            mfSec.className = "kpis";
+            mfSec.id = "flowKpis";
+            mfSec.style.gridTemplateColumns = "repeat(auto-fit,minmax(min(300px,100%),1fr))";
+            agCard.after(mfSec);
+        }
+        let mfCard = $("#flowCard");
+        if (!mfCard) {
+            mfCard = document.createElement("section");
+            mfCard.className = "grid";
+            mfCard.id = "flowCard";
+            mfCard.style.marginBottom = "18px";
+            mfSec.after(mfCard);
+        }
+        if (flow && !flow.error && flow.counts) {
+            const c = flow.counts, q = flow.quality || {};
+            const mi = Math.max(0, +flow.month.slice(5, 7) - 1);
+            const rpfNow = rpf12 ? conv(rpf12, mi) : 0;
+            const est = n => money(rpfNow * n);
+            mfSec.innerHTML = `<div class="kpi"><div class="label">${tx("mfMoves")(MONTHS[mi])}${live()}</div>\n        <div class="val">${c.active}</div>\n        <div class="sub">${tx("mfMovesSub")(c.packing, c.delivering, c.both)}</div></div>` + `<div class="kpi"><div class="label">${tx("mfInvoiced")}${live()}</div>\n        <div class="val">${c.invoiced} <span style="font-size:14px;color:#5c6675;font-weight:400">/ ${c.toInvoice} ${tx("mfAwaiting")}</span></div>\n        <div class="sub">${tx("mfInvoicedSub")(est(c.invoiced), est(c.toInvoice))}</div></div>` + `<div class="kpi"><div class="label">${tx("mfEstRev")(MONTHS[mi])}${estb()}</div>\n        <div class="val">${rpfNow ? est(c.active) : "—"}</div>\n        <div class="sub">${tx("mfEstRevSub")(c.active, money(rpfNow))}</div></div>`;
+            const TD2 = "padding:3px 0;border-top:1px solid #eef1f6";
+            const TDR = TD2 + ";text-align:right;padding-left:10px;font-variant-numeric:tabular-nums";
+            const TH2 = "text-align:right;padding:4px 0 4px 10px;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:#8a93a0";
+            const list = flow.toInvoiceList || [];
+            mfCard.innerHTML = `<div class="card" style="grid-column:1/-1">\n      <h3>${tx("mfCardTitle")(MONTHS[mi])}</h3>\n      <div class="note" style="background:#fff6e0;color:#7a5a00;padding:8px 10px;border-radius:4px;margin:0 0 10px">\n        ${tx("mfWaiting")(Math.round((q.packFill || 0) * 100), Math.round((q.deliveryFill || 0) * 100), q.packExpected, q.deliveryExpected, q.upliftFill != null ? Math.round(q.upliftFill * 100) : null, q.bookedFiles)}</div>\n      ${list.length ? `<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px">\n        <tr><td style="${TH2};text-align:left">${tx("mfColFile")}</td><td style="${TH2};text-align:left">${tx("mfColLane")}</td>\n        <td style="${TH2}">${tx("mfColPack")}</td><td style="${TH2}">${tx("mfColDeliver")}</td>\n        <td style="${TH2}">${tx("mfColCoord")}</td><td style="${TH2}">${tx("mfColValue")}</td></tr>\n        ${list.map(r => `<tr><td style="${TD2}"><b>${r.n}</b> <span style="color:#8a93a0">${r.type}</span></td>\n          <td style="${TD2};color:#5c6675">${r.lane || "—"}</td>\n          <td style="${TDR}">${r.pack ? day(r.pack) : r.packExpected === false ? `<span style="color:#8a93a0">${tx("mfNotNeeded")}</span>` : "—"}</td><td style="${TDR}">${r.delivery ? day(r.delivery) : r.deliveryExpected === false ? `<span style="color:#8a93a0">${tx("mfNotNeeded")}</span>` : "—"}</td>\n          <td style="${TDR};color:#5c6675">${r.coordinator || "—"}</td>\n          <td style="${TDR}">${r.value ? usdOnly(r.value) : "—"}</td></tr>`).join("")}</table></div>` : `<p class="note">${tx("mfNoneToInvoice")}</p>`}\n      <p class="note">${src(tx("mfNote")(c.toInvoice, usdOnly(flow.estimate.quotedValueToInvoice), stamp(mv.updated)))}</p></div>`;
+        } else {
+            mfSec.innerHTML = "";
+            mfCard.innerHTML = "";
+        }
+        let bfCard = $("#backfillCard");
+        if (!bfCard) {
+            bfCard = document.createElement("section");
+            bfCard.className = "grid";
+            bfCard.id = "backfillCard";
+            bfCard.style.marginBottom = "18px";
+            mfCard.after(bfCard);
+        }
+        if (bf && !bf.error) {
+            const fromTxt = day(bf.from);
+            const label = {
+                uplift: tx("bfUplift"),
+                pack: tx("bfPack"),
+                delivery: tx("bfDelivery")
+            };
+            const TD3 = "padding:5px 0;border-top:1px solid #eef1f6;vertical-align:top";
+            const TH3 = "text-align:left;padding:4px 0;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:#8a93a0";
+            let body;
+            if (bf.pending) body = `<p class="note">${tx("bfPending")}</p>`; else if (!bf.toUpdate) body = `<p class="note">${tx("bfDone")}</p>`; else body = `<p class="note" style="margin:0 0 8px"><b>${tx("bfSub")(bf.toUpdate, bf.cohort)}</b> · ${tx("bfMissing")(bf.missing.uplift, bf.missing.pack, bf.missing.delivery)}</p>\n      <div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px">\n      <tr><td style="${TH3}">${tx("bfColCoord")}</td><td style="${TH3};text-align:right;padding-right:14px">${tx("bfColFiles")}</td><td style="${TH3}">${tx("bfColJobs")}</td></tr>\n      ${bf.coordinators.map(c => `<tr><td style="${TD3};white-space:nowrap;padding-right:14px"><b>${c.coordinator}</b></td>\n        <td style="${TD3};text-align:right;padding-right:14px;font-variant-numeric:tabular-nums">${c.files}</td>\n        <td style="${TD3};line-height:1.7">${c.jobs.map(jb => `<span style="white-space:nowrap;margin-right:12px"><b>${jb.n}</b> <span style="color:#8a93a0">${jb.type}</span> <span style="color:#a3302a">${jb.missing.map(m => label[m]).join(", ")}</span></span>`).join(" ")}</td></tr>`).join("")}\n      </table></div>`;
+            bfCard.innerHTML = `<div class="card" style="grid-column:1/-1">\n      <h3>${tx("bfTitle")(fromTxt)}${live()}</h3>\n      <p class="note" style="margin:0 0 10px">${tx("bfIntro")(fromTxt)}</p>\n      ${body}\n      <p class="note">${src(tx("bfNote")(stamp(mv.updated)))}</p></div>`;
+        } else {
+            bfCard.innerHTML = "";
+        }
+        charts.rev = new Chart($("#revBudget"), {
+            type: "bar",
+            data: {
+                labels: MONTHS,
+                datasets: [ {
+                    label: tx("dsBudget"),
+                    data: series(fin.budget2026),
+                    backgroundColor: GREY
+                }, {
+                    label: tx("dsActual"),
+                    data: series(fin.actual2026).map((v, i) => i <= li ? v : null),
+                    backgroundColor: NAVY
+                } ]
+            },
+            options: opts({
+                money: true
+            })
+        });
+        $("#revNote").innerHTML = tx("noteRev")(money(sumConvTo(fin.actual2026, li + 1)), money(sumConvTo(fin.budget2026, li + 1)), pct(attainYtd), cmName) + src(tx("srcFinance"));
+        charts.moves = new Chart($("#moves"), {
+            type: "bar",
+            data: {
+                labels: MONTHS,
+                datasets: [ {
+                    label: String(bMonths.prevYear),
+                    data: b25,
+                    backgroundColor: PALE
+                }, {
+                    label: String(bMonths.year),
+                    data: b26,
+                    backgroundColor: NAVY
+                } ]
+            },
+            options: opts({})
+        });
+        const bYtd = b26.reduce((a, b) => a + b, 0), bPrevFull = b25.reduce((a, b) => a + b, 0);
+        $("#movesNote").innerHTML = mv.updated ? tx("noteBookedMonth")(bYtd, bPrevFull, bMonths.prevYear, BK && BK.ytd ? BK.ytd.prior.total : 0) + src(tx("srcLive")(stamp(mv.updated))) : mv.error ? "Moveware: " + mv.error : tx("awaitingCreds");
+        const bseg = BK && BK.bySegment || {};
+        const segRows = [ [ "agent", tx("segAgent") ], [ "dtd", tx("segDtd") ], [ "other", tx("segOther") ] ];
+        charts.segment = new Chart($("#segment"), {
+            type: "bar",
+            data: {
+                labels: segRows.map(r => r[1]),
+                datasets: [ {
+                    label: String(bMonths.prevYear),
+                    data: segRows.map(r => (bseg[r[0]] || {}).prior || 0),
+                    backgroundColor: PALE
+                }, {
+                    label: String(bMonths.year),
+                    data: segRows.map(r => (bseg[r[0]] || {}).current || 0),
+                    backgroundColor: NAVY
+                } ]
+            },
+            options: {
+                indexAxis: "y",
+                plugins: {
+                    legend: {
+                        position: "bottom"
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: tx("axBooked")
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            autoSkip: false
+                        }
+                    }
+                }
+            }
+        });
+        $("#segNote").innerHTML = tx("noteSegBooked")((bseg.agent || {}).current || 0, (bseg.dtd || {}).current || 0, (bseg.other || {}).current || 0, bMonths.prevYear) + src(tx("srcSeg")(stamp(mv.updated)));
+        const bMode = (BK && BK.byMode || []).filter(r => r.current || r.prior);
+        const smRows = bMode.length ? bMode : [];
+        if (smRows.length) {
+            const ML = tx("modeLabel"), MF = tx("modeFull");
+            charts.shipmode = new Chart($("#shipmode"), {
+                type: "bar",
+                data: {
+                    labels: smRows.map(r => ML[r.key] || r.key),
+                    datasets: [ {
+                        label: String(bMonths.prevYear),
+                        data: smRows.map(r => r.prior),
+                        backgroundColor: PALE
+                    }, {
+                        label: String(bMonths.year),
+                        data: smRows.map(r => r.current),
+                        backgroundColor: NAVY
+                    } ]
+                },
+                options: {
+                    indexAxis: "y",
+                    plugins: {
+                        legend: {
+                            position: "bottom"
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: tx("axBooked")
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                autoSkip: false
+                            }
+                        }
+                    }
+                }
+            });
+            const head = smRows.slice(0, 5).map(r => `<b>${ML[r.key] || r.key}</b> ${r.current} (${r.prior} ${tx("bkLastYear")})`).join(" · ");
+            const gloss = smRows.map(r => `<b>${ML[r.key] || r.key}</b> ${MF[r.key] || ""}`).filter(x => x.length > 12).join(" · ");
+            $("#shipNote").innerHTML = head + "<br>" + tx("noteShipBooked") + gloss + src(tx("srcShip")(stamp(mv.updated), 0));
+        } else {
+            $("#shipNote").innerHTML = sm.computing ? tx("shipComputing") : sm.error ? "Moveware: " + sm.error : tx("shipAwaiting");
+        }
+        const cd = (BK && BK.byCoordinator || []).slice(0, 10);
+        charts.coord = new Chart($("#coord"), {
+            type: "bar",
+            data: {
+                labels: cd.map(c => c.name),
+                datasets: [ {
+                    label: String(bMonths.prevYear),
+                    data: cd.map(c => c.prior),
+                    backgroundColor: PALE
+                }, {
+                    label: String(bMonths.year),
+                    data: cd.map(c => c.current),
+                    backgroundColor: NAVY
+                } ]
+            },
+            options: {
+                indexAxis: "y",
+                plugins: {
+                    legend: {
+                        position: "bottom"
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: tx("axBooked")
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            autoSkip: false
+                        }
+                    }
+                }
+            }
+        });
+        $("#coordNote").innerHTML = tx("noteCoordBooked")(cd.length, cd[0] ? cd[0].name : "—", cd[0] ? cd[0].current : 0) + src(tx("srcCoord")(stamp(mv.updated)));
+        const qualCard = $("#quality") && $("#quality").closest(".card");
+        if (qualCard) qualCard.style.display = "none";
+        const statusMix = mv.statusMix2026 || {};
+        charts.quality = new Chart($("#quality"), {
+            type: "bar",
+            data: {
+                labels: [ tx("qlWon"), tx("qlLost"), tx("qlOpen"), tx("qlMilestone") ],
+                datasets: [ {
+                    label: tx("dsFiles"),
+                    data: [ statusMix.W || 0, statusMix.L || 0, (statusMix.P || 0) + (statusMix.I || 0) + (statusMix.C || 0), dq.withAnyMilestone || 0 ],
+                    backgroundColor: [ GREEN, RED, PALE, GOLD ]
+                } ]
+            },
+            options: {
+                indexAxis: "y",
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: tx("axFilesOpened2026")
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            autoSkip: false
+                        }
+                    }
+                }
+            }
+        });
+        $("#qualNote").innerHTML = tx("noteQual")(dq.files || 0, dq.withAnyMilestone || 0, money(revPerFile), cmName) + src(tx("srcLive")(stamp(mv.updated)));
+        charts.claimsMo = new Chart($("#claimsMo"), {
+            type: "bar",
+            data: {
+                labels: MONTHS,
+                datasets: [ {
+                    label: tx("dsClaimed"),
+                    data: clm.byMonth2026.map(x => x.claimed),
+                    backgroundColor: GREY
+                }, {
+                    label: tx("dsSettled"),
+                    data: clm.byMonth2026.map(x => x.settled),
+                    backgroundColor: NAVY
+                } ]
+            },
+            options: opts({
+                money: true,
+                forceUsd: true
+            })
+        });
+        const cmeta = clm.meta || {};
+        $("#claimsNote") && ($("#claimsNote").innerHTML = tx("noteClaims") + src(tx("srcClaims")(day(cmeta.dataThrough || clm.asOf), cmeta.uploadedAt ? day(cmeta.uploadedAt.slice(0, 10)) : null, cmeta.uploadedBy)));
+        charts.loss = new Chart($("#lossRatio"), {
+            type: "line",
+            data: {
+                labels: clm.byYear.map(y => y.year),
+                datasets: [ {
+                    label: tx("dsLossRatio"),
+                    data: clm.byYear.map(y => y.lossRatio),
+                    borderColor: GOLD,
+                    backgroundColor: "rgba(201,162,39,.15)",
+                    fill: true,
+                    tension: .3
+                } ]
+            },
+            options: opts({
+                pct: true
+            })
+        });
+        const modes = mv.byMode || {}, lane = mv.byLane || {};
+        const bLane = BK && BK.byLane || {};
+        const laneVal = k => (bLane[k] || {}).current || 0;
+        charts.mix = new Chart($("#mix"), {
+            type: "doughnut",
+            data: {
+                labels: [ tx("laneIn"), tx("laneOut"), tx("laneDom"), tx("laneOther") ],
+                datasets: [ {
+                    data: [ laneVal("inbound"), laneVal("outbound"), laneVal("domestic"), laneVal("other") ],
+                    backgroundColor: [ NAVY, GOLD, GREY, PALE ]
+                } ]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        position: "bottom"
+                    }
+                }
+            }
+        });
+        const modeLine = (BK && BK.byMode || []).filter(r => r.current).map(r => `${tx("modeLabel")[r.key] || r.key} ${r.current}`).join(" · ");
+        $("#mixNote").innerHTML = tx("noteMixBooked")(modeLine || "—") + src(tx("srcLive")(stamp(mv.updated)));
+        $("#foot").innerHTML = tx("foot");
+        function att(p) {
+            return `<span class="${p >= 1 ? "pos" : "neg"}">${pct(p)}</span>`;
+        }
+        function yoy(p) {
+            return `<span class="${p >= 0 ? "pos" : "neg"}">${p >= 0 ? "+" : ""}${(p * 100).toFixed(1)}%</span>`;
+        }
+        function pctOf(a, b) {
+            return a && b ? (a / b * 100).toFixed(0) + "%" : "—";
+        }
+    }
+    function opts({money: isMoney, pct: isPct, horizontal: horizontal, forceUsd: forceUsd} = {}) {
+        const axis = horizontal ? "x" : "y";
+        const big = isMoney && basis === "mxn" && !forceUsd;
+        return {
+            indexAxis: horizontal ? "y" : "x",
+            plugins: {
+                legend: {
+                    position: "bottom"
+                }
+            },
+            scales: {
+                [axis]: {
+                    ticks: {
+                        callback: v => isMoney ? big ? "$" + (v / 1e6).toFixed(1) + "m" : "$" + Math.round(v / 1e3) + "k" : isPct ? (v * 100).toFixed(0) + "%" : v
+                    }
+                }
+            }
+        };
+    }
+    render();
+})();
+</script>
+</body></html>
