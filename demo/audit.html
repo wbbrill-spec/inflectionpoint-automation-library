@@ -1,10 +1,32 @@
 <!DOCTYPE html>
-<html lang="en"><head><script>(function(){var D={};
-var real=window.fetch;window.fetch=function(u,o){try{var p=new URL(u,location.href).pathname;}catch(e){var p=String(u);}
-var body=D[p]; if(body===undefined){for(var k in D){if(p.indexOf(k)===0||k.indexOf(p)===0){body=D[k];break;}}}
-if(body===undefined) body='{}';
-return Promise.resolve(new Response(body,{status:200,headers:{'Content-Type':'application/json'}}));};
-window.__DEMO_SNAPSHOT__=true;})();</script><meta name="robots" content="noindex"><meta charset="utf-8">
+<html lang="en"><head><script>(function() {
+    var D = {};
+    var real = window.fetch;
+    window.fetch = function(u, o) {
+        try {
+            var p = new URL(u, location.href).pathname;
+        } catch (e) {
+            var p = String(u);
+        }
+        var body = D[p];
+        if (body === undefined) {
+            for (var k in D) {
+                if (p.indexOf(k) === 0 || k.indexOf(p) === 0) {
+                    body = D[k];
+                    break;
+                }
+            }
+        }
+        if (body === undefined) body = "{}";
+        return Promise.resolve(new Response(body, {
+            status: 200,
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }));
+    };
+    window.__DEMO_SNAPSHOT__ = true;
+})();</script><meta name="robots" content="noindex"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Move-File Cost &amp; Profit Audit</title>
 <style>
@@ -259,27 +281,38 @@ window.__DEMO_SNAPSHOT__=true;})();</script><meta name="robots" content="noindex
 
   <footer>Automation Library · the audit runs on imperfect data and flags it — figures in file currency (mixed).</footer>
 </main>
-<script>
-(function(){
-  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
-  var btns = Array.prototype.slice.call(document.querySelectorAll('.tab-btn'));
-  var names = tabs.map(function(t){return t.getAttribute('data-tab');});
-  function show(name){
-    if(names.indexOf(name) < 0){ name = names[0]; }
-    tabs.forEach(function(t){ t.hidden = (t.getAttribute('data-tab') !== name); });
-    btns.forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-tab') === name); });
-  }
-  btns.forEach(function(b){
-    b.addEventListener('click', function(e){
-      e.preventDefault();
-      var name = b.getAttribute('data-tab');
-      if(history.replaceState){ history.replaceState(null, '', '#' + name); }
-      else { location.hash = name; }
-      show(name);
+<script>(function() {
+    var tabs = Array.prototype.slice.call(document.querySelectorAll(".tab"));
+    var btns = Array.prototype.slice.call(document.querySelectorAll(".tab-btn"));
+    var names = tabs.map(function(t) {
+        return t.getAttribute("data-tab");
     });
-  });
-  window.addEventListener('hashchange', function(){ show((location.hash || '').slice(1)); });
-  show((location.hash || '').slice(1) || names[0]);
-})();
-</script>
+    function show(name) {
+        if (names.indexOf(name) < 0) {
+            name = names[0];
+        }
+        tabs.forEach(function(t) {
+            t.hidden = t.getAttribute("data-tab") !== name;
+        });
+        btns.forEach(function(b) {
+            b.classList.toggle("active", b.getAttribute("data-tab") === name);
+        });
+    }
+    btns.forEach(function(b) {
+        b.addEventListener("click", function(e) {
+            e.preventDefault();
+            var name = b.getAttribute("data-tab");
+            if (history.replaceState) {
+                history.replaceState(null, "", "#" + name);
+            } else {
+                location.hash = name;
+            }
+            show(name);
+        });
+    });
+    window.addEventListener("hashchange", function() {
+        show((location.hash || "").slice(1));
+    });
+    show((location.hash || "").slice(1) || names[0]);
+})();</script>
 </body></html>

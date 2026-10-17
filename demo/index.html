@@ -1,11 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><script>(function(){var D={};
-var real=window.fetch;window.fetch=function(u,o){try{var p=new URL(u,location.href).pathname;}catch(e){var p=String(u);}
-var body=D[p]; if(body===undefined){for(var k in D){if(p.indexOf(k)===0||k.indexOf(p)===0){body=D[k];break;}}}
-if(body===undefined) body='{}';
-return Promise.resolve(new Response(body,{status:200,headers:{'Content-Type':'application/json'}}));};
-window.__DEMO_SNAPSHOT__=true;})();</script><meta name="robots" content="noindex">
+<head><script>(function() {
+    var D = {};
+    var real = window.fetch;
+    window.fetch = function(u, o) {
+        try {
+            var p = new URL(u, location.href).pathname;
+        } catch (e) {
+            var p = String(u);
+        }
+        var body = D[p];
+        if (body === undefined) {
+            for (var k in D) {
+                if (p.indexOf(k) === 0 || k.indexOf(p) === 0) {
+                    body = D[k];
+                    break;
+                }
+            }
+        }
+        if (body === undefined) body = "{}";
+        return Promise.resolve(new Response(body, {
+            status: 200,
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }));
+    };
+    window.__DEMO_SNAPSHOT__ = true;
+})();</script><meta name="robots" content="noindex">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Automation Library — Demo — Demo</title>
@@ -19,7 +41,7 @@ color: #1a1a2e;
 min-height: 100vh;
 }
 
-/* ── Header ── */
+
 header {
 background: #ffffff;
 padding: 0 40px;
@@ -49,7 +71,7 @@ padding: 4px 12px;
 border-radius: 20px;
 }
 
-/* ── Hero ── */
+
 .hero {
 background: white;
 border-bottom: 1px solid #e8e8e8;
@@ -71,7 +93,7 @@ margin: 0 auto;
 line-height: 1.6;
 }
 
-/* ── Main content ── */
+
 main {
 max-width: 1100px;
 margin: 40px auto;
@@ -99,7 +121,7 @@ border-radius: 3px;
 background: #c0392b;
 }
 
-/* ── Automation cards ── */
+
 .card-grid {
 display: grid;
 grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -235,14 +257,14 @@ transition: opacity 0.15s;
 .btn-secondary { background: #f3f4f6; color: #444; border: 1px solid #e0e0e0; }
 .btn-disabled { background: #f3f4f6; color: #bbb; cursor: default; border: 1px solid #e8e8e8; }
 
-/* ── Coming soon card ── */
+
 .card-coming-soon {
 opacity: 0.6;
 pointer-events: none;
 }
 .card-coming-soon .card-header { background: #fafafa; }
 
-/* ── Footer ── */
+
 footer {
 text-align: center;
 padding: 32px;
@@ -260,7 +282,7 @@ footer a:hover { text-decoration: underline; }
 <a href="/demo/" style="color:#9fd0ff;text-decoration:underline">All demos</a>
 <a href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1m9l9OYw-9r1rF79uTz5iZ__mOzfRVjqtVevGnOM7TQAIj-Ye68AXTqYNAr2GdXfROoYYafKSD" target="_blank" style="background:#0073CF;color:#fff;padding:5px 12px;border-radius:6px;text-decoration:none">Book a 30-min walkthrough</a></div>
 
-<!-- Header -->
+
 <header>
 <div class="header-brand">
 <a href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1m9l9OYw-9r1rF79uTz5iZ__mOzfRVjqtVevGnOM7TQAIj-Ye68AXTqYNAr2GdXfROoYYafKSD" target="_blank" target="_blank">
@@ -274,13 +296,13 @@ footer a:hover { text-decoration: underline; }
 </div>
 </header>
 
-<!-- Hero -->
+
 <div class="hero">
 <h1>Automation <span>Library</span></h1>
 <p>A collection of AI-powered tools built to support Demo Movers' growth — from lead generation to pricing automation. Tools marked “Open demo dashboard” run on sample data; book a walkthrough to see the rest.</p>
 </div>
 
-<!-- Main -->
+
 <main>
 <div class="section-label">AI Automation Tools</div>
 <div class="card-grid">
@@ -508,7 +530,7 @@ Monitors every Moveware move file 24/7 against the FAIM 3.4 quality standard —
 <a href="/demo/faim.html" class="btn btn-primary">Open demo dashboard →</a></div>
 </div>
 
-<!-- Card 3: Cross-border LTL Rate Engine -->
+
 <div class="card">
 <div class="card-header">
 <div class="card-icon icon-green">🚚</div>
@@ -575,7 +597,7 @@ Audits every move file automatically — comparing estimated, actual, and invoic
 <div class="section-label">AI Sales Automations</div>
 <div class="card-grid">
 
-<!-- Card 1: TMS Corp Lead Gen Engine -->
+
 <div class="card">
 <div class="card-header">
 <div class="card-icon icon-red">🌎</div>
