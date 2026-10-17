@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head><script>(function(){var D={"/faim/api/metrics":"{\"breaches\":[{\"coord\":\"Diego Ramos\",\"cust\":\"F\",\"days\":\"2 gaps\",\"file\":\"205164\",\"rule\":\"Missing: survey, delivery date\",\"sev\":\"crit\"},{\"coord\":\"Sofia Vega\",\"cust\":\"Booked\",\"days\":\"1 gap\",\"file\":\"205149\",\"rule\":\"Missing: delivery date\",\"sev\":\"warn\"},{\"coord\":\"Luis Medina\",\"cust\":\"Booked\",\"days\":\"1 gap\",\"file\":\"205161\",\"rule\":\"Missing: delivery date\",\"sev\":\"warn\"},{\"coord\":\"Karen Ortiz\",\"cust\":\"Booked\",\"days\":\"1 gap\",\"file\":\"205116\",\"rule\":\"Missing: survey\",\"sev\":\"warn\"},{\"coord\":\"Luis Medina\",\"cust\":\"Booked\",\"days\":\"1 gap\",\"file\":\"205127\",\"rule\":\"Missing: survey\",\"sev\":\"warn\"},{\"coord\":\"Luis Medina\",\"cust\":\"Booked\",\"days\":\"1 gap\",\"file\":\"205120\",\"rule\":\"Missing: survey\",\"sev\":\"warn\"},{\"coord\":\"Ana Torres\",\"cust\":\"Booked\",\"days\":\"1 gap\",\"file\":\"205166\",\"rule\":\"Missing: survey\",\"sev\":\"warn\"},{\"coord\":\"Diego Ramos\",\"cust\":\"Booked\",\"days\":\"1 gap\",\"file\":\"205190\",\"rule\":\"Missing: pack date\",\"sev\":\"warn\"},{\"coord\":\"Karen Ortiz\",\"cust\":\"Booked\",\"days\":\"1 gap\",\"file\":\"205144\",\"rule\":\"Missing: pack date\",\"sev\":\"warn\"},{\"coord\":\"Sofia Vega\",\"cust\":\"Booked\",\"days\":\"1 gap\",\"file\":\"205230\",\"rule\":\"Missing: delivery date\",\"sev\":\"warn\"},{\"coord\":\"Ana Torres\",\"cust\":\"Booked\",\"days\":\"1 gap\",\"file\":\"205101\",\"rule\":\"Missing: delivery date\",\"sev\":\"warn\"},{\"coord\":\"Karen Ortiz\",\"cust\":\"Booked\",\"days\":\"1 gap\",\"file\":\"205224\",\"rule\":\"Missing: delivery date\",\"sev\":\"warn\"},{\"coord\":\"Diego Ramos\",\"cust\":\"Booked\",\"days\":\"1 gap\",\"file\":\"205124\",\"rule\":\"Missing: delivery date\",\"sev\":\"warn\"},{\"coord\":\"Luis Medina\",\"cust\":\"Booked\",\"days\":\"1 gap\",\"file\":\"205157\",\"rule\":\"Missing: survey\",\"sev\":\"warn\"},{\"coord\":\"Ana Torres\",\"cust\":\"Booked\",\"days\":\"1 gap\",\"file\":\"205123\",\"rule\":\"Missing: delivery date\",\"sev\":\"warn\"}],\"byCoordinator\":[{\"files\":22,\"name\":\"Diego Ramos\",\"v\":91},{\"files\":18,\"name\":\"Karen Ortiz\",\"v\":89},{\"files\":21,\"name\":\"Sofia Vega\",\"v\":86},{\"files\":24,\"name\":\"Luis Medina\",\"v\":75},{\"files\":26,\"name\":\"Ana Torres\",\"v\":69}],\"byCriterion\":[{\"name\":\"Coordinator assigned\",\"v\":100},{\"name\":\"Pack date logged\",\"v\":94},{\"name\":\"Survey on file\",\"v\":90},{\"name\":\"Delivery date logged\",\"v\":89}],\"gapFiles\":27,\"generatedNote\":\"LIVE Moveware \\u2014 Demo Movers, the same file book as the Move-File Audit page. Moves dated 2025-10-16 to 2026-10-16 by pack/collect date or, where a file has none (an import), by delivery date (29 files). Where Moveware has no date, SIT's trip plan supplies it (0 files; the plan on hand covers no months yet). Lost and cancelled files (C, L) are left out. Not counted: 6 files with neither date on record (3 of them booked) and 0 dated ahead.\",\"passBar\":80,\"tiles\":{\"audited\":111,\"booked\":79,\"lost\":15,\"missingSurvey\":11,\"moves\":134,\"notBookedUnproven\":8,\"pending\":32},\"viewer\":\"\",\"window\":\"live\"}\n"};
+var real=window.fetch;window.fetch=function(u,o){try{var p=new URL(u,location.href).pathname;}catch(e){var p=String(u);}
+var body=D[p]; if(body===undefined){for(var k in D){if(p.indexOf(k)===0||k.indexOf(p)===0){body=D[k];break;}}}
+if(body===undefined) body='{}';
+return Promise.resolve(new Response(body,{status:200,headers:{'Content-Type':'application/json'}}));};
+window.__DEMO_SNAPSHOT__=true;})();</script><meta name="robots" content="noindex">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAIM AuditTrack — Coordinator Dashboard</title>
+<style>
+:root{color-scheme:light;--surface-1:#fcfcfb;--page:#f9f9f7;--text-primary:#0b0b0b;--text-secondary:#52514e;--muted:#898781;
+--grid:#e1e0d9;--baseline:#c3c2b7;--border:rgba(11,11,11,0.10);--series-1:#2a78d6;--series-1-soft:#cde2fb;
+--critical:#d03b3b;--serious:#ec835a;--good-ink:#006300;}
+:root[data-theme="dark"]{color-scheme:dark;--surface-1:#1a1a19;--page:#0d0d0d;--text-primary:#fff;--text-secondary:#c3c2b7;
+--muted:#898781;--grid:#2c2c2a;--baseline:#383835;--border:rgba(255,255,255,0.10);--series-1:#3987e5;--series-1-soft:#184f95;
+--critical:#d03b3b;--serious:#ec835a;--good-ink:#0ca30c;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--text-primary);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:14px;line-height:1.45}
+.wrap{max-width:1080px;margin:0 auto;padding:24px 24px 60px}
+header.top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+h1{font-size:22px;margin:0 0 2px}
+.sub{color:var(--text-secondary);font-size:13px;margin:0}
+.topright{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--text-secondary)}
+.btn{border:1px solid var(--border);background:var(--surface-1);color:var(--text-secondary);border-radius:8px;padding:7px 12px;font-size:12.5px;cursor:pointer;text-decoration:none}
+.btn:hover{color:var(--text-primary)}
+.banner{margin-top:14px;background:color-mix(in srgb,var(--series-1) 12%,transparent);color:var(--series-1);border:1px solid color-mix(in srgb,var(--series-1) 30%,transparent);border-radius:9px;padding:9px 13px;font-size:12.5px;font-weight:600}
+.card{background:var(--surface-1);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-top:18px}
+.card h2{font-size:14px;margin:0 0 2px}
+.card .note{font-size:12px;color:var(--muted);margin:0 0 16px}
+.tiles{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:18px}
+.tile{background:var(--surface-1);border:1px solid var(--border);border-radius:12px;padding:16px 18px}
+.tile .label{font-size:12px;color:var(--text-secondary);margin:0}
+.tile .val{font-size:30px;font-weight:650;margin:6px 0 0;letter-spacing:-.01em}
+.tile .sub2{font-size:12px;color:var(--muted);margin-top:4px}
+.bars{display:flex;flex-direction:column;gap:11px}
+.row{display:grid;grid-template-columns:150px 1fr 74px;align-items:center;gap:12px}
+.row .name{font-size:13px;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.track{position:relative;height:20px;background:var(--series-1-soft);border-radius:4px}
+.fill{position:absolute;left:0;top:0;height:100%;border-radius:4px;background:var(--series-1)}
+.fill.under{background:var(--critical)}
+.threshold{position:absolute;top:-5px;bottom:-5px;width:2px;background:var(--baseline)}
+.pct{font-size:13px;text-align:right;font-variant-numeric:tabular-nums}
+.pct .flag{color:var(--critical);font-weight:600}
+.legend{display:flex;gap:18px;margin-top:16px;font-size:12px;color:var(--text-secondary);flex-wrap:wrap}
+.legend .k{display:inline-flex;align-items:center;gap:6px}
+.sw{width:11px;height:11px;border-radius:3px;display:inline-block}
+.thr-key{width:2px;height:13px;background:var(--baseline);display:inline-block}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--grid)}
+th{font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:600}
+td.num{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px}
+.pill.crit{color:var(--critical);background:color-mix(in srgb,var(--critical) 14%,transparent)}
+.pill.warn{color:var(--serious);background:color-mix(in srgb,var(--serious) 16%,transparent)}
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media (max-width:1100px){.tiles{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:820px){.tiles{grid-template-columns:repeat(2,1fr)}.cols2{grid-template-columns:1fr}.row{grid-template-columns:120px 1fr 64px}}
+.foot{color:var(--muted);font-size:11.5px;margin-top:22px}
+</style>
+</head>
+<body><div id="ipn-demo-banner" style="position:sticky;top:0;z-index:99999;background:#07182A;color:#fff;font:600 13px/1.4 'Public Sans',system-ui,sans-serif;padding:9px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center">
+<span>Demo with sample data from a fictional mover &middot; InflectionPoint Now</span>
+<a href="/demo/" style="color:#9fd0ff;text-decoration:underline">All demos</a>
+<a href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1m9l9OYw-9r1rF79uTz5iZ__mOzfRVjqtVevGnOM7TQAIj-Ye68AXTqYNAr2GdXfROoYYafKSD" target="_blank" style="background:#0073CF;color:#fff;padding:5px 12px;border-radius:6px;text-decoration:none">Book a 30-min walkthrough</a></div>
+<div class="wrap">
+<header class="top">
+<div>
+<h1>FAIM AuditTrack — Coordinator Dashboard</h1>
+<p class="sub">Demo Movers Co. · FAIM 3.4 move-file evidence coverage · <span id="window">—</span></p>
+</div>
+<div class="topright">
+<span id="viewer"></span>
+<button class="btn" onclick="rebuild()">↻ Refresh data</button>
+<button class="btn" onclick="toggleTheme()">◐ Theme</button>
+<a class="btn" href="/demo/">← Library</a>
+
+</div>
+</header>
+<div id="sampleBanner" class="banner" style="display:none"></div>
+
+<div class="tiles" id="tiles"></div>
+
+<div class="cols2">
+<div class="card">
+<h2>Coverage by coordinator</h2>
+<p class="note">Share of each coordinator's audited files with a survey on record and, unless it is an agent export, a delivery date. Line = 80% target.</p>
+<div class="bars" id="byCoord"></div>
+</div>
+<div class="card">
+<h2>Evidence coverage by type</h2>
+<p class="note">Share of audited files that carry each piece of evidence in Moveware. A delivery date is not expected on an agent export (EXA), nor a pack date on an agent import (IMA). Line = 80% target.</p>
+<div class="bars" id="byCrit"></div>
+</div>
+</div>
+<div class="legend">
+<span class="k"><span class="sw" style="background:var(--series-1)"></span> At / above 80%</span>
+<span class="k"><span class="sw" style="background:var(--critical)"></span> ⚠ Below target</span>
+<span class="k"><span class="thr-key"></span> 80% target</span>
+</div>
+
+<div class="card">
+<h2>Files missing evidence</h2>
+<p class="note">What's not on record, worst first<span id="gapCount"></span>. (Alerting + auto-drafted follow-ups are a later phase — this view only reports gaps, it does not send anything yet.)</p>
+<table>
+<thead><tr><th>File</th><th>Moveware status</th><th>Missing evidence</th><th>Coordinator</th><th class="num">Gaps</th><th>Severity</th></tr></thead>
+<tbody id="breaches"></tbody>
+</table>
+</div>
+
+<p class="foot" id="foot"></p>
+</div>
+<script>
+function toggleTheme(){const r=document.documentElement;r.setAttribute('data-theme',r.getAttribute('data-theme')==='dark'?'light':'dark');}
+async function rebuild(){const b=document.getElementById('sampleBanner');b.style.display='block';b.textContent='● Asking Moveware for the latest…';try{const r=await fetch('/faim/rebuild',{method:'POST'});const j=await r.json();b.textContent='● '+(j.started?'Re-reading the last 12 months from Moveware in the background — reload this page in a few minutes.':('Refresh not started: '+(j.reason||'unknown reason')+'.'));}catch(e){b.textContent='● Could not start the refresh.';}}
+const THR=80;
+function bars(el,data){
+if(!data||!data.length){el.innerHTML='<p style="font-size:12px;color:var(--muted);margin:0">No files to show yet.</p>';return;}
+el.innerHTML=data.map(d=>{const under=d.v<THR;
+return `<div class="row"><span class="name" title="${d.name}">${d.name}</span>
+<div class="track"><div class="fill ${under?'under':''}" style="width:${d.v}%"></div>
+<div class="threshold" style="left:${THR}%"></div></div>
+<span class="pct">${d.v}%${under?' <span class="flag">⚠</span>':''}</span></div>`;}).join('');
+}
+async function load(){
+let d;
+try{ const r=await fetch('/faim/api/metrics'); if(r.status===401){location.href='/login';return;} d=await r.json(); }
+catch{ document.getElementById('foot').textContent='Could not load data.'; return; }
+document.getElementById('window').textContent=d.window||'';
+document.getElementById('viewer').textContent=d.viewer||'';
+if(d.generatedNote){const b=document.getElementById('sampleBanner');b.style.display='block';b.textContent='● '+d.generatedNote;}
+const t=d.tiles||{};
+document.getElementById('tiles').innerHTML=`
+<div class="tile"><p class="label">Moves in the window</p><p class="val">${t.moves}</p><p class="sub2">packed or delivered in the last 12 months, any status</p></div>
+<div class="tile"><p class="label">Lost or cancelled</p><p class="val">${t.lost}</p><p class="sub2">left out of the audit</p></div>
+<div class="tile"><p class="label">Not booked, no proof it moved</p><p class="val">${t.notBookedUnproven||0}</p><p class="sub2">no invoice, no truck in the plan &mdash; left out</p></div>
+<div class="tile"><p class="label">Files audited</p><p class="val">${t.audited}</p><p class="sub2">${t.booked} booked · ${t.pending} not marked booked but invoiced or moved</p></div>
+<div class="tile"><p class="label">Missing survey</p><p class="val">${t.missingSurvey}</p><p class="sub2">of audited files</p></div>`;
+bars(document.getElementById('byCoord'),d.byCoordinator||[]);
+bars(document.getElementById('byCrit'),d.byCriterion||[]);
+const tb=document.getElementById('breaches');
+document.getElementById('gapCount').textContent=d.gapFiles?` — showing ${(d.breaches||[]).length} of ${d.gapFiles} files with a gap`:'';
+const rows=(d.breaches||[]);
+tb.innerHTML=rows.length?rows.map(b=>`
+<tr><td class="num">${b.file}</td><td>${b.cust}</td><td>${b.rule}</td><td>${b.coord}</td>
+<td class="num">${b.days}</td><td><span class="pill ${b.sev}">${b.sev==='crit'?'● Several gaps':'▲ Minor gaps'}</span></td></tr>`).join(''):'<tr><td colspan="6" style="color:var(--muted)">No gaps on the audited files.</td></tr>';
+document.getElementById('foot').textContent='Evidence coverage is read from Moveware; a file counts as covered only when the evidence is actually on record. Full FAIM compliance scoring (deadlines, documents, signed inventories) resumes once the remaining Moveware endpoints and field mapping are confirmed.';
+}
+load();
+</script>
+</body>
+</html>

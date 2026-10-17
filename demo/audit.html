@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en"><head><script>(function(){var D={};
+var real=window.fetch;window.fetch=function(u,o){try{var p=new URL(u,location.href).pathname;}catch(e){var p=String(u);}
+var body=D[p]; if(body===undefined){for(var k in D){if(p.indexOf(k)===0||k.indexOf(p)===0){body=D[k];break;}}}
+if(body===undefined) body='{}';
+return Promise.resolve(new Response(body,{status:200,headers:{'Content-Type':'application/json'}}));};
+window.__DEMO_SNAPSHOT__=true;})();</script><meta name="robots" content="noindex"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Move-File Cost &amp; Profit Audit</title>
+<style>
+  :root{--rust:#b0472f;--rust-dark:#8f3a26;--ink:#2b2b2b;--muted:#8a8a86;
+        --line:#eae7e3;--bg:#f4f3f1;--card:#fff;--green:#2e7d32;--amber:#b7791f;--red:#c0392b;--tint:#faf3f0;}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+       background:var(--bg);color:var(--ink);font-size:14px;line-height:1.45}
+  header{background:var(--card);border-bottom:1px solid var(--line);padding:22px 30px;
+         display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  header h1{font-size:22px;margin:0;font-weight:800;letter-spacing:-.2px}
+  header h1 .accent{color:var(--rust)} header .meta{font-size:12px;color:var(--muted)}
+  .back{font-size:13px;color:var(--rust);text-decoration:none;font-weight:600}
+  .demo{display:inline-block;background:#fff4e5;color:var(--amber);border:1px solid #f0dcb8;
+        border-radius:5px;padding:1px 8px;margin-left:8px;font-size:11px;font-weight:700}
+  main{padding:24px 30px;max-width:1200px;margin:0 auto}
+  h2{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin:28px 0 12px;font-weight:700}
+  .grid{display:grid;gap:14px}.g4{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:820px){.g4{grid-template-columns:repeat(2,1fr)}}
+  .tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+  .tile .label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+  .tile .value{font-size:27px;font-weight:800;margin-top:5px;letter-spacing:-.5px}
+  .tile .sub{font-size:12px;color:var(--muted);margin-top:3px}
+  .good{color:var(--green)}.warn{color:var(--amber)}.bad{color:var(--red)}
+  .row{display:flex;gap:14px;flex-wrap:wrap}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  th,td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);font-size:13px}
+  th{background:var(--tint);color:var(--rust-dark);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+  tr:last-child td{border-bottom:none}
+  .pill{display:inline-block;padding:1px 9px;border-radius:20px;font-size:11px;font-weight:700}
+  .pill.gap{background:#f7e7e2;color:var(--rust)}.pill.ok{background:#e6f4e6;color:var(--green)}.pill.rev{background:#fbf0dd;color:var(--amber)}
+  .bars{display:flex;flex-direction:column;gap:7px}
+  .bar{display:flex;align-items:center;gap:9px;font-size:12px}
+  .bar .track{flex:1;height:8px;background:var(--line);border-radius:6px;overflow:hidden}
+  .bar .fill{height:100%;background:var(--rust)}
+  .stage-line{display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px dashed var(--line)}
+  .num{font-variant-numeric:tabular-nums}
+  .tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:4px 0 4px;flex-wrap:wrap}
+  .tab-btn{appearance:none;background:none;border:none;cursor:pointer;text-decoration:none;
+           padding:10px 16px;font-size:13px;font-weight:700;color:var(--muted);
+           border-bottom:2px solid transparent;margin-bottom:-1px;border-radius:8px 8px 0 0}
+  .tab-btn:hover{color:var(--ink);background:var(--tint)}
+  .tab-btn.active{color:var(--rust);border-bottom-color:var(--rust)}
+  .tab-btn .badge{display:inline-block;min-width:18px;padding:0 6px;margin-left:6px;border-radius:20px;
+           background:var(--rust);color:#fff;font-size:11px;font-weight:700;line-height:18px;text-align:center;vertical-align:middle}
+  .tab-btn .badge.zero{background:var(--line);color:var(--muted)}
+  .tab[hidden]{display:none!important}
+  footer{color:var(--muted);font-size:11px;text-align:center;padding:22px}
+</style></head><body><div id="ipn-demo-banner" style="position:sticky;top:0;z-index:99999;background:#07182A;color:#fff;font:600 13px/1.4 'Public Sans',system-ui,sans-serif;padding:9px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center">
+<span>Demo with sample data from a fictional mover &middot; InflectionPoint Now</span>
+<a href="/demo/" style="color:#9fd0ff;text-decoration:underline">All demos</a>
+<a href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1m9l9OYw-9r1rF79uTz5iZ__mOzfRVjqtVevGnOM7TQAIj-Ye68AXTqYNAr2GdXfROoYYafKSD" target="_blank" style="background:#0073CF;color:#fff;padding:5px 12px;border-radius:6px;text-decoration:none">Book a 30-min walkthrough</a></div>
+<header>
+  <h1>Move-File Cost &amp; Profit <span class="accent">Audit</span></h1>
+  <div class="meta"><a class="back" href="/demo/">← Automation Library</a> &nbsp;·&nbsp;
+    Data source: MoveWare<span class="demo">DEMO DATA</span> · as of 2026-10-16</div>
+</header>
+<main>
+  
+
+  <nav class="tabs" role="tablist">
+    <a class="tab-btn" data-tab="overview" href="#overview" role="tab">Overview</a>
+    <a class="tab-btn" data-tab="underbilling" href="#underbilling" role="tab">Discrepancies</a>
+    <a class="tab-btn" data-tab="files" href="#files" role="tab">Files</a>
+  </nav>
+
+  <section class="tab" data-tab="overview" role="tabpanel">
+  <h2>Profitability</h2>
+  
+  <div class="grid g4">
+    <div class="tile"><div class="label">Total revenue</div><div class="value num">183,800</div><div class="sub">cost 158,140</div></div>
+    <div class="tile"><div class="label">Total profit</div><div class="value num good">25,660</div><div class="sub">gross margin 14.0%</div></div>
+    <div class="tile"><div class="label">Profit leakage (est − act)</div><div class="value num bad">17,835</div><div class="sub">estimated vs actual profit</div></div>
+    <div class="tile"><div class="label">Negative-margin files</div><div class="value num bad">2</div><div class="sub">avg profit/file 1,711</div></div>
+  </div>
+  
+  <h2>Workload &amp; Pipeline</h2>
+  <div class="row">
+    <div class="tile" style="flex:1;min-width:220px"><div class="label">Active files</div><div class="value num">10</div><div class="sub">15 audited this month</div></div>
+    <div class="tile" style="flex:2;min-width:280px"><div class="label">Files by audit stage</div>
+      <div class="stage-line"><span>not started</span><span class="num">0</span></div><div class="stage-line"><span>in review</span><span class="num">0</span></div><div class="stage-line"><span>gap flagged</span><span class="num">8</span></div><div class="stage-line"><span>resolved</span><span class="num">2</span></div><div class="stage-line"><span>closed</span><span class="num">5</span></div></div>
+  </div>
+  <h2>Ready to Invoice</h2>
+  
+  <div class="grid g4">
+    <div class="tile"><div class="label">Ready to invoice</div><div class="value num warn">4</div><div class="sub">files packed/delivered, not billed</div></div>
+    <div class="tile"><div class="label">Value to invoice</div><div class="value num warn">59,800</div><div class="sub">total billable now</div></div>
+    <div class="tile"><div class="label">US Embassy/Consulate in transit</div><div class="value num">0</div><div class="sub">packed, not yet delivered</div></div>
+    <div class="tile"><div class="label">Embassy/Consulate value (pending delivery)</div><div class="value num">0</div><div class="sub">bills after delivery</div></div>
+  </div>
+  <div class="row" style="margin-top:12px">
+    <div class="tile" style="flex:1;min-width:220px"><div class="label">Invoiced this month</div><div class="value num">11</div><div class="sub">124,000 billed</div></div>
+    <div class="tile" style="flex:1;min-width:220px"><div class="label">Percent billed</div><div class="value num warn">73.3%</div><div class="sub">of moves that have happened</div></div>
+  </div>
+  
+  <table style="margin-top:12px"><tr><th>Job</th><th>Client</th><th>Coordinator</th><th>Packed</th><th>Delivered</th><th>Value</th></tr>
+  <tr>
+    <td class="num">110002</td>
+    <td>Embassy of Canada</td><td>Karen Ortiz</td>
+    <td>2026-10-06</td><td>2026-10-21</td>
+    <td class="num warn">26,000</td></tr><tr>
+    <td class="num">110005</td>
+    <td>Petrova Family</td><td>Luis Medina</td>
+    <td>2026-10-09</td><td>2026-10-26</td>
+    <td class="num warn">19,000</td></tr><tr>
+    <td class="num">110010</td>
+    <td>Okafor Family</td><td>Karen Ortiz</td>
+    <td>2026-10-11</td><td>2026-10-29</td>
+    <td class="num warn">9,000</td></tr><tr>
+    <td class="num">110013</td>
+    <td>Klein Household</td><td>Luis Medina</td>
+    <td>2026-10-13</td><td>2026-10-27</td>
+    <td class="num warn">5,800</td></tr></table>
+  
+  
+  
+  <h2>Gaps &amp; Recovery</h2>
+  <div class="grid g4">
+    <div class="tile"><div class="label">Avg gaps / file</div><div class="value num">0.87</div><div class="sub">avg value 2,053</div></div>
+    <div class="tile"><div class="label">Recovered</div><div class="value num good">7,174</div><div class="sub">of 17,935 recoverable</div></div>
+    <div class="tile"><div class="label">Recovery rate</div><div class="value num warn">40.0%</div></div>
+    <div class="tile"><div class="label">Open gaps</div><div class="value num warn">13</div><div class="sub">22,585 at risk</div></div>
+  </div>
+  <div class="row" style="margin-top:12px">
+    <div class="tile" style="flex:1;min-width:320px"><div class="label" style="margin-bottom:8px">Top gap reasons by value</div>
+      <div class="bars">
+      <div class="bar"><span style="width:180px">volume or mode change</span>
+        <span class="track"><span class="fill" style="width:100.0%"></span></span>
+        <span class="num" style="width:80px;text-align:right">16,735</span></div><div class="bar"><span style="width:180px">insurance out of band</span>
+        <span class="track"><span class="fill" style="width:19.0%"></span></span>
+        <span class="num" style="width:80px;text-align:right">3,150</span></div><div class="bar"><span style="width:180px">under quote</span>
+        <span class="track"><span class="fill" style="width:9.0%"></span></span>
+        <span class="num" style="width:80px;text-align:right">1,500</span></div><div class="bar"><span style="width:180px">invoice below cost</span>
+        <span class="track"><span class="fill" style="width:7.0%"></span></span>
+        <span class="num" style="width:80px;text-align:right">1,200</span></div></div></div>
+    <div class="tile" style="flex:1;min-width:260px"><div class="label" style="margin-bottom:8px">By mode &nbsp;·&nbsp; insurance flags: <b>5</b></div>
+      <table style="border:none"><tr><th>Mode</th><th>Files</th><th>Profit</th><th>Margin</th></tr>
+      <tr><td>sea</td><td class="num">7</td><td class="num">13,010</td><td class="num">18.2%</td></tr><tr><td>air</td><td class="num">5</td><td class="num">10,400</td><td class="num">10.9%</td></tr><tr><td>road</td><td class="num">3</td><td class="num">2,250</td><td class="num">13.4%</td></tr></table></div>
+  </div>
+  
+  </section>
+
+  <section class="tab" data-tab="underbilling" role="tabpanel">
+  
+  <h2>Calculation Accuracy — Revenue &amp; Cost</h2>
+  
+  <div class="grid g4">
+    <div class="tile"><div class="label">Total discrepancy</div><div class="value num warn">18,085</div><div class="sub">across active checked files</div></div>
+    <div class="tile"><div class="label">Files under-invoiced</div><div class="value num warn">7</div><div class="sub">revenue/cost not reconciling</div></div>
+    <div class="tile"><div class="label">Coordinators affected</div><div class="value num warn">2</div><div class="sub">move coordinator of each file</div></div>
+    <div class="tile"><div class="label">Method</div><div class="value num">3</div><div class="sub">recalc · quote↔invoice · quote↔cost</div></div>
+  </div>
+  <div class="row" style="margin-top:12px">
+    <div class="tile" style="flex:1;min-width:320px"><div class="label" style="margin-bottom:8px">Total discrepancy by move coordinator <span style="color:var(--muted)">· amount · # files</span></div>
+      
+      <div class="bars">
+      <div class="bar"><span style="width:150px">Luis Medina</span>
+        <span class="track"><span class="fill" style="width:100.0%"></span></span>
+        <span class="num" style="width:120px;text-align:right">9,250 <span style="color:var(--muted)">· 3</span></span></div><div class="bar"><span style="width:150px">Karen Ortiz</span>
+        <span class="track"><span class="fill" style="width:96.0%"></span></span>
+        <span class="num" style="width:120px;text-align:right">8,835 <span style="color:var(--muted)">· 4</span></span></div></div>
+      
+    </div>
+  </div>
+  
+  <table style="margin-top:12px"><tr><th>Job</th><th>Client</th><th>Coordinator</th><th>Discrepancy type(s)</th><th>Amount</th></tr>
+  <tr>
+    <td class="num">110015</td><td>Ivanov Corporate</td><td>Luis Medina</td>
+    <td>Actual cost ≠ quoted cost</td><td class="num bad">4,500</td></tr><tr>
+    <td class="num">110002</td><td>Embassy of Canada</td><td>Karen Ortiz</td>
+    <td>Actual cost ≠ quoted cost, Revenue total ≠ sum of line items</td><td class="num bad">4,435</td></tr><tr>
+    <td class="num">110007</td><td>Silva Corporate</td><td>Luis Medina</td>
+    <td>Actual cost ≠ quoted cost, Revenue total ≠ sum of line items</td><td class="num bad">4,050</td></tr><tr>
+    <td class="num">110010</td><td>Okafor Family</td><td>Karen Ortiz</td>
+    <td>Actual cost ≠ quoted cost</td><td class="num bad">2,300</td></tr><tr>
+    <td class="num">110004</td><td>Martinez Household</td><td>Karen Ortiz</td>
+    <td>Actual cost ≠ quoted cost</td><td class="num bad">1,900</td></tr><tr>
+    <td class="num">110005</td><td>Petrova Family</td><td>Luis Medina</td>
+    <td>Actual cost ≠ quoted cost</td><td class="num bad">700</td></tr><tr>
+    <td class="num">110006</td><td>Nakamura Move</td><td>Karen Ortiz</td>
+    <td>Actual cost ≠ quoted cost</td><td class="num bad">200</td></tr></table>
+  
+  </section>
+
+  <section class="tab" data-tab="files" role="tabpanel">
+  <h2>Files Needing Attention</h2>
+  
+  <table><tr><th>Job</th><th>Client</th><th>Mode</th><th>Stage</th><th>Margin</th><th>Actual profit</th><th>Open gaps</th><th>Gap value</th></tr>
+  <tr>
+    <td class="num">110007</td><td>Silva Corporate</td><td>sea</td>
+    <td><span class="pill gap">gap flagged</span></td>
+    <td class="num bad">-12.0%</td><td class="num">-1,200</td>
+    <td class="num">3</td><td class="num">6,300</td></tr><tr>
+    <td class="num">110004</td><td>Martinez Household</td><td>road</td>
+    <td><span class="pill gap">gap flagged</span></td>
+    <td class="num bad">-4.4%</td><td class="num">-300</td>
+    <td class="num">2</td><td class="num">2,200</td></tr><tr>
+    <td class="num">110010</td><td>Okafor Family</td><td>sea</td>
+    <td><span class="pill gap">gap flagged</span></td>
+    <td class="num ">1.1%</td><td class="num">100</td>
+    <td class="num">2</td><td class="num">2,300</td></tr><tr>
+    <td class="num">110002</td><td>Embassy of Canada</td><td>air</td>
+    <td><span class="pill gap">gap flagged</span></td>
+    <td class="num ">4.6%</td><td class="num">1,200</td>
+    <td class="num">2</td><td class="num">4,135</td></tr><tr>
+    <td class="num">110015</td><td>Ivanov Corporate</td><td>air</td>
+    <td><span class="pill gap">gap flagged</span></td>
+    <td class="num ">2.2%</td><td class="num">500</td>
+    <td class="num">1</td><td class="num">4,500</td></tr><tr>
+    <td class="num">110003</td><td>TechFlow Ltd</td><td>sea</td>
+    <td><span class="pill gap">gap flagged</span></td>
+    <td class="num ">25.2%</td><td class="num">1,560</td>
+    <td class="num">1</td><td class="num">840</td></tr><tr>
+    <td class="num">110014</td><td>Rossi Relocation</td><td>sea</td>
+    <td><span class="pill gap">gap flagged</span></td>
+    <td class="num ">27.2%</td><td class="num">2,200</td>
+    <td class="num">1</td><td class="num">770</td></tr><tr>
+    <td class="num">110006</td><td>Nakamura Move</td><td>sea</td>
+    <td><span class="pill gap">gap flagged</span></td>
+    <td class="num ">27.3%</td><td class="num">3,600</td>
+    <td class="num">1</td><td class="num">1,540</td></tr><tr>
+    <td class="num">110005</td><td>Petrova Family</td><td>air</td>
+    <td><span class="pill ok">resolved</span></td>
+    <td class="num ">16.3%</td><td class="num">3,100</td>
+    <td class="num">0</td><td class="num">0</td></tr><tr>
+    <td class="num">110012</td><td>Dubois Move</td><td>air</td>
+    <td><span class="pill ok">closed</span></td>
+    <td class="num ">18.3%</td><td class="num">2,100</td>
+    <td class="num">0</td><td class="num">0</td></tr><tr>
+    <td class="num">110008</td><td>Al-Rashid Relocation</td><td>air</td>
+    <td><span class="pill ok">closed</span></td>
+    <td class="num ">21.9%</td><td class="num">3,500</td>
+    <td class="num">0</td><td class="num">0</td></tr><tr>
+    <td class="num">110013</td><td>Klein Household</td><td>road</td>
+    <td><span class="pill ok">resolved</span></td>
+    <td class="num ">24.1%</td><td class="num">1,400</td>
+    <td class="num">0</td><td class="num">0</td></tr><tr>
+    <td class="num">110001</td><td>Global Corp Relo</td><td>sea</td>
+    <td><span class="pill ok">closed</span></td>
+    <td class="num ">25.5%</td><td class="num">2,800</td>
+    <td class="num">0</td><td class="num">0</td></tr><tr>
+    <td class="num">110009</td><td>Brown Household</td><td>road</td>
+    <td><span class="pill ok">closed</span></td>
+    <td class="num ">27.4%</td><td class="num">1,150</td>
+    <td class="num">0</td><td class="num">0</td></tr><tr>
+    <td class="num">110011</td><td>Zhang Corporate</td><td>sea</td>
+    <td><span class="pill ok">closed</span></td>
+    <td class="num ">28.2%</td><td class="num">3,950</td>
+    <td class="num">0</td><td class="num">0</td></tr></table>
+  
+  </section>
+
+  <footer>Automation Library · the audit runs on imperfect data and flags it — figures in file currency (mixed).</footer>
+</main>
+<script>
+(function(){
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var btns = Array.prototype.slice.call(document.querySelectorAll('.tab-btn'));
+  var names = tabs.map(function(t){return t.getAttribute('data-tab');});
+  function show(name){
+    if(names.indexOf(name) < 0){ name = names[0]; }
+    tabs.forEach(function(t){ t.hidden = (t.getAttribute('data-tab') !== name); });
+    btns.forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-tab') === name); });
+  }
+  btns.forEach(function(b){
+    b.addEventListener('click', function(e){
+      e.preventDefault();
+      var name = b.getAttribute('data-tab');
+      if(history.replaceState){ history.replaceState(null, '', '#' + name); }
+      else { location.hash = name; }
+      show(name);
+    });
+  });
+  window.addEventListener('hashchange', function(){ show((location.hash || '').slice(1)); });
+  show((location.hash || '').slice(1) || names[0]);
+})();
+</script>
+</body></html>

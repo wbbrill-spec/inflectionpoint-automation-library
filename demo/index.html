@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script>(function(){var D={};
+var real=window.fetch;window.fetch=function(u,o){try{var p=new URL(u,location.href).pathname;}catch(e){var p=String(u);}
+var body=D[p]; if(body===undefined){for(var k in D){if(p.indexOf(k)===0||k.indexOf(p)===0){body=D[k];break;}}}
+if(body===undefined) body='{}';
+return Promise.resolve(new Response(body,{status:200,headers:{'Content-Type':'application/json'}}));};
+window.__DEMO_SNAPSHOT__=true;})();</script><meta name="robots" content="noindex">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Automation Library — Demo — Demo</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+background: #f5f6f8;
+color: #1a1a2e;
+min-height: 100vh;
+}
+
+/* ── Header ── */
+header {
+background: #ffffff;
+padding: 0 40px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+height: 74px;
+box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+border-bottom: 3px solid #c0392b;
+}
+.header-brand {
+display: flex;
+align-items: center;
+}
+.header-logo-img {
+height: 46px;
+width: auto;
+display: block;
+}
+.header-badge {
+background: #f3f4f6;
+border: 1px solid #e0e0e0;
+color: #555;
+font-size: 11px;
+font-weight: 600;
+padding: 4px 12px;
+border-radius: 20px;
+}
+
+/* ── Hero ── */
+.hero {
+background: white;
+border-bottom: 1px solid #e8e8e8;
+padding: 48px 40px 40px;
+text-align: center;
+}
+.hero h1 {
+font-size: 32px;
+font-weight: 800;
+color: #1a1a2e;
+margin-bottom: 10px;
+}
+.hero h1 span { color: #c0392b; }
+.hero p {
+font-size: 16px;
+color: #666;
+max-width: 560px;
+margin: 0 auto;
+line-height: 1.6;
+}
+
+/* ── Main content ── */
+main {
+max-width: 1100px;
+margin: 40px auto;
+padding: 0 24px;
+}
+
+.section-label {
+font-size: 30px;
+font-weight: 800;
+line-height: 1.2;
+color: #1a1a2e;
+padding: 2px 0 16px 20px;
+border-bottom: 2px solid #e8e8e8;
+margin-bottom: 24px;
+position: relative;
+}
+.section-label::before {
+content: "";
+position: absolute;
+left: 0;
+top: 5px;
+width: 6px;
+height: 32px;
+border-radius: 3px;
+background: #c0392b;
+}
+
+/* ── Automation cards ── */
+.card-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+gap: 24px;
+margin-bottom: 48px;
+}
+
+.card {
+background: white;
+border-radius: 14px;
+border: 1px solid #e8e8e8;
+overflow: hidden;
+transition: box-shadow 0.2s, transform 0.2s;
+display: flex;
+flex-direction: column;
+}
+.card:hover {
+box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+transform: translateY(-2px);
+}
+
+.card-header {
+padding: 24px 24px 16px;
+display: flex;
+align-items: flex-start;
+gap: 14px;
+border-bottom: 1px solid #f3f3f3;
+}
+.card-icon {
+width: 48px;
+height: 48px;
+border-radius: 12px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 22px;
+flex-shrink: 0;
+}
+.icon-red { background: #fdecea; }
+.icon-blue { background: #e8f0fe; }
+.icon-green { background: #e6f4ea; }
+.icon-gold { background: #fef9e7; }
+
+.card-meta { flex: 1; }
+.card-name {
+font-size: 15px;
+font-weight: 700;
+color: #1a1a2e;
+line-height: 1.3;
+margin-bottom: 6px;
+}
+.card-tags {
+display: flex;
+flex-wrap: wrap;
+gap: 5px;
+}
+.tag {
+font-size: 10px;
+font-weight: 600;
+padding: 2px 8px;
+border-radius: 10px;
+text-transform: uppercase;
+letter-spacing: 0.3px;
+}
+.tag-active { background: #e6f4ea; color: #1e7e34; }
+.tag-dev { background: #fef9e7; color: #856404; }
+.tag-ai { background: #e8f0fe; color: #1967d2; }
+.tag-email { background: #fce8e6; color: #c0392b; }
+.tag-daily { background: #f3e8ff; color: #7b1fa2; }
+
+.card-body {
+padding: 18px 24px;
+flex: 1;
+}
+.card-description {
+font-size: 13.5px;
+color: #555;
+line-height: 1.65;
+margin-bottom: 14px;
+}
+.card-features {
+list-style: none;
+display: flex;
+flex-direction: column;
+gap: 6px;
+}
+.card-features li {
+font-size: 12.5px;
+color: #666;
+display: flex;
+align-items: flex-start;
+gap: 7px;
+}
+.card-features li::before {
+content: '✓';
+color: #c0392b;
+font-weight: 700;
+flex-shrink: 0;
+margin-top: 1px;
+}
+
+.card-footer {
+padding: 16px 24px;
+border-top: 1px solid #f3f3f3;
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 10px;
+}
+.card-schedule {
+font-size: 11px;
+color: #999;
+display: flex;
+align-items: center;
+gap: 5px;
+}
+
+.btn {
+display: inline-flex;
+align-items: center;
+gap: 6px;
+padding: 9px 18px;
+border-radius: 8px;
+font-size: 13px;
+font-weight: 600;
+cursor: pointer;
+border: none;
+text-decoration: none;
+transition: opacity 0.15s;
+}
+.btn:hover { opacity: 0.85; }
+.btn-primary { background: #c0392b; color: white; }
+.btn-secondary { background: #f3f4f6; color: #444; border: 1px solid #e0e0e0; }
+.btn-disabled { background: #f3f4f6; color: #bbb; cursor: default; border: 1px solid #e8e8e8; }
+
+/* ── Coming soon card ── */
+.card-coming-soon {
+opacity: 0.6;
+pointer-events: none;
+}
+.card-coming-soon .card-header { background: #fafafa; }
+
+/* ── Footer ── */
+footer {
+text-align: center;
+padding: 32px;
+font-size: 12px;
+color: #bbb;
+border-top: 1px solid #e8e8e8;
+margin-top: 24px;
+}
+footer a { color: #c0392b; text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body><div id="ipn-demo-banner" style="position:sticky;top:0;z-index:99999;background:#07182A;color:#fff;font:600 13px/1.4 'Public Sans',system-ui,sans-serif;padding:9px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center">
+<span>Demo with sample data from a fictional mover &middot; InflectionPoint Now</span>
+<a href="/demo/" style="color:#9fd0ff;text-decoration:underline">All demos</a>
+<a href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1m9l9OYw-9r1rF79uTz5iZ__mOzfRVjqtVevGnOM7TQAIj-Ye68AXTqYNAr2GdXfROoYYafKSD" target="_blank" style="background:#0073CF;color:#fff;padding:5px 12px;border-radius:6px;text-decoration:none">Book a 30-min walkthrough</a></div>
+
+<!-- Header -->
+<header>
+<div class="header-brand">
+<a href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1m9l9OYw-9r1rF79uTz5iZ__mOzfRVjqtVevGnOM7TQAIj-Ye68AXTqYNAr2GdXfROoYYafKSD" target="_blank" target="_blank">
+<img src="/logo.png" alt="Demo Movers Co." class="header-logo-img">
+</a>
+</div>
+<div style="display:flex;align-items:center;gap:16px">
+<span style="font-size:13px;color:#666"></span>
+
+
+</div>
+</header>
+
+<!-- Hero -->
+<div class="hero">
+<h1>Automation <span>Library</span></h1>
+<p>A collection of AI-powered tools built to support Demo Movers' growth — from lead generation to pricing automation. Tools marked “Open demo dashboard” run on sample data; book a walkthrough to see the rest.</p>
+</div>
+
+<!-- Main -->
+<main>
+<div class="section-label">AI Automation Tools</div>
+<div class="card-grid">
+
+<!-- Card: AI Assistant (per-user command center) -->
+<div class="card">
+<div class="card-header">
+<div class="card-icon icon-gold">🤖</div>
+<div class="card-meta">
+<div class="card-name">AI Assistant</div>
+<div class="card-tags">
+<span class="tag tag-active">Active</span>
+<span class="tag tag-ai">AI</span>
+<span class="tag tag-daily">5×/day</span>
+<span class="tag tag-email">Email</span>
+</div>
+</div>
+</div>
+<div class="card-body">
+<p class="card-description">
+Your personal command center. Pulls your emails, your Moveware (TMS) and ClickUp (TIM) files and (optionally) WhatsApp into one private dashboard, ranked by urgency — so you can see everything that needs you in one place.
+</p>
+<ul class="card-features">
+<li>Emails that need your reply, plus flagged mail</li>
+<li>Moveware &amp; ClickUp to-dos: invoice files, request &amp; send documents, next steps</li>
+<li>Everything ranked Urgent / Today / Soon</li>
+<li>AI-suggested replies saved as drafts (never sent)</li>
+<li>Private to you — nobody else sees your dashboard</li>
+</ul>
+</div>
+<div class="card-footer">
+<div class="card-schedule">🕘 6am · 9am · 12pm · 3pm · 6pm (Mexico City)</div>
+<a href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1m9l9OYw-9r1rF79uTz5iZ__mOzfRVjqtVevGnOM7TQAIj-Ye68AXTqYNAr2GdXfROoYYafKSD" target="_blank" class="btn btn-primary">Book a demo →</a>
+</div>
+</div>
+
+<!-- Card: Cube-Sheet Converter -->
+<div class="card">
+<div class="card-header">
+<div class="card-icon icon-red">📦</div>
+<div class="card-meta">
+<div class="card-name">Cube-Sheet Converter</div>
+<div class="card-tags">
+<span class="tag tag-active">Active</span>
+<span class="tag tag-ai">AI</span>
+<span class="tag tag-email">Bilingual</span>
+</div>
+</div>
+</div>
+<div class="card-body">
+<p class="card-description">
+Turns a phone photo of a handwritten survey cube sheet into a "Reporte de volumetría" (TH-FO-VI-18) — an itemized volume sheet in m³ with carton counts and service-type totals, in Spanish and English, ready to download. Eliminates manual re-entry into SIT/Moveware.
+</p>
+<ul class="card-features">
+<li>Photo → volumetry report in minutes</li>
+<li>AI vision extraction with mandatory human review</li>
+<li>Bilingual xlsx output (Spanish + English)</li>
+<li>Carton catalog + service-flag totals (Huacal, Empaque, Desempaque)</li>
+<li>Reproduces the official TH-FO-VI-18 form exactly</li>
+</ul>
+</div>
+<div class="card-footer">
+<div class="card-schedule">⚡ On-demand</div>
+<a href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1m9l9OYw-9r1rF79uTz5iZ__mOzfRVjqtVevGnOM7TQAIj-Ye68AXTqYNAr2GdXfROoYYafKSD" target="_blank" class="btn btn-primary">Book a demo →</a>
+</div>
+</div>
+
+<!-- Card: Warehouse Doc Capture (Embassy 2-day SLA) -->
+<div class="card">
+<div class="card-header">
+<div class="card-icon icon-blue">📄</div>
+<div class="card-meta">
+<div class="card-name">Document Audit &amp; Translation — Packing Inventory &amp; Weight Certificate</div>
+<div class="card-tags">
+<span class="tag tag-active">Active</span>
+<span class="tag tag-ai">AI</span>
+<span class="tag tag-email">Email</span>
+</div>
+</div>
+</div>
+<div class="card-body">
+<p class="card-description">
+Upload the SIT packing inventory and the certified weight certificate. The automation audits both documents for accuracy, flags audit gaps (totals that don’t add up, kg/lb mismatches, inventory weight vs. certified weight, missing signatures or dates), translates the inventory to English, and lets the user review, correct and send the final documents to U.S. Embassy and Consulate staff — built for the 2-day SLA.
+</p>
+<ul class="card-features">
+<li>Upload the inventory and weight certificate PDFs (one or both)</li>
+<li>Deterministic audit of every line: van rows, totals, kg↔lb, density, cross-document checks</li>
+<li>Audit gaps flagged for review before anything is sent</li>
+<li>English packing inventory PDF, with line-by-line corrections and the Spanish original attached</li>
+<li>Ready-to-send Outlook draft to the Embassy / Consulate, created in the user’s own mailbox</li>
+</ul>
+</div>
+<div class="card-footer">
+<div class="card-schedule">💻 Documentation team · before dispatch</div>
+<a href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1m9l9OYw-9r1rF79uTz5iZ__mOzfRVjqtVevGnOM7TQAIj-Ye68AXTqYNAr2GdXfROoYYafKSD" target="_blank" class="btn btn-primary">Book a demo →</a>
+</div>
+</div>
+
+<!-- Card: Cross-Border Shipment Dashboard -->
+<div class="card">
+<div class="card-header">
+<div class="card-icon icon-red">🛃</div>
+<div class="card-meta">
+<div class="card-name">Cross-Border Shipment Dashboard</div>
+<div class="card-tags">
+<span class="tag tag-active">Active</span>
+<span class="tag tag-daily">Live</span>
+<span class="tag tag-ai">Consolidation</span>
+<span class="tag tag-ai">Trucks</span>
+</div>
+</div>
+</div>
+<div class="card-body">
+<p class="card-description">
+One live picture of every US → Mexico shipment across TIM (ClickUp) and TMS (Moveware) — the digital replacement for the whiteboard. Pipeline by stage, hub loads, a needs-attention list of stalled, on-hold and document-pending moves, and the real DOM trucks already rolling to each hub with space left on them.
+</p>
+<ul class="card-features">
+<li>Pipeline board: booked → docs → border → customs → hub → delivery</li>
+<li>Stalled / docs-incomplete / on-hold alerts with the assigned coordinator</li>
+<li>Hub load in lift-van equivalents toward a 53' truck</li>
+<li>Volumes, destinations and sale value from the Remisiones workbook</li>
+<li>Consolidation planner with daily suggested loads</li>
+<li>Real DOM trucks from the Plan de Viajes — spare m³ already heading to each Mexican hub, matched to the loads that could fill it</li>
+</ul>
+</div>
+<div class="card-footer">
+<div class="card-schedule">📊 Live dashboard · refreshes every 5 min</div>
+<a href="/demo/crossborder.html" class="btn btn-primary">Open demo dashboard →</a>
+</div>
+</div>
+
+<!-- Card: Coordinator Dashboard — Automated File Audit -->
+<div class="card">
+<div class="card-header">
+<div class="card-icon icon-blue">⏱️</div>
+<div class="card-meta">
+<div class="card-name">Coordinator Dashboard — Automated File Audit</div>
+<div class="card-tags">
+<span class="tag tag-active">Active</span>
+<span class="tag tag-daily">Live</span>
+<span class="tag tag-ai">AI</span>
+</div>
+</div>
+</div>
+<div class="card-body">
+<p class="card-description">
+One screen for the move coordinators: every job's weight certificate and inventory audited automatically, the 2-day Embassy document clock counting from loading date, exceptions to review, and one-click approval that files the certified weights into Moveware.
+</p>
+<ul class="card-features">
+<li>Docs complete / missing per job and per lot (UAB vs surface)</li>
+<li>2-day Embassy SLA countdown from loading date, with escalation ladder</li>
+<li>Audit flags only — kg/lb errors, density, van counts, cross-document mismatches</li>
+<li>Review &amp; approve → certificate attached and per-lot summary written to the Moveware job</li>
+<li>Reads live Moveware data (company 10000)</li>
+</ul>
+</div>
+<div class="card-footer">
+<div class="card-schedule">⏱️ Live — refreshes on every document received</div>
+<div style="display:flex;gap:8px">
+<a href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1m9l9OYw-9r1rF79uTz5iZ__mOzfRVjqtVevGnOM7TQAIj-Ye68AXTqYNAr2GdXfROoYYafKSD" target="_blank" target="_blank" class="btn btn-primary">Book a demo →</a>
+</div>
+</div>
+</div>
+
+<!-- Card: FAIM Move-File Quality Audit -->
+<div class="card">
+<div class="card-header">
+<div class="card-icon icon-blue">🛡️</div>
+<div class="card-meta">
+<div class="card-name">FAIM Move-File Quality Audit</div>
+<div class="card-tags">
+<span class="tag tag-active">Active</span>
+<span class="tag tag-ai">AI</span>
+<span class="tag tag-daily">Daily</span>
+</div>
+</div>
+</div>
+<div class="card-body">
+<p class="card-description">
+Monitors every Moveware move file 24/7 against the FAIM 3.4 quality standard — survey, quotation, documentation, insurance, and delivery milestones. Alerts the assigned coordinator and auto-drafts follow-up emails on their behalf.
+</p>
+<ul class="card-features">
+<li>Continuous FAIM 3.4 conformance checks per file</li>
+<li>Working-day deadline clocks (MS2.1–MS2.6)</li>
+<li>Coordinator email alerts + auto-drafted follow-ups</li>
+<li>Per-coordinator stats to target training</li>
+<li>Reads live Moveware data (company 10000)</li>
+</ul>
+</div>
+<div class="card-footer">
+<div class="card-schedule">📊 Live dashboard</div>
+<a href="/demo/faim.html" class="btn btn-primary">Open demo dashboard →</a></div>
+</div>
+
+<!-- Card 3: Cross-border LTL Rate Engine -->
+<div class="card">
+<div class="card-header">
+<div class="card-icon icon-green">🚚</div>
+<div class="card-meta">
+<div class="card-name">Cross-border LTL Quote Engine</div>
+<div class="card-tags">
+<span class="tag tag-active">Active</span>
+<span class="tag tag-ai">AI</span>
+<span class="tag tag-email">Email</span>
+</div>
+</div>
+</div>
+<div class="card-body">
+<p class="card-description">
+Automates rate quoting for US↔Mexico LTL moves (5–15 cbm). Reads flat-rate pricing, applies markup by account type, detects accessorials, and generates bilingual branded PDF quotes with Gmail drafts and automatic follow-ups.
+</p>
+<ul class="card-features">
+<li>Instant quotes for US↔Mexico LTL (5–15 cbm)</li>
+<li>Bilingual PDF quotes (English + Spanish)</li>
+<li>Auto-detects accessorials from cube sheet</li>
+<li>Gmail drafts + 48h / 120h follow-up scheduling</li>
+<li>Logs all quotes to Google Sheets automatically</li>
+</ul>
+</div>
+<div class="card-footer">
+<div class="card-schedule">⚡ On-demand</div>
+<a href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1m9l9OYw-9r1rF79uTz5iZ__mOzfRVjqtVevGnOM7TQAIj-Ye68AXTqYNAr2GdXfROoYYafKSD" target="_blank" class="btn btn-primary">Book a demo →</a>
+</div>
+</div>
+
+<!-- Card: Move-File Cost & Profit Audit -->
+<div class="card">
+<div class="card-header">
+<div class="card-icon icon-green">📊</div>
+<div class="card-meta">
+<div class="card-name">Move-File Cost &amp; Profit Audit</div>
+<div class="card-tags">
+<span class="tag tag-active">Active</span>
+<span class="tag tag-ai">AI</span>
+<span class="tag tag-daily">Daily</span>
+</div>
+</div>
+</div>
+<div class="card-body">
+<p class="card-description">
+Audits every move file automatically — comparing estimated, actual, and invoiced cost to catch margin leaks, missing costs, and recoverable charges. Replaces the manual month-end cost review.
+</p>
+<ul class="card-features">
+<li>Estimate vs. actual vs. invoiced reconciliation per file</li>
+<li>Flags missing costs, under-quotes &amp; out-of-band insurance</li>
+<li>Tracks recoverable charges until they&rsquo;re collected</li>
+<li>Supplier-invoice &amp; change-order capture (upload / photo / email)</li>
+<li>Live dashboard: profit, gaps, recovery &amp; insurance flags</li>
+</ul>
+</div>
+<div class="card-footer">
+<div class="card-schedule">📊 Live dashboard</div>
+<a href="/demo/audit.html" class="btn btn-primary">Open demo dashboard →</a>
+</div>
+</div>
+
+</div>
+
+<div class="section-label">AI Sales Automations</div>
+<div class="card-grid">
+
+<!-- Card 1: TMS Corp Lead Gen Engine -->
+<div class="card">
+<div class="card-header">
+<div class="card-icon icon-red">🌎</div>
+<div class="card-meta">
+<div class="card-name">Cross-Border Expansion Lead Gen</div>
+<div class="card-tags">
+<span class="tag tag-active">Active</span>
+<span class="tag tag-ai">AI</span>
+<span class="tag tag-daily">Daily</span>
+<span class="tag tag-email">Email</span>
+</div>
+</div>
+</div>
+<div class="card-body">
+<p class="card-description">
+Scans news, Google Alerts, and Reddit every morning to identify US, Canadian, and Mexican SMBs expanding cross-border. Automatically qualifies leads and drafts bilingual outreach emails to HR, Global Mobility, and Procurement contacts.
+</p>
+<ul class="card-features">
+<li>38 monitored sources — news, Google Alerts, Reddit</li>
+<li>AI qualification filters for SMBs only</li>
+<li>Bilingual email drafts (English + Spanish)</li>
+<li>Targets HR, Global Mobility, C&B, Procurement</li>
+<li>Agent approval required before any email sends</li>
+</ul>
+</div>
+<div class="card-footer">
+<div class="card-schedule">🕘 Runs daily at 9am Central</div>
+<div style="display:flex;gap:8px">
+<a href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1m9l9OYw-9r1rF79uTz5iZ__mOzfRVjqtVevGnOM7TQAIj-Ye68AXTqYNAr2GdXfROoYYafKSD" target="_blank" class="btn btn-primary">Book a demo →</a>
+<a href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1m9l9OYw-9r1rF79uTz5iZ__mOzfRVjqtVevGnOM7TQAIj-Ye68AXTqYNAr2GdXfROoYYafKSD" target="_blank" class="btn btn-secondary">Book a demo →</a>
+</div>
+</div>
+</div>
+
+<!-- Card: Agent Outreach — Email Campaigns -->
+<div class="card">
+<div class="card-header">
+<div class="card-icon icon-gold">✉️</div>
+<div class="card-meta">
+<div class="card-name">Agent Outreach — Email Campaigns</div>
+<div class="card-tags">
+<span class="tag tag-active">Active</span>
+<span class="tag tag-email">Email</span>
+<span class="tag tag-daily">Multi-touch</span>
+</div>
+</div>
+</div>
+<div class="card-body">
+<p class="card-description">
+Runs multi-touch email campaigns to international moving agents and tracks the full funnel — sent → replied → rate request → booked — across every campaign, with global suppression and sanctions screening. One dashboard for all campaigns.
+</p>
+<ul class="card-features">
+<li>Config-driven: new campaigns appear automatically</li>
+<li>Funnel + conversion by country and domain</li>
+<li>Pipeline value, pacing, and bookings-to-confirm queue</li>
+<li>Global opt-out / suppression honored before every draft</li>
+<li>Reads the live "Agent Outreach" workbook</li>
+</ul>
+</div>
+<div class="card-footer">
+<div class="card-schedule">📊 Live dashboard</div>
+<a href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1m9l9OYw-9r1rF79uTz5iZ__mOzfRVjqtVevGnOM7TQAIj-Ye68AXTqYNAr2GdXfROoYYafKSD" target="_blank" class="btn btn-primary">Book a demo →</a>
+</div>
+</div>
+
+<!-- Card: WhatsApp AI Assistant (under construction) -->
+<div class="card">
+<div class="card-header">
+<div class="card-icon icon-green">💬</div>
+<div class="card-meta">
+<div class="card-name">WhatsApp AI Assistant</div>
+<div class="card-tags">
+<span class="tag tag-dev">🚧 Under Construction</span>
+<span class="tag tag-ai">AI</span>
+<span class="tag tag-email">Bilingual</span>
+</div>
+</div>
+</div>
+<div class="card-body">
+<p class="card-description">
+A WhatsApp Business line for private LCL / groupage leads (Mexico → Europe). The bot greets the customer in Spanish or English, collects origin, destination and dates, estimates the volume from photos, returns one total price from the 2026 Groupage Tariff Guide, answers common questions, and hands off to a live advisor — every lead logged in the team inbox.
+</p>
+<ul class="card-features">
+<li>Photo → item list → m³ / kg estimate (surveyor cube sheet)</li>
+<li>Price = origin branch + destination country tariff, per whole m³ (min 2 m³)</li>
+<li>Knowledge-base replies: transit time, inclusions, documents</li>
+<li>"1" or "asesor" → human handoff; &lt;10-min SLA inbox</li>
+<li>Status: in testing — pricing, copy and Meta business verification being finalized</li>
+</ul>
+</div>
+<div class="card-footer">
+<div class="card-schedule">🚧 Testing — not yet open to customers</div>
+<div style="display:flex;gap:8px">
+<a href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1m9l9OYw-9r1rF79uTz5iZ__mOzfRVjqtVevGnOM7TQAIj-Ye68AXTqYNAr2GdXfROoYYafKSD" target="_blank" target="_blank" class="btn btn-secondary">Book a demo →</a>
+</div>
+</div>
+</div>
+
+</div>
+
+<div class="section-label">Management Reports</div>
+<div class="card-grid">
+
+<!-- Card: TMS Executive Dashboard -->
+<div class="card">
+<div class="card-header">
+<div class="card-icon icon-gold">📈</div>
+<div class="card-meta">
+<div class="card-name">TMS Executive Dashboard</div>
+<div class="card-tags">
+<span class="tag tag-active">Active</span>
+<span class="tag tag-daily">Live</span>
+</div>
+</div>
+</div>
+<div class="card-body">
+<p class="card-description">
+One executive view of the moving business — revenue vs. budget, move volumes, coordinator productivity, and claims/loss ratios — pulling live operational and financial data into a single KPI dashboard.
+</p>
+<ul class="card-features">
+<li>Revenue vs. budget tracking (2026, USD)</li>
+<li>Move files booked per month &amp; by mode / lane</li>
+<li>Moves per coordinator — YTD productivity</li>
+<li>Claims by month &amp; loss ratio by year</li>
+<li>Reads live Moveware data (company 10000)</li>
+</ul>
+</div>
+<div class="card-footer">
+<div class="card-schedule">📊 Live dashboard</div>
+<a href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1m9l9OYw-9r1rF79uTz5iZ__mOzfRVjqtVevGnOM7TQAIj-Ye68AXTqYNAr2GdXfROoYYafKSD" target="_blank" class="btn btn-primary">Book a demo →</a>
+</div>
+</div>
+
+
+
+</div>
+
+</main>
+
+<footer>
+<a href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1m9l9OYw-9r1rF79uTz5iZ__mOzfRVjqtVevGnOM7TQAIj-Ye68AXTqYNAr2GdXfROoYYafKSD" target="_blank" target="_blank">demo.com</a> &nbsp;·&nbsp; Internal use only
+</footer>
+
+</body>
+</html>
