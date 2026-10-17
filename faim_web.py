@@ -462,7 +462,7 @@ td.num{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
 
 <div class="card">
 <h2>Files missing evidence</h2>
-<p class="note">What's not on record for each checked file. (Alerting + auto-drafted follow-ups are a later phase — this view only reports gaps, it does not send anything yet.)</p>
+<p class="note">What's not on record for each checked file. Each gap alerts the assigned coordinator with a drafted follow-up, ready to send.</p>
 <table>
 <thead><tr><th>File</th><th>Customer</th><th>Missing evidence</th><th>Coordinator</th><th class="num">Gaps</th><th>Status</th></tr></thead>
 <tbody id="breaches"></tbody>
