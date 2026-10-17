@@ -368,7 +368,7 @@ const FLAG_ICON = {stalled:"⏳", docs_incomplete:"📄", on_hold:"⛔", payment
 const ALERT_FLAGS = ["on_hold","payment_pending","window_risk","unresponsive","docs_incomplete","docs_pending","certificate_pending","visa_pending","no_delivery_date","no_uplift_date","stalled"];
 const HUBS = ["Monterrey","Mexico City","Guadalajara","Querétaro","Mérida","Torreón","Unknown"];
 const TRUCK_LV = 13;
-const TRUCK_M3 = 88;   // 53' trailer ≈ 20,000 lb HHG at 6.5 lb/cuft ≈ 3,077 cuft ≈ 88 m³ (Bill, 2026-09-09)
+const TRUCK_M3 = 88;   // 53' trailer ≈ 20,000 lb HHG at 6.5 lb/cuft ≈ 3,077 cuft ≈ 88 m³
 const pm3 = s => s.planning_m3 || 0;
 
 let ALL = [], STATUS = {}, DIAG = {}, view = "ship", sortKey = "customer_name", sortDir = 1, kpiSel = null;
@@ -423,7 +423,7 @@ const ES = {
   "Board": "Tablero", "Table": "Tabla", "↻ Refresh": "↻ Actualizar",
   "Pipeline": "Flujo", "Suggested loads": "Cargas sugeridas",
   // Two-stage imports, detours, exports and existing consolidations
-  // (Edgar / Fernanda, 22 Sep 2026).
+  //
   "Stage 1 — border crossing (McAllen → Monterrey)": "Etapa 1 — cruce fronterizo (McAllen → Monterrey)",
   "Stage 2 — onward from Monterrey": "Etapa 2 — distribución desde Monterrey",
   "Export": "Exportación", "Domestic Mexico": "Nacional México",
@@ -565,7 +565,7 @@ function setLang(l){ LANG = l; try { localStorage.setItem("cb_lang", l); } catch
 // Demo Movers books some files in MXN and some in USD. Nothing here ever adds two
 // currencies together without converting first, and the conversion uses the
 // books rate for the month the file earned in — pack/load date on exports,
-// delivery date on imports (Bill, 2026-09-16), falling back to the booked date
+// delivery date on imports, falling back to the booked date
 // when neither is filled. FX comes from the server (crossborder/fx.py) so the
 // page and the API can never disagree about a rate.
 const BASIS_LABEL = { pack: "pack / load date", delivery: "delivery date", booked: "booked date" };
@@ -965,7 +965,7 @@ function renderMetrics(p) {
 // Consolidations a coordinator has already made, read from her note on the
 // ClickUp list. These are not suggestions — they are trucks being filled right
 // now, and the useful move is to put more freight on one rather than book
-// another (decision D6 with Edgar, 22 Sep).
+// another.
 function renderGroups(p) {
   const gs = p.groups || [];
   $("#grouphead").style.display = gs.length ? "" : "none";
@@ -1113,7 +1113,7 @@ function renderKpis() {
   });
 }
 
-// "Already consolidated with TMS - 110719, TIM - 121722" (Bill, 2026-09-22).
+// "Already consolidated with TMS - 110719, TIM - 121722".
 // Naming the other files by source and job number is the point: a coordinator
 // who sees this has to be able to go and open them.
 function consolidatedLine(s) {
@@ -1273,7 +1273,7 @@ function openDrawer(id) {
       if (j.error) { $("#dinv").innerHTML = `<span style="color:#c0392b">${esc(j.error)}</span>`; return; }
       if (!j.count) { $("#dinv").textContent = tr("no invoice raised yet"); return; }
       // Deliberately NOT labelled "outstanding". Moveware is not Demo Movers'
-      // accounting system of record (Bill, 2026-09-16) — payments are booked
+      // accounting system of record — payments are booked
       // elsewhere, so Moveware shows nearly every invoice as unpaid. Presenting
       // that as an AR figure would invent a receivables crisis that isn't real.
       $("#dinv").innerHTML = `${tr("Invoiced")} ${fmtMoney(j.invoiced, j.currency, s.revenue_month)}`
